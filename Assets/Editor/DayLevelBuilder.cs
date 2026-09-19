@@ -131,43 +131,52 @@ namespace BigRedButton.Editor
         {
             // Day 4: red now, green in a few seconds, then back again.
             GameObject timed = SpecialButton("Timed Colour Button", new Vector3(-4.6f, 0f, 5.4f),
-                "TURNS GREEN ON A TIMER");
+                "GREEN ON A TIMER - PRESS IT WHILE GREEN");
             var schedule = timed.AddComponent<ButtonColourSchedule>();
             SetPrivate(schedule, "redDuration", 4f);
             SetPrivate(schedule, "greenDuration", 4f);
+            // Pressing it while green ends the day; while red it restarts.
+            ResolveByColour(timed, level);
 
             // Day 18: looking at it makes it turn red.
             GameObject shy = SpecialButton("Shy Button", new Vector3(-1.6f, 0f, 5.4f),
                 "TURNS RED WHEN WATCHED");
             var gaze = shy.AddComponent<ButtonGazeColour>();
             SetPrivate(gaze, "mode", (int)ButtonGazeColour.GazeMode.TurnsRedWhenWatched);
+            ResolveByColour(shy, level);
 
             // Day 19: colour depends on which way the player is facing.
             GameObject compass = SpecialButton("Compass Button", new Vector3(1.6f, 0f, 5.4f),
                 "COLOUR FOLLOWS YOUR HEADING");
             var heading = compass.AddComponent<ButtonGazeColour>();
             SetPrivate(heading, "mode", (int)ButtonGazeColour.GazeMode.FollowsPlayerHeading);
+            ResolveByColour(compass, level);
 
             // Day 13: grey and inert until it is woken up.
             GameObject sleeping = SpecialButton("Sleeping Button", new Vector3(4.6f, 0f, 5.4f),
                 "PRESS ONCE TO WAKE IT");
             sleeping.AddComponent<WakeableButton>();
+            // Wakes up green, so the second press is the one that ends the day.
+            ResolveByColour(sleeping, level);
 
             // Day 5: a sign telling you not to press the button you need.
             GameObject warned = SpecialButton("Warned Green Button", new Vector3(-4.6f, 0f, 0.2f),
                 "DO NOT PRESS");
-            warned.GetComponent<ButtonAppearance>().SetGreen();
+            SetStartGreen(warned);
+            ResolveByColour(warned, level);
 
             // Day 7: pushes your aim away as you try to point at it.
             GameObject slippery = SpecialButton("Magnetic Button", new Vector3(-4.6f, 0f, -2.6f),
                 "PUSHES YOUR AIM AWAY");
-            slippery.GetComponent<ButtonAppearance>().SetGreen();
+            SetStartGreen(slippery);
             slippery.AddComponent<CursorRepellingButton>();
+            ResolveByColour(slippery, level);
 
             // Days 8-12: the button that argues with you.
             GameObject talker = SpecialButton("Talking Button", new Vector3(4.6f, 0f, 0.2f),
                 "TALKS WHEN YOU APPROACH");
-            talker.GetComponent<ButtonAppearance>().SetGreen();
+            SetStartGreen(talker);
+            ResolveByColour(talker, level);
             var talking = talker.AddComponent<TalkingButton>();
             SetPrivateStringList(talking, "lines", new[]
             {
@@ -178,17 +187,19 @@ namespace BigRedButton.Editor
 
             // Day 20: walks towards the player and presses against them.
             GameObject chaser = SpecialButton("Chasing Red Button", new Vector3(4.6f, 0f, -2.6f),
-                "FOLLOWS YOU");
+                "FOLLOWS YOU - STAYS RED");
             var chase = chaser.AddComponent<ButtonMover>();
             SetPrivate(chase, "mode", (int)ButtonMover.MoveMode.ChasePlayer);
             SetPrivate(chase, "speed", 1.5f);
+            ResolveByColour(chaser, level);
 
             // Day 21: slips around to stay behind your back.
             GameObject sneak = SpecialButton("Sneaking Green Button", new Vector3(0f, 0f, -2.6f),
                 "STAYS BEHIND YOU");
-            sneak.GetComponent<ButtonAppearance>().SetGreen();
+            SetStartGreen(sneak);
             var behind = sneak.AddComponent<ButtonMover>();
             SetPrivate(behind, "mode", (int)ButtonMover.MoveMode.StayBehindPlayer);
+            ResolveByColour(sneak, level);
 
             // A plain moving button, for platform-style days.
             GameObject patrol = SpecialButton("Patrolling Button", new Vector3(1.6f, 0f, -2.6f),
@@ -197,7 +208,7 @@ namespace BigRedButton.Editor
             SetPrivate(patrolMover, "mode", (int)ButtonMover.MoveMode.Patrol);
             SetPrivate(patrolMover, "speed", 1.6f);
 
-            // These are for trying mechanics, so none of them end the test day.
+            // Every showcase press is logged, so the Console shows which state was pressed.
             foreach (GameObject item in new[]
                      {
                          timed, shy, compass, sleeping, warned, slippery, talker, chaser, sneak, patrol
@@ -207,6 +218,23 @@ namespace BigRedButton.Editor
                 if (button != null)
                     UnityEventTools.AddPersistentListener(button.OnPressed, button.LogPress);
             }
+        }
+
+        /// <summary>
+        /// Makes a colour-changing button honour the colour it is showing: pressing it
+        /// while green completes the day, while red it restarts the day.
+        /// </summary>
+        private static void ResolveByColour(GameObject cap, DayLevel level)
+        {
+            var resolver = cap.AddComponent<StatefulDayButton>();
+            SetPrivate(resolver, "day", level);
+        }
+
+        private static void SetStartGreen(GameObject cap)
+        {
+            var appearance = cap.GetComponent<ButtonAppearance>();
+            if (appearance != null)
+                SetPrivate(appearance, "greenness", 1f);
         }
 
         /// <summary>

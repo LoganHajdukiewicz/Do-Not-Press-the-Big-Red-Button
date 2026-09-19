@@ -60,13 +60,17 @@ namespace BigRedButton
             int fontSize = Mathf.Max(8, Mathf.RoundToInt(baseFontSize * (3f / screenPoint.z) *
                 (Screen.height / 720f)));
             if (style == null)
-                style = CorporateText.CreateStyle(fontSize);
+                style = new GUIStyle { alignment = TextAnchor.MiddleCenter, wordWrap = false };
             style.fontSize = fontSize;
 
             float fade = Mathf.Clamp01(1f - screenPoint.z / visibleDistance);
+            float alpha = colour.a * Mathf.Min(1f, fade + 0.35f);
             var area = new Rect(screenPoint.x - 200f, Screen.height - screenPoint.y - 20f, 400f, 40f);
-            CorporateText.DrawWithShadow(area, CorporateText.Tracked(text.ToUpperInvariant()),
-                style, new Color(colour.r, colour.g, colour.b, colour.a * Mathf.Min(1f, fade + 0.35f)));
+            style.normal.textColor = new Color(colour.r, colour.g, colour.b, alpha);
+            Color previous = GUI.color;
+            GUI.color = new Color(1f, 1f, 1f, alpha);
+            GUI.Label(area, text, style);
+            GUI.color = previous;
         }
     }
 }

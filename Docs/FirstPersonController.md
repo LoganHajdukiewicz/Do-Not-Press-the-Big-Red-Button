@@ -85,6 +85,23 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. | 7 |
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
+| `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
+
+### Judging a button by the colour it is showing
+
+For any button whose colour changes, add `StatefulDayButton` next to its `ButtonInteractable` and `ButtonAppearance`, instead of wiring `CompleteDay` or `FailDay` by hand. What the player sees is then what they get:
+
+- Pressed while it **looks green**, it completes the day.
+- Pressed while it **looks red**, it restarts the day.
+- Pressed while it shows the **grey** disabled look, nothing happens.
+
+So the shy button advances the day if you can hit it before your stare turns it red, the timed button only counts during its green window, and the compass button depends on which way you are facing. One button, both outcomes.
+
+- **Day:** the `DayLevel` to resolve. Found automatically when left empty.
+- **Green Threshold:** how green it must look to count, default halfway.
+- **On Pressed While Green / On Pressed While Red:** extra wiring for sounds or dialogue. These fire even with no day attached, so the sandbox can use them.
+
+A sleeping button's wake-up press never resolves the day; it wakes up green, so the next press is the one that counts.
 
 Notes for building days with these:
 
@@ -92,7 +109,7 @@ Notes for building days with these:
 - A button's colour is only its appearance. What it does still comes from its `On Pressed` wiring, which is what makes the mislabelled and repainted days work.
 - `ButtonMover` belongs on the button assembly's root, not the cap, so the whole pedestal moves. Its chase mode presses against the player through the existing contact system.
 - `WakeableButton` uses `SuppressEvents`, so the first press still clicks and feels physical but does not reach the level wiring.
-- `TalkingButton` and `ButtonSign` draw with the shared `CorporateText` look, so signage, dialogue, the day titles and the opening all match.
+- `TalkingButton` and `ButtonSign` draw with Unity's default label text, the same as the day titles and the opening.
 
 ### Pressed indicator
 
@@ -177,7 +194,7 @@ To convert a scene you already built by hand, open it, rename it `Day <number>`,
 
 - **Opening Narration:** the clip to play, normally `Assets/Audio/Opening.mp3`. The timing follows the clip's real length.
 - **Warning Text / Text Start Delay / Text Reveal Duration:** what appears and when, so the words land with the voice line. Defaults are 10.28 s and 4 s.
-- **Letter Spacing:** how far apart the letters sit. The warning and the day titles are uppercase, bold, letter-spaced and shadowed, in off-white on black, so they read as printed company notices rather than game UI.
+
 - **Hold After Narration / Fade Out Duration:** black-screen hold and fade, default 1.2 s and 3 s.
 - **Frozen During Opening:** the player controller, disabled until the screen clears.
 - `Finish()` ends the opening early, for a skip button.
@@ -193,9 +210,8 @@ To put the opening in another scene, add `OpeningSequence` next to a `DayTitle`,
 ### DayTitle inspector settings
 
 - **Fade In / Hold / Fade Out Duration:** default 0.4 s, 1.6 s, 1.2 s.
-- **Text Height Fraction:** title height relative to screen height, so it stays large on phones and monitors; default 0.13.
-- **Letter Spacing:** spacing between letters; default 3, which gives the flat corporate look.
-- **Text Color** and **Backdrop Opacity:** default off-white ink over a 55% dark backdrop.
+- **Text Height Fraction:** title height relative to screen height, so it stays large on phones and monitors; default 0.16.
+- **Text Color** and **Backdrop Opacity:** default white text over a 55% dark backdrop.
 
 The title uses unscaled time, so it still fades if a day sets `Time.timeScale` to zero. It draws with Unity's built-in IMGUI, so no fonts, Canvas, or TextMeshPro assets are required.
 
@@ -211,7 +227,9 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.OpeningAndIndicatorTests` covers the indicator toggle, the black-screen opening, its text reveal, restoring player control, and `TimedReveal`.
 
-`BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, the magnetic push, and the letter-spacing helper.
+`BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, and the magnetic push.
+
+`BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
 
@@ -233,6 +251,7 @@ Manual Play Mode checklist:
 - Unchecking **Show Pressed Indicator** hides the light while the button still works.
 - Every button clicks when pressed; the green button clicks *and* dings.
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
+- Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

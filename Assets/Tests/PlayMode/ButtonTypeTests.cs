@@ -39,16 +39,6 @@ namespace BigRedButton.Tests
             return cap;
         }
 
-        [Test]
-        public void CorporateTextTracksLettersWithoutPaddingSpaces()
-        {
-            Assert.That(CorporateText.Tracked("DAY 2", 1), Is.EqualTo("D A Y 2"));
-            Assert.That(CorporateText.Tracked("AB", 2), Is.EqualTo("A  B"));
-            Assert.That(CorporateText.Tracked("A", 2), Is.EqualTo("A"));
-            Assert.That(CorporateText.Tracked(string.Empty, 2), Is.Empty);
-            Assert.That(CorporateText.Tracked("DAY 2", 0), Is.EqualTo("DAY 2"));
-        }
-
         [UnityTest]
         public IEnumerator EveryButtonPlaysThePressSoundAndGreenAlsoDings()
         {

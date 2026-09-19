@@ -138,17 +138,16 @@ namespace BigRedButton
             if (string.IsNullOrEmpty(line))
                 return;
 
-            int fontSize = Mathf.Max(12, Mathf.RoundToInt(Screen.height * 0.032f));
             if (style == null)
-                style = CorporateText.CreateStyle(fontSize, wordWrap: true);
-            style.fontSize = fontSize;
-            style.fontStyle = FontStyle.Normal;
+                style = new GUIStyle { alignment = TextAnchor.UpperCenter, wordWrap = true };
+            style.fontSize = Mathf.Max(12, Mathf.RoundToInt(Screen.height * 0.032f));
+            style.normal.textColor = Color.white;
 
             // Sits low on the screen so it never covers the button being talked about.
             float width = Mathf.Min(Screen.width * 0.8f, 900f);
             var area = new Rect((Screen.width - width) * 0.5f, Screen.height * 0.74f, width,
                 Screen.height * 0.2f);
-            CorporateText.DrawWithShadow(area, line.ToUpperInvariant(), style, CorporateText.Ink);
+            GUI.Label(area, line, style);
         }
     }
 }
