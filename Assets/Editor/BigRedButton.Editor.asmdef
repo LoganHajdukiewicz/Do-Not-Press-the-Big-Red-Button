@@ -1,0 +1,6 @@
+{
+    "name": "BigRedButton.Editor",
+    "rootNamespace": "BigRedButton.Editor",
+    "references": ["BigRedButton.Runtime", "Unity.InputSystem"],
+    "includePlatforms": ["Editor"]
+}

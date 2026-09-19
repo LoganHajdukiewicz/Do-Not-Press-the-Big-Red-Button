@@ -1,0 +1,5 @@
+{
+    "name": "BigRedButton.Runtime",
+    "rootNamespace": "BigRedButton",
+    "references": ["Unity.InputSystem"]
+}

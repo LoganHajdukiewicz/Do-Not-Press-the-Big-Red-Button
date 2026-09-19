@@ -1,4 +1,15 @@
-Do Not Press the Big Red Button:
+# Do Not Press the Big Red Button
+
+## First-person controller
+
+Walking, running, jumping, mouse/gamepad look, and button interactions are implemented using the Unity Input System and a CharacterController.
+
+In Unity, choose **Tools > Big Red Button > Create Controller Test Scene**, save the new scene, and press Play. Controls: **WASD** move, **Shift** run, **Space** jump, **E** interact, **Esc** release/capture cursor.
+
+See [controller setup, customization, and tests](Docs/FirstPersonController.md).
+
+## Game design
+
 Each Day is a Level. 
 (Robot Voice is RoboSoft 3 from: https://www.tetyys.com/SAPI4/)
 
