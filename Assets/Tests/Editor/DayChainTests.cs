@@ -13,7 +13,7 @@ namespace BigRedButton.Tests
     /// </summary>
     public sealed class DayChainTests
     {
-        private const int ExpectedDays = 30;
+        private const int ExpectedDays = 31;
 
         private static List<int> BuiltDayNumbers()
         {
@@ -34,7 +34,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-30.");
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
 
             Assert.That(days, Is.EqualTo(Enumerable.Range(1, ExpectedDays).ToList()),
                 "Days must run 1 to 30 with no gaps and no duplicates.");
@@ -45,7 +45,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-30.");
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
 
             var registered = EditorBuildSettings.scenes
                 .Where(s => s.enabled)
@@ -65,7 +65,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-30.");
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
 
             // Walk the chain the way the game does, without loading any scenes.
             DayFlow.ResetForTests();
@@ -89,7 +89,7 @@ namespace BigRedButton.Tests
                 }
 
                 Assert.That(visited, Is.EqualTo(days),
-                    "Starting at day one and completing each day must reach the last day.");
+                    "Starting at day one and completing each day must reach the ending.");
                 Assert.That(DayFlow.CurrentDay, Is.EqualTo(days[^1]));
             }
             finally
@@ -103,7 +103,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-30.");
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
 
             foreach (int day in days)
             {
@@ -124,19 +124,38 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-30.");
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
 
             foreach (int day in days)
             {
                 string path = $"Assets/Scenes/Days/Day {day}.unity";
                 string text = File.ReadAllText(path);
 
-                // Either a button wired straight to CompleteDay, or one that resolves by colour.
+                // Either a button wired straight to CompleteDay, one that resolves by
+                // colour, or the final day, which ends at the door instead of a button.
                 bool wiredDirectly = text.Contains("CompleteDay");
                 bool resolvesByColour = text.Contains("BigRedButton.StatefulDayButton");
-                Assert.That(wiredDirectly || resolvesByColour, Is.True,
-                    $"Day {day} has no button that can complete it.");
+                bool isTheEnding = text.Contains("BigRedButton.EndingSequence");
+                Assert.That(wiredDirectly || resolvesByColour || isTheEnding, Is.True,
+                    $"Day {day} has no way to finish it.");
             }
+        }
+
+        [Test]
+        public void TheLastDayIsTheEndingWithNoButtons()
+        {
+            List<int> days = BuiltDayNumbers();
+            if (days.Count == 0)
+                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+
+            string path = $"Assets/Scenes/Days/Day {days[^1]}.unity";
+            string text = File.ReadAllText(path);
+
+            Assert.That(days[^1], Is.EqualTo(ExpectedDays), "The month ends on day 31.");
+            Assert.That(text, Does.Contain("BigRedButton.EndingSequence"),
+                "The last day must run the ending.");
+            Assert.That(text, Does.Not.Contain("BigRedButton.ButtonInteractable"),
+                "There are no buttons on the last day. There is nothing to decide.");
         }
 
         private static int CountOccurrences(string text, string value)

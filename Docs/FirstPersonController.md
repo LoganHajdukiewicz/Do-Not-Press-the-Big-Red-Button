@@ -86,6 +86,7 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
 | `TrapdoorTrigger` | Opens a floor panel when the player walks over it. | 15 |
+| `EndingSequence` | Sunshine, gunshot, darkness, and the employee of the year card. | 31 |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
 
 ### Judging a button by the colour it is showing
@@ -193,7 +194,7 @@ Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows *
 
 ### Build the 30 days
 
-Select **Tools > Big Red Button > Build Days 1-30**. It generates `Assets/Scenes/Days/Day 1.unity` through `Day 30.unity`, registers them in build settings in numeric order, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1` and each day leads to the next.
+Select **Tools > Big Red Button > Build Days 1-31**. It generates `Assets/Scenes/Days/Day 1.unity` through `Day 31.unity`, registers them in build settings in numeric order, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1` and each day leads to the next.
 
 Every generated day is an ordinary scene. Open any of them and move buttons, resize the room, change the sign text, retime the colour cycles, or replace a whole layout in the inspector. Nothing about a day is locked.
 
@@ -226,8 +227,21 @@ Every generated day is an ordinary scene. Open any of them and move buttons, res
 | 20 | Red buttons follow you around | README |
 | 21 | Green button hides behind your back | README |
 | 22-30 | A working day with one red and one green button | placeholder |
+| 31 | The ending: no buttons, only a door | README |
 
-Days 22 to 30 are not described in the design yet, so each is generated as a plain, completable day for you to turn into its own idea. The last level from the README, with the door and the gunshot, is not built: it is an ending rather than a button day.
+Days 22 to 30 are not described in the design yet, so each is generated as a plain, completable day for you to turn into its own idea. A month of work, then it is over.
+
+### Day 31, the ending
+
+The last day has **no buttons at all**. The back wall has a doorway with daylight behind it, and the only warm light in the game spills through it. Walking into the doorway runs `EndingSequence`: the screen bleaches to sunshine, the gunshot from `Assets/Audio/gunshot.mp3` lands on the brightest frame, the light is cut to black, and after a silence the card fades in naming the player **Employee of the Year**.
+
+- **Doorway Centre / Radius:** the area that starts the ending. `Begin()` can also be called from a door animation or trigger.
+- **Sunshine Fade In / Hold / Colour:** how long the outside blinds the player before the shot.
+- **Gunshot / Volume / Cut To Black / Dark Hold:** the shot and the darkness after it.
+- **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
+- **Frozen During Ending:** the player controller, disabled so they cannot walk back inside.
+
+The worker's name lives in `WorkerIdentity`, shared by the opening narration and the closing card, so the company greets and buries the player by the same name. Set `WorkerIdentity.FirstName` and `LastName` from a name-entry screen when you build one; the default is `DALE MERRIWEATHER`.
 
 The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
 
@@ -289,13 +303,15 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.DayFlowTests` covers day order, missing days, reloads, and rejected day numbers.
 
-`BigRedButton.Tests.DayChainTests` checks the built chain: that days 1 to 30 exist with no gaps, that they are registered in numeric order, that walking from day one reaches day thirty, that each scene holds exactly one correctly numbered `DayLevel`, and that every day has some way to complete it. These tests skip themselves if the days have not been built yet.
+`BigRedButton.Tests.DayChainTests` checks the built chain: that days 1 to 31 exist with no gaps, that they are registered in numeric order, that walking from day one reaches the ending, that each scene holds exactly one correctly numbered `DayLevel`, and that every day has some way to complete it. These tests skip themselves if the days have not been built yet.
 
 `BigRedButton.Tests.OpeningAndIndicatorTests` covers the indicator toggle, the black-screen opening, its text reveal, restoring player control, and `TimedReveal`.
 
 `BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, and the magnetic push.
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
+
+`BigRedButton.Tests.EndingSequenceTests` covers the ending: the run from sunshine through the gunshot to the card, the doorway trigger, beginning only once, freezing the player, and filling in the worker's name.
 
 `BigRedButton.Tests.WakeableButtonTests` covers the sleeping button: starting grey rather than red, waking to green without advancing the day, the next press advancing it, multiple wake presses, waking up red, and suppression holding for the press that lifts it.
 
@@ -324,6 +340,7 @@ Manual Play Mode checklist:
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
+- On Day 31 there are no buttons. Walking into the doorway gives sunshine, a gunshot, darkness, then the employee of the year card.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

@@ -21,7 +21,9 @@ namespace BigRedButton.Editor
         private const string OpeningClipPath = "Assets/Audio/Opening.mp3";
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
-        private const int DaysToBuild = 30;
+        private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
+        private const int DaysToBuild = 31;
+        private const int EndingDay = 31;
 
         private static Material wallMaterial;
         private static Material floorMaterial;
@@ -30,7 +32,7 @@ namespace BigRedButton.Editor
         private static Material greenMaterial;
         private static Material pedestalMaterial;
 
-        [MenuItem("Tools/Big Red Button/Build Days 1-30")]
+        [MenuItem("Tools/Big Red Button/Build Days 1-31")]
         public static void BuildFirstDays()
         {
             var actions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputPath);
@@ -557,6 +559,11 @@ namespace BigRedButton.Editor
                     break;
                 }
 
+                case EndingDay:
+                    // "There are no buttons. There is nothing to decide... there is only a door."
+                    CreateEnding(level);
+                    break;
+
                 default:
                     // Days 22-30 are not written in the design yet. Each is a working day
                     // with one red and one green button, ready to be turned into its own idea.
@@ -564,6 +571,67 @@ namespace BigRedButton.Editor
                     CreateGreenButton(new Vector3(-2.2f, 0f, 2.4f), level, delay: 0f);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Day 31, the last level. No buttons at all: the far wall has a doorway with
+        /// daylight behind it. Walking into the doorway plays the ending.
+        /// </summary>
+        private static void CreateEnding(DayLevel level)
+        {
+            const float height = 4f;
+            const float wallZ = 7f;
+            const float doorWidth = 1.9f;
+            const float doorHeight = 2.5f;
+
+            // Replace the solid back wall with one that has a doorway cut into it.
+            foreach (GameObject existing in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+                if (existing.name == "Wall (back)")
+                    Object.DestroyImmediate(existing);
+
+            float sideWidth = (12f - doorWidth) * 0.5f;
+            float sideOffset = doorWidth * 0.5f + sideWidth * 0.5f;
+            Box("Wall (back)", new Vector3(-sideOffset, height * 0.5f, wallZ),
+                new Vector3(sideWidth, height, 0.5f), wallMaterial);
+            Box("Wall (back)", new Vector3(sideOffset, height * 0.5f, wallZ),
+                new Vector3(sideWidth, height, 0.5f), wallMaterial);
+            Box("Wall (above door)", new Vector3(0f, (doorHeight + height) * 0.5f, wallZ),
+                new Vector3(doorWidth, height - doorHeight, 0.5f), wallMaterial);
+
+            // The frame, and a bright panel standing in for the outside.
+            Box("Door frame", new Vector3(-doorWidth * 0.5f, doorHeight * 0.5f, wallZ),
+                new Vector3(0.12f, doorHeight, 0.6f), trimMaterial);
+            Box("Door frame", new Vector3(doorWidth * 0.5f, doorHeight * 0.5f, wallZ),
+                new Vector3(0.12f, doorHeight, 0.6f), trimMaterial);
+            Box("Door frame", new Vector3(0f, doorHeight, wallZ),
+                new Vector3(doorWidth, 0.12f, 0.6f), trimMaterial);
+
+            Material daylight = Material("Daylight", new Color(1f, 0.98f, 0.9f), 0f);
+            GameObject outside = Box("Outside", new Vector3(0f, doorHeight * 0.5f, wallZ + 0.4f),
+                new Vector3(doorWidth - 0.1f, doorHeight - 0.1f, 0.1f), daylight);
+            Object.DestroyImmediate(outside.GetComponent<Collider>());
+
+            // Light spilling in through the doorway, the only warm light in the game.
+            var sunlight = new GameObject("Doorway light");
+            Light spill = sunlight.AddComponent<Light>();
+            spill.type = LightType.Spot;
+            spill.color = new Color(1f, 0.96f, 0.86f);
+            spill.intensity = 14f;
+            spill.range = 22f;
+            spill.spotAngle = 78f;
+            spill.shadows = LightShadows.Soft;
+            sunlight.transform.position = new Vector3(0f, 1.8f, wallZ + 0.2f);
+            sunlight.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+            var ending = level.gameObject.AddComponent<EndingSequence>();
+            SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ));
+            SetPrivate(ending, "doorwayRadius", 1.5f);
+            SetPrivate(ending, "gunshot",
+                AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
+
+            // No red button to fail and no green button to complete. Walking into the
+            // doorway starts the ending itself, so nothing else needs wiring here.
+            SetPrivate(level, "delayBeforeNextDay", 0f);
         }
 
         /// <summary>
@@ -749,6 +817,7 @@ namespace BigRedButton.Editor
             2 or 3 => RoomSize.Standard,
             // The crowded and moving days need floor space and no dividers in the way.
             6 or 14 or 20 or 21 => RoomSize.Hall,
+            EndingDay => RoomSize.Intimate,
             _ => RoomSize.Intimate
         };
 

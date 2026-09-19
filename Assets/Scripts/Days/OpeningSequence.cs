@@ -93,9 +93,11 @@ namespace BigRedButton
 
             elapsed += Time.unscaledDeltaTime;
 
+            // Supports {WORKER-FIRSTNAME} and {WORKER-LASTNAME}, as used in the design.
+            string fullText = WorkerIdentity.Format(warningText);
             float revealed = Mathf.Clamp01((elapsed - textStartDelay) / textRevealDuration);
-            int characters = Mathf.RoundToInt(revealed * warningText.Length);
-            VisibleText = warningText.Substring(0, Mathf.Clamp(characters, 0, warningText.Length));
+            int characters = Mathf.RoundToInt(revealed * fullText.Length);
+            VisibleText = fullText.Substring(0, Mathf.Clamp(characters, 0, fullText.Length));
             TextAlpha = elapsed < textStartDelay ? 0f : 1f;
 
             if (elapsed < FadeStartTime)
