@@ -33,6 +33,7 @@ namespace BigRedButton
         private Material instanceMaterial;
         private Material[] additionalMaterials;
         private bool isDisabled;
+        private bool initialised;
 
         /// <summary>0 is fully red, 1 is fully green.</summary>
         public float Greenness
@@ -40,6 +41,7 @@ namespace BigRedButton
             get => greenness;
             set
             {
+                Initialise();
                 greenness = Mathf.Clamp01(value);
                 Apply();
             }
@@ -50,6 +52,7 @@ namespace BigRedButton
             get => isDisabled;
             set
             {
+                Initialise();
                 isDisabled = value;
                 Apply();
             }
@@ -58,12 +61,24 @@ namespace BigRedButton
         public Color CurrentColour => isDisabled
             ? disabledColour : Color.Lerp(redColour, greenColour, greenness);
 
-        private void Awake()
+        private void Awake() => Initialise();
+
+        /// <summary>
+        /// Sets up the material copies. Safe to call early from another component's Awake,
+        /// so whichever runs first still gets a working appearance instead of being
+        /// overwritten when this component's own Awake arrives.
+        /// </summary>
+        private void Initialise()
         {
+            if (initialised)
+                return;
+            initialised = true;
+
             if (targetRenderer == null)
                 targetRenderer = GetComponent<Renderer>();
 
             isDisabled = startDisabled;
+            greenness = Mathf.Clamp01(greenness);
             if (targetRenderer == null)
                 return;
 

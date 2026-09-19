@@ -103,6 +103,14 @@ So the shy button advances the day if you can hit it before your stare turns it 
 
 A sleeping button's wake-up press never resolves the day; it wakes up green, so the next press is the one that counts.
 
+### The sleeping button in order
+
+1. It starts **grey**, whatever the saved scene says, because `WakeableButton` claims the look during setup. A grey button also never dings.
+2. The **first press** clicks, wakes it, and turns it **green**. It does not advance the day.
+3. The **next press** is a normal green press: it clicks, dings, and completes the day.
+
+Set **Presses To Wake** above one to require several dead presses, or **Wakes Up As** to 0 to have it wake up red, which then restarts the day when pressed.
+
 Notes for building days with these:
 
 - `ButtonAppearance` owns its own material copy, so tinting one button never recolours the others. Drive it with `Greenness` (0 red, 1 green), `SetRed()`, `SetGreen()`, or `IsDisabledLook`.
@@ -256,6 +264,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
+`BigRedButton.Tests.WakeableButtonTests` covers the sleeping button: starting grey rather than red, waking to green without advancing the day, the next press advancing it, multiple wake presses, waking up red, and suppression holding for the press that lifts it.
+
 `BigRedButton.Tests.ButtonSoundStateTests` covers the ding following the state: plain green buttons, a button that turns green, grey buttons staying silent, the timed green window, the always-ding option, and the halfway threshold.
 
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
@@ -280,6 +290,7 @@ Manual Play Mode checklist:
 - The magnetic button shoves the view hard; it is still pressable when you get close to it.
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
+- The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

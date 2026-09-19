@@ -155,6 +155,8 @@ namespace BigRedButton.Editor
             // Day 13: grey and inert until it is woken up.
             GameObject sleeping = SpecialButton("Sleeping Button", new Vector3(4.6f, 0f, 5.4f),
                 "PRESS ONCE TO WAKE IT");
+            // Grey in the saved scene too, so it never shows red before the first press.
+            SetPrivate(sleeping.GetComponent<ButtonAppearance>(), "startDisabled", true);
             sleeping.AddComponent<WakeableButton>();
             // Wakes up green, so the second press is the one that ends the day.
             ResolveByColour(sleeping, level);

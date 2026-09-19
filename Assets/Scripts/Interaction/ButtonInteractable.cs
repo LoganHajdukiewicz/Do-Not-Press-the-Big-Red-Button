@@ -77,8 +77,11 @@ namespace BigRedButton
             nextPressTime = Time.time + cooldown;
             ApplyIndicator(true);
 
+            // Decided before Pressed runs. A listener such as a wake-up handler may turn
+            // suppression off during that press, and this press must still stay suppressed.
+            bool runInspectorEvent = !SuppressEvents;
             Pressed?.Invoke();
-            if (!SuppressEvents)
+            if (runInspectorEvent)
                 onPressed.Invoke();
         }
 
