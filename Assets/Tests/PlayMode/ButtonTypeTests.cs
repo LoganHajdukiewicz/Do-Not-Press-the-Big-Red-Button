@@ -47,8 +47,8 @@ namespace BigRedButton.Tests
             var press = AudioClip.Create("press", 4410, 1, 44100, false);
             var ding = AudioClip.Create("ding", 4410, 1, 44100, false);
             Set(sound, "pressClip", press);
-            Set(sound, "extraClip", ding);
-            Set(sound, "extraDelay", 0f);
+            Set(sound, "greenClip", ding);
+            Set(sound, "greenDelay", 0f);
             yield return null;
 
             var source = cap.GetComponent<AudioSource>();

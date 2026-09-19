@@ -20,10 +20,18 @@ namespace BigRedButton
         [SerializeField] private float greenness;
         [SerializeField] private bool startDisabled;
 
+        [Header("References")]
         [Tooltip("Renderer to tint. Defaults to this object's renderer.")]
         [SerializeField] private Renderer targetRenderer;
+        [Tooltip("Extra renderers tinted with the same colour, such as a housing ring.")]
+        [SerializeField] private Renderer[] additionalRenderers = new Renderer[0];
+
+        [Header("Look")]
+        [Tooltip("Brightens the button so its colour reads clearly in a dim room.")]
+        [SerializeField, Range(0f, 3f)] private float emissionStrength;
 
         private Material instanceMaterial;
+        private Material[] additionalMaterials;
         private bool isDisabled;
 
         /// <summary>0 is fully red, 1 is fully green.</summary>
@@ -62,6 +70,16 @@ namespace BigRedButton
             // Own the material so tinting one button never recolours every other button.
             instanceMaterial = new Material(targetRenderer.sharedMaterial);
             targetRenderer.material = instanceMaterial;
+
+            additionalMaterials = new Material[additionalRenderers.Length];
+            for (int i = 0; i < additionalRenderers.Length; i++)
+            {
+                if (additionalRenderers[i] == null)
+                    continue;
+                additionalMaterials[i] = new Material(additionalRenderers[i].sharedMaterial);
+                additionalRenderers[i].material = additionalMaterials[i];
+            }
+
             Apply();
         }
 
@@ -77,15 +95,39 @@ namespace BigRedButton
                 return;
 
             Color colour = CurrentColour;
-            instanceMaterial.color = colour;
-            if (instanceMaterial.HasProperty("_BaseColor"))
-                instanceMaterial.SetColor("_BaseColor", colour);
+            Tint(instanceMaterial, colour);
+            if (additionalMaterials == null)
+                return;
+            foreach (Material extra in additionalMaterials)
+                Tint(extra, colour);
+        }
+
+        private void Tint(Material material, Color colour)
+        {
+            if (material == null)
+                return;
+
+            material.color = colour;
+            if (material.HasProperty("_BaseColor"))
+                material.SetColor("_BaseColor", colour);
+
+            if (emissionStrength <= 0f)
+                return;
+            if (!material.HasProperty("_EmissionColor"))
+                return;
+            material.EnableKeyword("_EMISSION");
+            material.SetColor("_EmissionColor", colour * emissionStrength);
         }
 
         private void OnDestroy()
         {
             if (instanceMaterial != null)
                 Destroy(instanceMaterial);
+            if (additionalMaterials == null)
+                return;
+            foreach (Material extra in additionalMaterials)
+                if (extra != null)
+                    Destroy(extra);
         }
     }
 }

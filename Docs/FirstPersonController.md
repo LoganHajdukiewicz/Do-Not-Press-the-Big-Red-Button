@@ -75,14 +75,14 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 
 | Component | What it does | Days |
 | --- | --- | --- |
-| `ButtonSound` | Plays the press click on every button, plus an optional extra layer such as the green ding. | all |
+| `ButtonSound` | Plays the press click on every button, and the ding whenever the button is green as it is pressed. | all |
 | `ButtonAppearance` | Sets the colour a button *looks* like, separately from what it does: red, green, a blend, or grey. | 4, 10, 13, 16-19 |
 | `ButtonColourSchedule` | Switches the look between red and green on a timer. | 4 |
 | `ButtonGazeColour` | Colour reacts to the player's view: turns red when watched, or follows their heading. | 18, 19 |
 | `ButtonSign` | A word painted above the button, in the company's lettering. | 5, 10, 17 |
 | `TalkingButton` | Shows lines of dialogue when approached, looked at, or at day start. | 8, 9, 11, 12 |
 | `WakeableButton` | Starts grey and inert; the first press only wakes it up. | 13 |
-| `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. | 7 |
+| `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. Default strength 210 deg/s. | 7 |
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
@@ -110,6 +110,31 @@ Notes for building days with these:
 - `ButtonMover` belongs on the button assembly's root, not the cap, so the whole pedestal moves. Its chase mode presses against the player through the existing contact system.
 - `WakeableButton` uses `SuppressEvents`, so the first press still clicks and feels physical but does not reach the level wiring.
 - `TalkingButton` and `ButtonSign` draw with Unity's default label text, the same as the day titles and the opening.
+
+### Button sound
+
+`ButtonSound` decides the ding from the button's **state**, not from which object it is. Any button that is green when pressed dings, including one that only turned green on a timer or as the player looked away.
+
+- **Press Clip / Press Volume:** the click every button makes.
+- **Green Clip / Green Volume / Green Delay:** the ding, played after the click so the press lands first.
+- **Ding Only When Green:** uncheck to always ding.
+- **Red Clip / Red Volume / Red Delay:** an optional sound for pressing it while red.
+- **Spatial Blend / Min Distance / Max Distance:** how the sound sits in the room.
+
+A button with a `ButtonAppearance` is judged by its current colour; one without is treated as green, so plain green buttons ding as before. A button showing the grey disabled look never dings. Give a red button a `ButtonAppearance` set to red if you want it to stay silent while still holding the ding clip.
+
+### Configuring each button type
+
+Every button type exposes its full settings in the inspector, grouped under headings. Select the button's cap object to edit them.
+
+- **`ButtonGazeColour`:** hover delay, blend duration, aim tolerance, max watch distance, the exact watched and unwatched colours, recovery delay, a latch so it never recovers, plus heading reference, sweep angle and inversion for the compass mode. Events fire when it becomes watched or unwatched.
+- **`ButtonColourSchedule`:** red and green durations, blend duration, start delay, starting colour, a switch limit, whether it ignores pause, and events for each turn.
+- **`ButtonMover`:** speed, start delay, facing, chase stop distance, lose-interest distance, close-in speed, orbit radius and speed, patrol offset, pause and space, height locking, and a reached-player event.
+- **`TalkingButton`:** the lines themselves as multi-line text, seconds per line, looping, start delay, what triggers it, trigger distance, aim tolerance, retriggering, a single voice clip or one clip per line, volume, spatial blend, text size, screen position, colour, a hide-text option for voice-only, and started/finished events.
+- **`CursorRepellingButton`:** push strength, aim tolerance, max distance, vertical push, whether it ramps up with closeness, an attract-instead option, and a safe distance so it stays pressable up close.
+- **`ButtonSign`:** the text, uppercase option, colour, height and offset, base font size, visible distance, constant-screen-size and minimum size options, occlusion hiding, and hiding after the press.
+- **`WakeableButton`:** presses needed, asleep prompt, the colour it wakes as, wake delay, an asleep sound, and events for waking and for a press that did nothing.
+- **`ButtonAppearance`:** the red, green and disabled colours, starting greenness, a disabled start, additional renderers to tint together, and an emission strength for dim rooms.
 
 ### Pressed indicator
 
@@ -231,6 +256,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
+`BigRedButton.Tests.ButtonSoundStateTests` covers the ding following the state: plain green buttons, a button that turns green, grey buttons staying silent, the timed green window, the always-ding option, and the halfway threshold.
+
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
 
 Manual Play Mode checklist:
@@ -249,7 +276,8 @@ Manual Play Mode checklist:
 - Pressing green ends the day and loads the next one; pressing red repeats the same day.
 - Day 3's green button appears after 5 seconds.
 - Unchecking **Show Pressed Indicator** hides the light while the button still works.
-- Every button clicks when pressed; the green button clicks *and* dings.
+- Every button clicks when pressed. Any button clicks *and* dings while it is green, including one that turned green on a timer.
+- The magnetic button shoves the view hard; it is still pressable when you get close to it.
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.

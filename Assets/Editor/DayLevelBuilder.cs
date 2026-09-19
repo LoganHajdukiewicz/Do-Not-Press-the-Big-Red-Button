@@ -250,7 +250,9 @@ namespace BigRedButton.Editor
             SetPrivate(button, "showPressedIndicator", false);
 
             cap.AddComponent<ButtonAppearance>();
-            AddButtonSound(cap, null);
+            // The ding is given to every showcase button; ButtonSound only plays it
+            // when the button is actually showing green as it is pressed.
+            AddButtonSound(cap, DingClipPath);
 
             var sign = cap.AddComponent<ButtonSign>();
             SetPrivate(sign, "text", signText);
@@ -285,6 +287,8 @@ namespace BigRedButton.Editor
             SetPrivate(button, "prompt", "Step on the floor button");
             SetPrivate(button, "cooldown", 1f);
 
+            var padLook = pad.AddComponent<ButtonAppearance>();
+            SetPrivate(padLook, "greenness", 1f);
             AddButtonSound(pad, DingClipPath);
             UnityEventTools.AddPersistentListener(button.OnPressed, button.LogPress);
             return pad;
@@ -418,7 +422,9 @@ namespace BigRedButton.Editor
             SetPrivate(button, "showPressedIndicator", false);
             SetPrivate(button, "oneShot", false);
 
-            AddButtonSound(cap, extraClipPath: null);
+            // Declares itself red, so the ding correctly stays silent for this one.
+            cap.AddComponent<ButtonAppearance>();
+            AddButtonSound(cap, DingClipPath);
 
             // The red button is the thing you were told not to press: it fails the day.
             UnityEventTools.AddPersistentListener(button.OnPressed, level.FailDay);
@@ -433,7 +439,9 @@ namespace BigRedButton.Editor
             SetPrivate(button, "oneShot", true);
             SetPrivate(button, "showPressedIndicator", false);
 
-            // Every button clicks; the green one also dings.
+            // Every button clicks; a button in a green state also dings.
+            var appearance = cap.AddComponent<ButtonAppearance>();
+            SetPrivate(appearance, "greenness", 1f);
             AddButtonSound(cap, DingClipPath);
 
             // This is the wiring that was missing: the green button ends the day.
@@ -492,7 +500,7 @@ namespace BigRedButton.Editor
 
             var sound = host.AddComponent<ButtonSound>();
             SetPrivate(sound, "pressClip", press);
-            SetPrivate(sound, "extraClip", extra);
+            SetPrivate(sound, "greenClip", extra);
             return sound;
         }
 
