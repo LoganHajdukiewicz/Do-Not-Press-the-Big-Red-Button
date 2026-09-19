@@ -53,3 +53,4 @@ Day 20: Red Buttons will follow you around. They will want to be pressed.
 
 Day 21: The Green Button spawns behind the player and tries to stay behind the player. As they turn to see it, it turns around them so it is behind them. The player must turn quickly and press the button. 
 
+LAST LEVEL: There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside, for a second you are enveloped in sunshine, then you hear a gunshot, screen goes dark. Employee of the Year {WORKER-FIRSTNAME} {WORKER-LASTNAME}
