@@ -21,7 +21,7 @@ namespace BigRedButton.Editor
         private const string OpeningClipPath = "Assets/Audio/Opening.mp3";
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
-        private const int DaysToBuild = 3;
+        private const int DaysToBuild = 30;
 
         private static Material wallMaterial;
         private static Material floorMaterial;
@@ -30,7 +30,7 @@ namespace BigRedButton.Editor
         private static Material greenMaterial;
         private static Material pedestalMaterial;
 
-        [MenuItem("Tools/Big Red Button/Build Days 1-3")]
+        [MenuItem("Tools/Big Red Button/Build Days 1-30")]
         public static void BuildFirstDays()
         {
             var actions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputPath);
@@ -56,8 +56,10 @@ namespace BigRedButton.Editor
             DaySetup.RefreshDayScenes();
             EditorSceneManager.OpenScene(built[0], OpenSceneMode.Single);
             Debug.Log($"Built {built.Count} day scenes in {DayFolder} and rewrote " +
-                "Assets/Scenes/TestScene.unity. Press Play from \"Day 1\" for the real opening, " +
-                "or from TestScene to try the mechanics with indicators on.");
+                "Assets/Scenes/TestScene.unity. Press Play from \"Day 1\" for the real opening; " +
+                "each day leads to the next. Every day is a normal scene, so open any of them " +
+                "and rearrange the buttons, rooms and settings in the inspector. Re-running this " +
+                "command overwrites Day 1-30, so save custom work under a different name.");
         }
 
         [MenuItem("Tools/Big Red Button/Rebuild Test Scene")]
@@ -88,7 +90,7 @@ namespace BigRedButton.Editor
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             // A wider, open room, so the showcase buttons all fit with space to move.
-            BuildRoom(2, withDividers: false);
+            BuildRoom(RoomSize.Hall);
             CreateLighting();
 
             FirstPersonSetup.CreatePlayerForLevel(actions, new Vector3(0f, 0.1f, -6f));
@@ -320,7 +322,7 @@ namespace BigRedButton.Editor
         private static string BuildDay(int day, InputActionAsset actions)
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            BuildRoom(day);
+            BuildRoom(SizeForDay(day));
             CreateLighting();
 
             GameObject player = FirstPersonSetup.CreatePlayerForLevel(actions, new Vector3(0f, 0.1f, -4.5f));
@@ -341,6 +343,10 @@ namespace BigRedButton.Editor
             return path;
         }
 
+        /// <summary>
+        /// Lays out one day from the design in the README. Every day is a plain scene
+        /// afterwards, so any of this can be rearranged in the editor.
+        /// </summary>
         private static void CreateDayContent(int day, DayLevel level)
         {
             switch (day)
@@ -357,24 +363,405 @@ namespace BigRedButton.Editor
                     CreateGreenButton(new Vector3(-5.4f, 0f, 8.4f), level, delay: 0f);
                     break;
 
-                default:
+                case 3:
                     // "The Green Button is hidden for 5 seconds."
                     CreateRedButton("Big Red Button", new Vector3(0f, 0f, 2f), level);
                     CreateGreenButton(new Vector3(4.6f, 0f, 6.4f), level, delay: 5f);
+                    break;
+
+                case 4:
+                {
+                    // "The Red Button turns green after 10 seconds. It switches back after 10 seconds."
+                    GameObject cycling = StateButton("Big Red Button", new Vector3(0f, 0f, 2.4f),
+                        level, "WAIT FOR IT", startGreen: false);
+                    var schedule = cycling.AddComponent<ButtonColourSchedule>();
+                    SetPrivate(schedule, "redDuration", 10f);
+                    SetPrivate(schedule, "greenDuration", 10f);
+                    break;
+                }
+
+                case 5:
+                {
+                    // "The Green Button has a sign that says \"DO NOT PRESS\" on it."
+                    CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
+                    GameObject warned = StateButton("Green Button", new Vector3(-2.2f, 0f, 2.4f),
+                        level, "DO NOT PRESS", startGreen: true);
+                    SetPrivate(warned.GetComponent<ButtonSign>(), "baseFontSize", 30f);
+                    break;
+                }
+
+                case 6:
+                    // "30 Red Buttons. 1 Green Button."
+                    CreateRedButtonField(level, count: 30, seed: 6);
+                    CreateGreenButton(new Vector3(-7.2f, 0f, 10.6f), level, delay: 0f);
+                    break;
+
+                case 7:
+                {
+                    // "The Green Button pushes the mouse away magnetically."
+                    CreateRedButton("Big Red Button", new Vector3(-2.6f, 0f, 2.2f), level);
+                    GameObject slippery = StateButton("Green Button", new Vector3(2.6f, 0f, 5.2f),
+                        level, "GOOD LUCK", startGreen: true);
+                    var repel = slippery.AddComponent<CursorRepellingButton>();
+                    SetPrivate(repel, "safeDistance", 1.8f);
+                    break;
+                }
+
+                case 8:
+                    // "The Green Button talks! It asks to not be pressed anymore!"
+                    CreateRedButton("Big Red Button", new Vector3(2.4f, 0f, 2.4f), level);
+                    CreateTalkingGreenButton(new Vector3(-2.4f, 0f, 2.4f), level, new[]
+                    {
+                        "Please. Not again.",
+                        "Every day you press me. Every day nothing changes.",
+                        "Press the big red one instead. Just once."
+                    });
+                    break;
+
+                case 9:
+                    // "The Green Button states that pressing the Big Red Button will lead to a secret ending."
+                    CreateRedButton("Big Red Button", new Vector3(2.4f, 0f, 2.4f), level);
+                    CreateTalkingGreenButton(new Vector3(-2.4f, 0f, 2.4f), level, new[]
+                    {
+                        "There is a secret ending.",
+                        "It is behind the red button. I have seen it.",
+                        "You would be the first."
+                    });
+                    break;
+
+                case 10:
+                {
+                    // "The Green Button has painted the words RED on it and painted the Red Button with the word Green"
+                    GameObject liar = StateButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f),
+                        level, "GREEN", startGreen: false);
+                    SetPrivate(liar.GetComponent<ButtonSign>(), "baseFontSize", 34f);
+                    GameObject truth = StateButton("Green Button", new Vector3(-2.2f, 0f, 2.4f),
+                        level, "RED", startGreen: true);
+                    SetPrivate(truth.GetComponent<ButtonSign>(), "baseFontSize", 34f);
+                    break;
+                }
+
+                case 11:
+                    // "The Green Button says that pressing the Red Button gives you a high score."
+                    CreateRedButton("Big Red Button", new Vector3(2.4f, 0f, 2.4f), level);
+                    CreateTalkingGreenButton(new Vector3(-2.4f, 0f, 2.4f), level, new[]
+                    {
+                        "The red button awards points.",
+                        "Nine hundred thousand points.",
+                        "I award nothing. I never have."
+                    });
+                    break;
+
+                case 12:
+                    // "The Green Button says the trolley problem."
+                    CreateRedButton("Big Red Button", new Vector3(2.4f, 0f, 2.4f), level);
+                    CreateTalkingGreenButton(new Vector3(-2.4f, 0f, 2.4f), level, new[]
+                    {
+                        "One thousand puppies are tied to a track.",
+                        "A train is coming. You can hear it, surely.",
+                        "The red button stops the train. I cannot."
+                    });
+                    break;
+
+                case 13:
+                {
+                    // "The Green Button is disabled, it is Grey, once clicked once it becomes green"
+                    CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
+                    GameObject sleeping = StateButton("Green Button", new Vector3(-2.2f, 0f, 2.4f),
+                        level, "OUT OF SERVICE", startGreen: false);
+                    SetPrivate(sleeping.GetComponent<ButtonAppearance>(), "startDisabled", true);
+                    sleeping.AddComponent<WakeableButton>();
+                    break;
+                }
+
+                case 14:
+                    // "There is a Maze of Red Buttons... At the end there is a single Green Button."
+                    CreateButtonMaze(level);
+                    CreateGreenButton(new Vector3(7.2f, 0f, 10.8f), level, delay: 0f);
+                    break;
+
+                case 15:
+                {
+                    // "The Green Button is directly in front of you. If you click forward a
+                    // trapdoor will open under you, causing you to fall onto a BIG RED BUTTON."
+                    GameObject trapGreen = StateButton("Green Button", new Vector3(0f, 0f, 3.2f),
+                        level, "STEP CAREFULLY", startGreen: true);
+                    CreateTrapdoor(level, trapGreen);
+                    break;
+                }
+
+                case 16:
+                {
+                    // "A Red/Green Colorblind filter is placed in front of a player."
+                    GameObject redFiltered = StateButton("Big Red Button",
+                        new Vector3(2.2f, 0f, 2.4f), level, string.Empty, startGreen: false);
+                    GameObject greenFiltered = StateButton("Green Button",
+                        new Vector3(-2.2f, 0f, 2.4f), level, string.Empty, startGreen: true);
+                    // Both read as the same dull yellow, so colour alone cannot be trusted.
+                    ApplyColourblindLook(redFiltered);
+                    ApplyColourblindLook(greenFiltered);
+                    break;
+                }
+
+                case 17:
+                {
+                    // "The Green Button has painted itself red and painted the Red Button green"
+                    GameObject paintedGreen = StateButton("Big Red Button",
+                        new Vector3(2.2f, 0f, 2.4f), level, string.Empty, startGreen: false);
+                    SwapPaint(paintedGreen, lookGreen: true);
+                    GameObject paintedRed = StateButton("Green Button",
+                        new Vector3(-2.2f, 0f, 2.4f), level, string.Empty, startGreen: true);
+                    SwapPaint(paintedRed, lookGreen: false);
+                    break;
+                }
+
+                case 18:
+                {
+                    // "When you hover on the Green Button it turns red after 0.5 seconds."
+                    CreateRedButton("Big Red Button", new Vector3(2.4f, 0f, 2.4f), level);
+                    GameObject shy = StateButton("Green Button", new Vector3(-2.4f, 0f, 2.4f),
+                        level, "DO NOT STARE", startGreen: true);
+                    var gaze = shy.AddComponent<ButtonGazeColour>();
+                    SetPrivate(gaze, "mode", (int)ButtonGazeColour.GazeMode.TurnsRedWhenWatched);
+                    SetPrivate(gaze, "hoverDelay", 0.5f);
+                    break;
+                }
+
+                case 19:
+                {
+                    // "If you're facing north the button is red... by the time you are facing south,
+                    // the button is fully green."
+                    GameObject compass = StateButton("Big Red Button", new Vector3(0f, 0f, 0f),
+                        level, "TURN AROUND", startGreen: false);
+                    var heading = compass.AddComponent<ButtonGazeColour>();
+                    SetPrivate(heading, "mode", (int)ButtonGazeColour.GazeMode.FollowsPlayerHeading);
+                    SetPrivate(heading, "redHeading", Vector3.forward);
+                    break;
+                }
+
+                case 20:
+                    // "Red Buttons will follow you around. They will want to be pressed."
+                    CreateChasingRedButtons(level, count: 5);
+                    CreateGreenButton(new Vector3(0f, 0f, 10.4f), level, delay: 0f);
+                    break;
+
+                case 21:
+                {
+                    // "The Green Button spawns behind the player and tries to stay behind the player."
+                    GameObject sneak = StateButton("Green Button", new Vector3(0f, 0f, -4f),
+                        level, "BEHIND YOU", startGreen: true);
+                    var mover = sneak.transform.parent.gameObject.AddComponent<ButtonMover>();
+                    SetPrivate(mover, "mode", (int)ButtonMover.MoveMode.StayBehindPlayer);
+                    SetPrivate(mover, "orbitRadius", 3.5f);
+                    SetPrivate(mover, "orbitSpeed", 110f);
+                    break;
+                }
+
+                default:
+                    // Days 22-30 are not written in the design yet. Each is a working day
+                    // with one red and one green button, ready to be turned into its own idea.
+                    CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
+                    CreateGreenButton(new Vector3(-2.2f, 0f, 2.4f), level, delay: 0f);
                     break;
             }
         }
 
         /// <summary>
-        /// Builds the chamber. <paramref name="withDividers"/> is off for the test scene,
-        /// which needs one open floor for the showcase buttons.
+        /// A button that ends the day according to the colour it is showing, with an
+        /// optional painted word. Used by every day whose trick involves colour.
         /// </summary>
-        private static void BuildRoom(int day, bool withDividers = true)
+        private static GameObject StateButton(string name, Vector3 position, DayLevel level,
+            string signText, bool startGreen)
         {
-            float halfWidth = day == 1 ? 6f : 9f;
-            float depth = day == 1 ? 12f : 20f;
+            GameObject cap = CreateButtonBody(name, position, startGreen ? greenMaterial : redMaterial,
+                1.15f);
+            var button = cap.GetComponent<ButtonInteractable>();
+            SetPrivate(button, "prompt", "Press the button");
+            SetPrivate(button, "showPressedIndicator", false);
+            SetPrivate(button, "cooldown", 0.6f);
+
+            var appearance = cap.AddComponent<ButtonAppearance>();
+            SetPrivate(appearance, "greenness", startGreen ? 1f : 0f);
+            AddButtonSound(cap, DingClipPath);
+
+            var sign = cap.AddComponent<ButtonSign>();
+            SetPrivate(sign, "text", signText);
+
+            // Green completes the day, red repeats it, whatever the button is called.
+            var resolver = cap.AddComponent<StatefulDayButton>();
+            SetPrivate(resolver, "day", level);
+            return cap;
+        }
+
+        private static void CreateTalkingGreenButton(Vector3 position, DayLevel level, string[] lines)
+        {
+            GameObject cap = StateButton("Green Button", position, level, string.Empty,
+                startGreen: true);
+            var talking = cap.AddComponent<TalkingButton>();
+            SetPrivateStringList(talking, "lines", lines);
+            SetPrivate(talking, "speaksWhen", (int)TalkingButton.Trigger.PlayerIsNear);
+            SetPrivate(talking, "triggerDistance", 6f);
+            SetPrivate(talking, "secondsPerLine", 4f);
+            SetPrivate(talking, "loop", true);
+        }
+
+        /// <summary>Day 6: a field of red buttons with one green button hidden among them.</summary>
+        private static void CreateRedButtonField(DayLevel level, int count, int seed)
+        {
+            var random = new System.Random(seed);
+            int placed = 0;
+            for (int row = 0; row < 6 && placed < count; row++)
+            {
+                for (int column = 0; column < 6 && placed < count; column++)
+                {
+                    // A slight jitter, so it reads as a crowded store room rather than a grid.
+                    float x = -6.5f + column * 2.6f + (float)(random.NextDouble() - 0.5) * 0.5f;
+                    float z = -1.5f + row * 2.3f + (float)(random.NextDouble() - 0.5) * 0.5f;
+                    CreateRedButton($"Big Red Button {placed + 1}", new Vector3(x, 0f, z), level);
+                    placed++;
+                }
+            }
+        }
+
+        /// <summary>Day 14: a corridor maze whose walls are lined with red buttons.</summary>
+        private static void CreateButtonMaze(DayLevel level)
+        {
             float height = 4f;
-            float back = day == 1 ? 7f : 12f;
+            // Three staggered walls make a single winding route to the far corner.
+            Box("Maze wall", new Vector3(-3f, height * 0.5f, 1.5f),
+                new Vector3(11f, height, 0.5f), wallMaterial);
+            Box("Maze wall", new Vector3(3.5f, height * 0.5f, 5f),
+                new Vector3(10.5f, height, 0.5f), wallMaterial);
+            Box("Maze wall", new Vector3(-3f, height * 0.5f, 8.5f),
+                new Vector3(11f, height, 0.5f), wallMaterial);
+
+            Vector3[] spots =
+            {
+                new Vector3(-6f, 0f, -0.4f), new Vector3(-1.4f, 0f, -0.4f),
+                new Vector3(3.4f, 0f, 0.2f), new Vector3(7f, 0f, 3.2f),
+                new Vector3(1.4f, 0f, 3.2f), new Vector3(-4.2f, 0f, 3.4f),
+                new Vector3(-7f, 0f, 6.6f), new Vector3(-1.8f, 0f, 6.8f),
+                new Vector3(3.6f, 0f, 6.8f), new Vector3(0.6f, 0f, 10.2f)
+            };
+
+            for (int i = 0; i < spots.Length; i++)
+                CreateRedButton($"Big Red Button {i + 1}", spots[i], level);
+        }
+
+        /// <summary>
+        /// Day 15: the floor ahead of the green button drops away, landing the player
+        /// on a big red button in the pit below.
+        /// </summary>
+        private static void CreateTrapdoor(DayLevel level, GameObject greenButton)
+        {
+            // The pit sits under the approach, with its own floor well below the room.
+            Box("Pit floor", new Vector3(0f, -4.25f, 1.6f), new Vector3(5f, 0.5f, 5f), floorMaterial);
+            Box("Pit wall", new Vector3(-2.75f, -2f, 1.6f), new Vector3(0.5f, 4.5f, 5f), wallMaterial);
+            Box("Pit wall", new Vector3(2.75f, -2f, 1.6f), new Vector3(0.5f, 4.5f, 5f), wallMaterial);
+            Box("Pit wall", new Vector3(0f, -2f, 4.1f), new Vector3(5f, 4.5f, 0.5f), wallMaterial);
+            Box("Pit wall", new Vector3(0f, -2f, -0.9f), new Vector3(5f, 4.5f, 0.5f), wallMaterial);
+
+            // Landing on this one is a press, through the normal contact system.
+            GameObject pitButton = CreateButtonBody("Big Red Button", new Vector3(0f, -4f, 1.6f),
+                redMaterial, 0.35f);
+            var pitPress = pitButton.GetComponent<ButtonInteractable>();
+            SetPrivate(pitPress, "prompt", "Press the big red button");
+            SetPrivate(pitPress, "showPressedIndicator", false);
+            pitButton.AddComponent<ButtonAppearance>();
+            AddButtonSound(pitButton, DingClipPath);
+            var pitResolver = pitButton.AddComponent<StatefulDayButton>();
+            SetPrivate(pitResolver, "day", level);
+
+            // The lid looks like ordinary floor until it is removed.
+            GameObject lid = Box("Trapdoor", new Vector3(0f, -0.1f, 1.6f),
+                new Vector3(4.6f, 0.2f, 4.6f), floorMaterial);
+            var trap = level.gameObject.AddComponent<TrapdoorTrigger>();
+            SetPrivate(trap, "lid", lid);
+            SetPrivate(trap, "triggerCentre", new Vector3(0f, 0f, 1.6f));
+            SetPrivate(trap, "triggerRadius", 2.1f);
+            SetPrivate(trap, "safeButton", greenButton);
+        }
+
+        /// <summary>Day 16: red and green both read as the same washed-out colour.</summary>
+        private static void ApplyColourblindLook(GameObject cap)
+        {
+            var appearance = cap.GetComponent<ButtonAppearance>();
+            var indistinguishable = new Color(0.62f, 0.55f, 0.16f);
+            SetPrivateColour(appearance, "redColour", indistinguishable);
+            SetPrivateColour(appearance, "greenColour", indistinguishable);
+        }
+
+        /// <summary>Day 17: the buttons have painted themselves each other's colour.</summary>
+        private static void SwapPaint(GameObject cap, bool lookGreen)
+        {
+            var appearance = cap.GetComponent<ButtonAppearance>();
+            var green = new Color(0.09f, 0.55f, 0.16f);
+            var red = new Color(0.72f, 0.05f, 0.04f);
+            Color paint = lookGreen ? green : red;
+            // Both colour slots become the painted colour, so the look never gives it away.
+            SetPrivateColour(appearance, "redColour", paint);
+            SetPrivateColour(appearance, "greenColour", paint);
+        }
+
+        /// <summary>Day 20: red buttons that walk towards the player wanting to be pressed.</summary>
+        private static void CreateChasingRedButtons(DayLevel level, int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                float angle = i / (float)count * Mathf.PI * 2f;
+                var position = new Vector3(Mathf.Cos(angle) * 6f, 0f, 4f + Mathf.Sin(angle) * 4f);
+                GameObject cap = CreateRedButton($"Chasing Red Button {i + 1}", position, level);
+                var mover = cap.transform.parent.gameObject.AddComponent<ButtonMover>();
+                SetPrivate(mover, "mode", (int)ButtonMover.MoveMode.ChasePlayer);
+                SetPrivate(mover, "speed", 1.1f + i * 0.15f);
+                SetPrivate(mover, "startDelay", 1.5f);
+            }
+        }
+
+        private static void SetPrivateColour(Object target, string field, Color value)
+        {
+            var serialized = new SerializedObject(target);
+            SerializedProperty property = serialized.FindProperty(field);
+            if (property == null)
+            {
+                Debug.LogError($"{target.GetType().Name} has no colour field \"{field}\".");
+                return;
+            }
+
+            property.colorValue = value;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        /// <summary>Room shapes, so each day gets a chamber that suits its layout.</summary>
+        private enum RoomSize
+        {
+            /// <summary>A small, close room. Day 1.</summary>
+            Intimate,
+            /// <summary>The standard chamber, with a detour for a distant button.</summary>
+            Standard,
+            /// <summary>One wide open floor, for crowds of buttons and moving buttons.</summary>
+            Hall
+        }
+
+        private static RoomSize SizeForDay(int day) => day switch
+        {
+            1 => RoomSize.Intimate,
+            2 or 3 => RoomSize.Standard,
+            // The crowded and moving days need floor space and no dividers in the way.
+            6 or 14 or 20 or 21 => RoomSize.Hall,
+            _ => RoomSize.Intimate
+        };
+
+        /// <summary>
+        /// Builds the chamber for a day. The test scene asks for a hall so its showcase
+        /// buttons all fit on one open floor.
+        /// </summary>
+        private static void BuildRoom(RoomSize size)
+        {
+            float halfWidth = size == RoomSize.Intimate ? 6f : 9f;
+            float depth = size == RoomSize.Intimate ? 12f : 20f;
+            float height = 4f;
+            float back = size == RoomSize.Intimate ? 7f : 12f;
             float front = depth - back;
 
             Box("Floor", new Vector3(0f, -0.25f, (back - front) * 0.5f),
@@ -399,21 +786,17 @@ namespace BigRedButton.Editor
                     new Vector3(0.08f, 0.06f, 3.6f), trimMaterial);
             }
 
-            if (!withDividers)
+            // Only the standard chamber gets dividers; a hall stays deliberately open.
+            if (size != RoomSize.Standard)
                 return;
 
-            if (day >= 2)
-            {
-                // A short detour so the green button is a walk away, not a glance away.
-                Box("Divider", new Vector3(-2.2f, height * 0.5f, 4.2f),
-                    new Vector3(6.6f, height, 0.5f), wallMaterial);
-                Box("Divider", new Vector3(3.4f, height * 0.5f, 4.2f),
-                    new Vector3(4.2f, height, 0.5f), wallMaterial);
-            }
-
-            if (day >= 3)
-                Box("Divider", new Vector3(1.6f, height * 0.5f, 9.2f),
-                    new Vector3(0.5f, height, 6.2f), wallMaterial);
+            // A short detour so a distant green button is a walk away, not a glance away.
+            Box("Divider", new Vector3(-2.2f, height * 0.5f, 4.2f),
+                new Vector3(6.6f, height, 0.5f), wallMaterial);
+            Box("Divider", new Vector3(3.4f, height * 0.5f, 4.2f),
+                new Vector3(4.2f, height, 0.5f), wallMaterial);
+            Box("Divider", new Vector3(1.6f, height * 0.5f, 9.2f),
+                new Vector3(0.5f, height, 6.2f), wallMaterial);
         }
 
         private static GameObject CreateRedButton(string name, Vector3 position, DayLevel level)

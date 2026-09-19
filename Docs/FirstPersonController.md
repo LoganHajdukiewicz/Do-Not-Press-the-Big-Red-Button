@@ -85,6 +85,7 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. Default strength 210 deg/s. | 7 |
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
+| `TrapdoorTrigger` | Opens a floor panel when the player walks over it. | 15 |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
 
 ### Judging a button by the colour it is showing
@@ -190,17 +191,45 @@ public sealed class DoorInteractable : BigRedButton.Interactable
 
 Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows **DAY N** in large letters, fades it out, and loads the next day when the day is completed.
 
-### Build the first playable days
+### Build the 30 days
 
-Select **Tools > Big Red Button > Build Days 1-3**. It generates `Assets/Scenes/Days/Day 1-3.unity` from the README design, registers them in build settings, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1`.
+Select **Tools > Big Red Button > Build Days 1-30**. It generates `Assets/Scenes/Days/Day 1.unity` through `Day 30.unity`, registers them in build settings in numeric order, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1` and each day leads to the next.
+
+Every generated day is an ordinary scene. Open any of them and move buttons, resize the room, change the sign text, retime the colour cycles, or replace a whole layout in the inspector. Nothing about a day is locked.
+
+**Re-running the command overwrites `Day 1-30` and `TestScene`.** Once you start editing a day by hand, either stop re-running it or save your version under a different name first.
 
 - **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears centred at **10.28 seconds**, when the line is spoken, then the black fades away onto the room and `DAY 1` fades in. The player cannot move until the screen clears.
-- **Day 1:** a big red button with the green button directly to its left. The green button dings and ends the day.
-- **Day 2:** the red button is directly in front of the player; the green button is a walk away behind a divider.
-- **Day 3:** the green button is hidden for 5 seconds, then appears.
-- **The red button** repeats the current day, so pressing it never advances the game.
+- **The red button** repeats the current day, so pressing it never advances the game. Any button showing green completes the day.
 
-The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. The narration, button audio and the title are the only things competing for attention. Re-running the command regenerates these scenes, so keep your own level work in separate scenes or under different day numbers.
+| Day | What it is | Built from |
+| --- | --- | --- |
+| 1 | Red button, green directly to its left | README |
+| 2 | Red button in front, green a walk away | README |
+| 3 | Green button hidden for 5 seconds | README |
+| 4 | Red button turns green for 10 seconds, then back | README |
+| 5 | Green button signed `DO NOT PRESS` | README |
+| 6 | Thirty red buttons, one green | README |
+| 7 | Green button pushes your aim away | README |
+| 8 | Green button begs you to stop pressing it | README |
+| 9 | Green button promises a secret ending | README |
+| 10 | Buttons painted with the other's name | README |
+| 11 | Green button offers a high score | README |
+| 12 | Green button poses the trolley problem | README |
+| 13 | Green button is grey until woken | README |
+| 14 | Maze of red buttons, one green at the end | README |
+| 15 | Trapdoor drops you onto a big red button | README |
+| 16 | Red and green look identical | README |
+| 17 | Buttons have repainted each other | README |
+| 18 | Green button reddens when you stare at it | README |
+| 19 | Colour follows which way you face | README |
+| 20 | Red buttons follow you around | README |
+| 21 | Green button hides behind your back | README |
+| 22-30 | A working day with one red and one green button | placeholder |
+
+Days 22 to 30 are not described in the design yet, so each is generated as a plain, completable day for you to turn into its own idea. The last level from the README, with the door and the gunshot, is not built: it is an ending rather than a button day.
+
+The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
 
 `Assets/Scenes/TestScene.unity` is the sandbox: the same wiring as a real day, plus jump platforms, a floor button, and visible pressed indicators. Completing it reloads itself instead of advancing, so it stays available for testing.
 
@@ -213,6 +242,8 @@ The rooms are plain, quiet, and evenly lit, with panel trim and no decorative pr
 5. Press **Play** from `Day 1`. Completing a day loads the next one.
 
 To convert a scene you already built by hand, open it, rename it `Day <number>`, and select **Tools > Big Red Button > Set Up Current Scene As A Day**. If you add or rename day scenes outside the menu, run **Tools > Big Red Button > Refresh Day Scene List** so build settings match. The refresh keeps your non-day scenes enabled and logs any gap, such as a missing `Day 4`.
+
+To extend past day 30, use **Create Next Day Scene**, which copies the last day as a starting point.
 
 ### DayLevel inspector settings
 
@@ -257,6 +288,8 @@ The title uses unscaled time, so it still fades if a day sets `Time.timeScale` t
 Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedButton.Tests.FirstPersonTests`. These tests cover action availability, press interactions, raycast range, wall occlusion, stale targets, disabled/locked objects, child colliders, ignored triggers, cooldowns, and one-shot resets.
 
 `BigRedButton.Tests.DayFlowTests` covers day order, missing days, reloads, and rejected day numbers.
+
+`BigRedButton.Tests.DayChainTests` checks the built chain: that days 1 to 30 exist with no gaps, that they are registered in numeric order, that walking from day one reaches day thirty, that each scene holds exactly one correctly numbered `DayLevel`, and that every day has some way to complete it. These tests skip themselves if the days have not been built yet.
 
 `BigRedButton.Tests.OpeningAndIndicatorTests` covers the indicator toggle, the black-screen opening, its text reveal, restoring player control, and `TimedReveal`.
 

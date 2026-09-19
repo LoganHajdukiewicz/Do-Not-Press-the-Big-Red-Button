@@ -10,7 +10,7 @@ In Unity, choose **Tools > Big Red Button > Create Controller Test Scene**, save
 
 Each day is a level in its own scene (`Day 1`, `Day 2`, ...). A day shows **DAY N** in large letters, fades it out, and loads the next day when the green button is pressed. The red button repeats the day.
 
-Select **Tools > Big Red Button > Build Days 1-3** to generate the first three days from the design below, plus a mechanics sandbox in `TestScene`. Press **Play** from `Day 1`: the game opens on a black screen with `Opening.mp3`, the warning text appears as it is spoken, then the room fades in.
+Select **Tools > Big Red Button > Build Days 1-30** to generate all thirty days from the design below, plus a mechanics sandbox in `TestScene`. Every day is an ordinary scene you can rearrange in the editor. Press **Play** from `Day 1`: the game opens on a black screen with `Opening.mp3`, the warning text appears as it is spoken, then the room fades in.
 
 Add more days with **Tools > Big Red Button > Create Next Day Scene**, then connect the green button's `On Pressed` to `DayLevel.CompleteDay`.
 
