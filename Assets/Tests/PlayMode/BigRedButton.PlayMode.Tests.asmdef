@@ -1,0 +1,6 @@
+{
+    "name": "BigRedButton.PlayMode.Tests",
+    "rootNamespace": "BigRedButton.Tests",
+    "references": ["BigRedButton.Runtime"],
+    "optionalUnityReferences": ["TestAssemblies"]
+}

@@ -9,6 +9,8 @@ namespace BigRedButton
         [SerializeField] private string prompt = "Press button";
         [SerializeField] private bool interactable = true;
         [SerializeField] private bool oneShot;
+        [Tooltip("Also press when the player's CharacterController physically touches this button.")]
+        [SerializeField] private bool pressOnContact = true;
         [SerializeField, Min(0f)] private float cooldown = 0.25f;
         [SerializeField] private UnityEvent onPressed = new UnityEvent();
 
@@ -19,6 +21,16 @@ namespace BigRedButton
         public override bool CanInteract => base.CanInteract && interactable &&
             !(oneShot && hasBeenPressed) && Time.time >= nextPressTime;
         public UnityEvent OnPressed => onPressed;
+        public int LastPressedFrame { get; private set; } = -1;
+
+        public bool TryPressFromContact(PlayerInteractor player)
+        {
+            if (!pressOnContact || player == null || !player.isActiveAndEnabled || !CanInteract)
+                return false;
+
+            Interact(player);
+            return true;
+        }
 
         public override void Interact(PlayerInteractor player)
         {
@@ -26,6 +38,7 @@ namespace BigRedButton
                 return;
 
             hasBeenPressed = true;
+            LastPressedFrame = Time.frameCount;
             nextPressTime = Time.time + cooldown;
             onPressed.Invoke();
         }

@@ -2,7 +2,7 @@
 
 ## First-person controller
 
-Walking, running, jumping, mouse/gamepad look, and button interactions are implemented using the Unity Input System and a CharacterController.
+Walking, running, jumping, mouse/gamepad look, and button interactions are implemented using the Unity Input System and a CharacterController. Buttons also press when the player physically touches them, including landing, standing, side contact, and incoming moving buttons. Each continuous contact fires once; E still works as before.
 
 In Unity, choose **Tools > Big Red Button > Create Controller Test Scene**, save the new scene, and press Play. Controls: **WASD** move, **Shift** run, **Space** jump, **E** interact, **Esc** release/capture cursor.
 

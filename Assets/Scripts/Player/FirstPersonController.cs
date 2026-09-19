@@ -26,6 +26,7 @@ namespace BigRedButton
 
         private CharacterController character;
         private PlayerInteractor interactor;
+        private PlayerButtonContact buttonContact;
         private InputActionAsset ownedActions;
         private InputAction move;
         private InputAction look;
@@ -75,6 +76,12 @@ namespace BigRedButton
             pitch = Mathf.Clamp(Mathf.DeltaAngle(0f, playerCamera.transform.localEulerAngles.x),
                 -pitchLimit, pitchLimit);
             interactor.SetCamera(playerCamera);
+
+            // Existing scenes/prefabs gain collision interaction without being rebuilt.
+            buttonContact = GetComponent<PlayerButtonContact>();
+            if (buttonContact == null)
+                buttonContact = gameObject.AddComponent<PlayerButtonContact>();
+            buttonContact.enabled = enabled;
         }
 
         private void OnEnable()
@@ -82,6 +89,8 @@ namespace BigRedButton
             if (move == null || look == null || jump == null || sprint == null || interact == null)
                 return;
             move.actionMap.Enable();
+            if (buttonContact != null)
+                buttonContact.enabled = true;
             SetCursorCaptured(true);
         }
 
@@ -89,6 +98,8 @@ namespace BigRedButton
         {
             if (ownedActions != null)
                 ownedActions.Disable();
+            if (buttonContact != null)
+                buttonContact.enabled = false;
             verticalSpeed = 0f;
             IsRunning = false;
             SetCursorCaptured(false);
