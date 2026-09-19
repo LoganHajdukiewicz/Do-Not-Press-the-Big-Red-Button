@@ -76,12 +76,13 @@ namespace BigRedButton.Tests
         public IEnumerator CardNamesTheWorker()
         {
             EndingSequence ending = BuildEnding();
-            WorkerIdentity.FirstName = "DALE";
-            WorkerIdentity.LastName = "MERRIWEATHER";
+            WorkerIdentity.FirstName = "{WORKER-FIRSTNAME}";
+            WorkerIdentity.LastName = "{WORKER-LASTNAME}";
             yield return null;
 
             Assert.That(ending.CardText, Does.Contain("Employee of the Year"));
-            Assert.That(ending.CardText, Does.Contain("DALE MERRIWEATHER"));
+            Assert.That(ending.CardText, Does.Contain("{WORKER-FIRSTNAME} {WORKER-LASTNAME}"),
+                "The card uses the worker's name.");
             Assert.That(ending.CardText, Does.Not.Contain("{WORKER-"),
                 "The name tokens must be filled in, not shown raw.");
         }

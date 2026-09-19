@@ -241,8 +241,6 @@ The last day has **no buttons at all**. The back wall has a doorway with dayligh
 - **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
 - **Frozen During Ending:** the player controller, disabled so they cannot walk back inside.
 
-The worker's name lives in `WorkerIdentity`, shared by the opening narration and the closing card, so the company greets and buries the player by the same name. Set `WorkerIdentity.FirstName` and `LastName` from a name-entry screen when you build one; the default is `DALE MERRIWEATHER`.
-
 The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
 
 `Assets/Scenes/TestScene.unity` is the sandbox: the same wiring as a real day, plus jump platforms, a floor button, and visible pressed indicators. Completing it reloads itself instead of advancing, so it stays available for testing.

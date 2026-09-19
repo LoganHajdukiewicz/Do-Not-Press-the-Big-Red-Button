@@ -11,8 +11,9 @@ namespace BigRedButton
         public const string FirstNameToken = "{WORKER-FIRSTNAME}";
         public const string LastNameToken = "{WORKER-LASTNAME}";
 
-        private static string firstName = "DALE";
-        private static string lastName = "MERRIWEATHER";
+        private static string firstName = "{WORKER-FIRSTNAME}";
+
+        private static string lastName = "{WORKER-LASTNAME}";
 
         public static string FirstName
         {
@@ -39,8 +40,8 @@ namespace BigRedButton
         /// <summary>Test hook: restores the default name.</summary>
         public static void ResetForTests()
         {
-            firstName = "DALE";
-            lastName = "MERRIWEATHER";
+            firstName = "{WORKER-FIRSTNAME}";
+            lastName = "{WORKER-LASTNAME}";
         }
     }
 }
