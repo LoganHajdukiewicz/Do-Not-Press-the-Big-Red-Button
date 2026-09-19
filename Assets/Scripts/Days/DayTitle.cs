@@ -10,8 +10,10 @@ namespace BigRedButton
         [SerializeField, Min(0f)] private float holdDuration = 1.6f;
         [SerializeField, Min(0f)] private float fadeOutDuration = 1.2f;
         [Tooltip("Title height as a fraction of screen height, so it stays big on any display.")]
-        [SerializeField, Range(0.05f, 0.5f)] private float textHeightFraction = 0.16f;
-        [SerializeField] private Color textColor = Color.white;
+        [SerializeField, Range(0.05f, 0.5f)] private float textHeightFraction = 0.13f;
+        [Tooltip("Letter spacing, which makes the title read as company signage.")]
+        [SerializeField, Range(0, 6)] private int letterSpacing = 3;
+        [SerializeField] private Color textColor = new Color(0.86f, 0.86f, 0.83f);
         [Tooltip("Darkens the scene behind the title while it is visible.")]
         [SerializeField, Range(0f, 1f)] private float backdropOpacity = 0.55f;
         [Tooltip("Uncheck when something else starts the title, such as the opening sequence.")]
@@ -79,7 +81,7 @@ namespace BigRedButton
                 return;
 
             if (style == null)
-                style = new GUIStyle { alignment = TextAnchor.MiddleCenter, wordWrap = false };
+                style = CorporateText.CreateStyle(16);
             if (backdrop == null)
             {
                 backdrop = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
@@ -95,10 +97,14 @@ namespace BigRedButton
                 GUI.DrawTexture(full, backdrop);
             }
 
-            style.fontSize = Mathf.Max(12, Mathf.RoundToInt(Screen.height * textHeightFraction));
-            style.normal.textColor = new Color(textColor.r, textColor.g, textColor.b, textColor.a * alpha);
+            int fontSize = Mathf.Max(12, Mathf.RoundToInt(Screen.height * textHeightFraction));
+            style.fontSize = fontSize;
+            style.fontStyle = FontStyle.Bold;
             GUI.color = new Color(1f, 1f, 1f, alpha);
-            GUI.Label(full, $"DAY {day}", style);
+            CorporateText.DrawWithShadow(full,
+                CorporateText.Tracked($"DAY {day}", letterSpacing), style,
+                new Color(textColor.r, textColor.g, textColor.b, textColor.a * alpha),
+                shadowOffset: Mathf.Max(2f, fontSize * 0.05f));
             GUI.color = previous;
         }
 

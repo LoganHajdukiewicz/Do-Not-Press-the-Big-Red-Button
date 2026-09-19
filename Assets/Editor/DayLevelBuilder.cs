@@ -87,10 +87,11 @@ namespace BigRedButton.Editor
         private static string BuildTestScene(InputActionAsset actions)
         {
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            BuildRoom(1);
+            // A wider, open room, so the showcase buttons all fit with space to move.
+            BuildRoom(2, withDividers: false);
             CreateLighting();
 
-            FirstPersonSetup.CreatePlayerForLevel(actions, new Vector3(0f, 0.1f, -4.5f));
+            FirstPersonSetup.CreatePlayerForLevel(actions, new Vector3(0f, 0.1f, -6f));
             var dayHost = new GameObject("Day");
             dayHost.AddComponent<DayTitle>();
             var level = dayHost.AddComponent<DayLevel>();
@@ -101,8 +102,8 @@ namespace BigRedButton.Editor
             for (int i = 0; i < 3; i++)
             {
                 float height = 0.4f * (i + 1);
-                Box("Jump platform " + (i + 1), new Vector3(-4.2f, height * 0.5f, i * 2f),
-                    new Vector3(2f, height, 1.6f), trimMaterial);
+                Box("Jump platform " + (i + 1), new Vector3(-7.4f, height * 0.5f, i * 2f - 2f),
+                    new Vector3(1.8f, height, 1.6f), trimMaterial);
             }
 
             GameObject red = CreateRedButton("Big Red Button", new Vector3(1.1f, 0f, 2.2f), level);
@@ -115,9 +116,133 @@ namespace BigRedButton.Editor
             AddIndicator(green.GetComponentInChildren<ButtonInteractable>(), greenMaterial);
             AddIndicator(floorButton.GetComponent<ButtonInteractable>(), greenMaterial);
 
+            BuildButtonShowcase(level);
+
             const string path = "Assets/Scenes/TestScene.unity";
             EditorSceneManager.SaveScene(scene, path);
             return path;
+        }
+
+        /// <summary>
+        /// One of each special button from the design, laid out along the room so every
+        /// behaviour can be tried in one place. Labels say what each one does.
+        /// </summary>
+        private static void BuildButtonShowcase(DayLevel level)
+        {
+            // Day 4: red now, green in a few seconds, then back again.
+            GameObject timed = SpecialButton("Timed Colour Button", new Vector3(-4.6f, 0f, 5.4f),
+                "TURNS GREEN ON A TIMER");
+            var schedule = timed.AddComponent<ButtonColourSchedule>();
+            SetPrivate(schedule, "redDuration", 4f);
+            SetPrivate(schedule, "greenDuration", 4f);
+
+            // Day 18: looking at it makes it turn red.
+            GameObject shy = SpecialButton("Shy Button", new Vector3(-1.6f, 0f, 5.4f),
+                "TURNS RED WHEN WATCHED");
+            var gaze = shy.AddComponent<ButtonGazeColour>();
+            SetPrivate(gaze, "mode", (int)ButtonGazeColour.GazeMode.TurnsRedWhenWatched);
+
+            // Day 19: colour depends on which way the player is facing.
+            GameObject compass = SpecialButton("Compass Button", new Vector3(1.6f, 0f, 5.4f),
+                "COLOUR FOLLOWS YOUR HEADING");
+            var heading = compass.AddComponent<ButtonGazeColour>();
+            SetPrivate(heading, "mode", (int)ButtonGazeColour.GazeMode.FollowsPlayerHeading);
+
+            // Day 13: grey and inert until it is woken up.
+            GameObject sleeping = SpecialButton("Sleeping Button", new Vector3(4.6f, 0f, 5.4f),
+                "PRESS ONCE TO WAKE IT");
+            sleeping.AddComponent<WakeableButton>();
+
+            // Day 5: a sign telling you not to press the button you need.
+            GameObject warned = SpecialButton("Warned Green Button", new Vector3(-4.6f, 0f, 0.2f),
+                "DO NOT PRESS");
+            warned.GetComponent<ButtonAppearance>().SetGreen();
+
+            // Day 7: pushes your aim away as you try to point at it.
+            GameObject slippery = SpecialButton("Magnetic Button", new Vector3(-4.6f, 0f, -2.6f),
+                "PUSHES YOUR AIM AWAY");
+            slippery.GetComponent<ButtonAppearance>().SetGreen();
+            slippery.AddComponent<CursorRepellingButton>();
+
+            // Days 8-12: the button that argues with you.
+            GameObject talker = SpecialButton("Talking Button", new Vector3(4.6f, 0f, 0.2f),
+                "TALKS WHEN YOU APPROACH");
+            talker.GetComponent<ButtonAppearance>().SetGreen();
+            var talking = talker.AddComponent<TalkingButton>();
+            SetPrivateStringList(talking, "lines", new[]
+            {
+                "Please. Do not press me again.",
+                "Press the big red button instead.",
+                "There is a secret ending. You would like it."
+            });
+
+            // Day 20: walks towards the player and presses against them.
+            GameObject chaser = SpecialButton("Chasing Red Button", new Vector3(4.6f, 0f, -2.6f),
+                "FOLLOWS YOU");
+            var chase = chaser.AddComponent<ButtonMover>();
+            SetPrivate(chase, "mode", (int)ButtonMover.MoveMode.ChasePlayer);
+            SetPrivate(chase, "speed", 1.5f);
+
+            // Day 21: slips around to stay behind your back.
+            GameObject sneak = SpecialButton("Sneaking Green Button", new Vector3(0f, 0f, -2.6f),
+                "STAYS BEHIND YOU");
+            sneak.GetComponent<ButtonAppearance>().SetGreen();
+            var behind = sneak.AddComponent<ButtonMover>();
+            SetPrivate(behind, "mode", (int)ButtonMover.MoveMode.StayBehindPlayer);
+
+            // A plain moving button, for platform-style days.
+            GameObject patrol = SpecialButton("Patrolling Button", new Vector3(1.6f, 0f, -2.6f),
+                "SLIDES BACK AND FORTH");
+            var patrolMover = patrol.AddComponent<ButtonMover>();
+            SetPrivate(patrolMover, "mode", (int)ButtonMover.MoveMode.Patrol);
+            SetPrivate(patrolMover, "speed", 1.6f);
+
+            // These are for trying mechanics, so none of them end the test day.
+            foreach (GameObject item in new[]
+                     {
+                         timed, shy, compass, sleeping, warned, slippery, talker, chaser, sneak, patrol
+                     })
+            {
+                var button = item.GetComponentInChildren<ButtonInteractable>();
+                if (button != null)
+                    UnityEventTools.AddPersistentListener(button.OnPressed, button.LogPress);
+            }
+        }
+
+        /// <summary>
+        /// A button on a pedestal with a sign above it and its own colour control, ready
+        /// for one of the special behaviours to be attached.
+        /// </summary>
+        private static GameObject SpecialButton(string name, Vector3 position, string signText)
+        {
+            GameObject cap = CreateButtonBody(name, position, redMaterial, 1.15f);
+            var button = cap.GetComponent<ButtonInteractable>();
+            SetPrivate(button, "prompt", "Press " + name.ToLowerInvariant());
+            SetPrivate(button, "cooldown", 0.6f);
+            SetPrivate(button, "showPressedIndicator", false);
+
+            cap.AddComponent<ButtonAppearance>();
+            AddButtonSound(cap, null);
+
+            var sign = cap.AddComponent<ButtonSign>();
+            SetPrivate(sign, "text", signText);
+            return cap;
+        }
+
+        private static void SetPrivateStringList(Object target, string field, string[] values)
+        {
+            var serialized = new SerializedObject(target);
+            SerializedProperty property = serialized.FindProperty(field);
+            if (property == null || !property.isArray)
+            {
+                Debug.LogError($"{target.GetType().Name} has no list field \"{field}\".");
+                return;
+            }
+
+            property.arraySize = values.Length;
+            for (int i = 0; i < values.Length; i++)
+                property.GetArrayElementAtIndex(i).stringValue = values[i];
+            serialized.ApplyModifiedPropertiesWithoutUndo();
         }
 
         /// <summary>A flat green pad that presses when the player walks or lands on it.</summary>
@@ -132,10 +257,7 @@ namespace BigRedButton.Editor
             SetPrivate(button, "prompt", "Step on the floor button");
             SetPrivate(button, "cooldown", 1f);
 
-            AudioSource ding = AddSound(pad, DingClipPath, 1f);
-            if (ding != null)
-                UnityEventTools.AddPersistentListener(button.OnPressed, ding.Play);
-
+            AddButtonSound(pad, DingClipPath);
             UnityEventTools.AddPersistentListener(button.OnPressed, button.LogPress);
             return pad;
         }
@@ -209,7 +331,11 @@ namespace BigRedButton.Editor
             }
         }
 
-        private static void BuildRoom(int day)
+        /// <summary>
+        /// Builds the chamber. <paramref name="withDividers"/> is off for the test scene,
+        /// which needs one open floor for the showcase buttons.
+        /// </summary>
+        private static void BuildRoom(int day, bool withDividers = true)
         {
             float halfWidth = day == 1 ? 6f : 9f;
             float depth = day == 1 ? 12f : 20f;
@@ -239,6 +365,9 @@ namespace BigRedButton.Editor
                     new Vector3(0.08f, 0.06f, 3.6f), trimMaterial);
             }
 
+            if (!withDividers)
+                return;
+
             if (day >= 2)
             {
                 // A short detour so the green button is a walk away, not a glance away.
@@ -261,9 +390,7 @@ namespace BigRedButton.Editor
             SetPrivate(button, "showPressedIndicator", false);
             SetPrivate(button, "oneShot", false);
 
-            AudioSource click = AddSound(cap, ClickClipPath, 0.9f);
-            if (click != null)
-                UnityEventTools.AddPersistentListener(button.OnPressed, click.Play);
+            AddButtonSound(cap, extraClipPath: null);
 
             // The red button is the thing you were told not to press: it fails the day.
             UnityEventTools.AddPersistentListener(button.OnPressed, level.FailDay);
@@ -278,9 +405,8 @@ namespace BigRedButton.Editor
             SetPrivate(button, "oneShot", true);
             SetPrivate(button, "showPressedIndicator", false);
 
-            AudioSource ding = AddSound(cap, DingClipPath, 1f);
-            if (ding != null)
-                UnityEventTools.AddPersistentListener(button.OnPressed, ding.Play);
+            // Every button clicks; the green one also dings.
+            AddButtonSound(cap, DingClipPath);
 
             // This is the wiring that was missing: the green button ends the day.
             UnityEventTools.AddPersistentListener(button.OnPressed, level.CompleteDay);
@@ -318,23 +444,28 @@ namespace BigRedButton.Editor
             return cap;
         }
 
-        private static AudioSource AddSound(GameObject host, string clipPath, float volume)
+        /// <summary>
+        /// Gives a button the shared press sound, plus an optional extra layer such as
+        /// the green button's ding. Every button clicks when it is pressed.
+        /// </summary>
+        private static ButtonSound AddButtonSound(GameObject host, string extraClipPath)
         {
-            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(clipPath);
-            if (clip == null)
+            var press = AssetDatabase.LoadAssetAtPath<AudioClip>(ClickClipPath);
+            if (press == null)
+                Debug.LogWarning($"Missing \"{ClickClipPath}\"; buttons will have no press sound.");
+
+            AudioClip extra = null;
+            if (!string.IsNullOrEmpty(extraClipPath))
             {
-                Debug.LogWarning($"Missing audio clip \"{clipPath}\"; the button will be silent.");
-                return null;
+                extra = AssetDatabase.LoadAssetAtPath<AudioClip>(extraClipPath);
+                if (extra == null)
+                    Debug.LogWarning($"Missing \"{extraClipPath}\"; that layer will be silent.");
             }
 
-            AudioSource source = host.AddComponent<AudioSource>();
-            source.clip = clip;
-            source.playOnAwake = false;
-            source.volume = volume;
-            source.spatialBlend = 0.85f;
-            source.minDistance = 2f;
-            source.maxDistance = 25f;
-            return source;
+            var sound = host.AddComponent<ButtonSound>();
+            SetPrivate(sound, "pressClip", press);
+            SetPrivate(sound, "extraClip", extra);
+            return sound;
         }
 
         private static void CreateOpening(GameObject dayHost, GameObject player, DayTitle title)

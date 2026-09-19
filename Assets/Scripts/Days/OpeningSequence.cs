@@ -18,11 +18,13 @@ namespace BigRedButton
 
         [Header("Text")]
         [SerializeField] private string warningText = "DO NOT PRESS THE BIG RED BUTTON";
-        [Tooltip("Seconds of silence before the text starts appearing.")]
-        [SerializeField, Min(0f)] private float textStartDelay = 9f;
+        [Tooltip("Seconds before the text starts appearing, matched to the narration.")]
+        [SerializeField, Min(0f)] private float textStartDelay = 10.28f;
         [Tooltip("Seconds the text takes to finish appearing, as the words are spoken.")]
         [SerializeField, Min(0.1f)] private float textRevealDuration = 4f;
-        [SerializeField, Range(0.02f, 0.3f)] private float textHeightFraction = 0.075f;
+        [SerializeField, Range(0.02f, 0.3f)] private float textHeightFraction = 0.062f;
+        [Tooltip("Letter spacing, which makes the warning read as printed company signage.")]
+        [SerializeField, Range(0, 4)] private int letterSpacing = 2;
 
         [Header("Timing")]
         [Tooltip("Extra seconds to stay on black after the narration ends.")]
@@ -156,12 +158,15 @@ namespace BigRedButton
 
             if (TextAlpha > 0f && !string.IsNullOrEmpty(VisibleText))
             {
+                int fontSize = Mathf.Max(11, Mathf.RoundToInt(Screen.height * textHeightFraction));
                 if (style == null)
-                    style = new GUIStyle { alignment = TextAnchor.MiddleCenter, wordWrap = true };
-                style.fontSize = Mathf.Max(11, Mathf.RoundToInt(Screen.height * textHeightFraction));
-                style.normal.textColor = new Color(1f, 1f, 1f, TextAlpha);
+                    style = CorporateText.CreateStyle(fontSize, wordWrap: true);
+                style.fontSize = fontSize;
                 GUI.color = new Color(1f, 1f, 1f, TextAlpha);
-                GUI.Label(full, VisibleText, style);
+                CorporateText.DrawWithShadow(full,
+                    CorporateText.Tracked(VisibleText, letterSpacing), style,
+                    new Color(CorporateText.Ink.r, CorporateText.Ink.g, CorporateText.Ink.b, TextAlpha),
+                    shadowOffset: Mathf.Max(2f, fontSize * 0.055f));
             }
 
             GUI.color = previous;

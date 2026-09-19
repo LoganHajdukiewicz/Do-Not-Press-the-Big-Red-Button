@@ -69,6 +69,31 @@ The runtime clones the input asset and enables only the clone's Player map. It d
 
 Red and green buttons share the same interaction code; their event wiring determines what they do. No win/fail or day progression is hard-coded into the controller. In the generated days, the green button's `On Pressed` calls `DayLevel.CompleteDay` and the red button's calls `DayLevel.FailDay`.
 
+### Button types
+
+These components cover the tricks in the design. Add them to a button's cap, alongside its `ButtonInteractable`. `TestScene` has one of each, labelled, so every behaviour can be tried in one room.
+
+| Component | What it does | Days |
+| --- | --- | --- |
+| `ButtonSound` | Plays the press click on every button, plus an optional extra layer such as the green ding. | all |
+| `ButtonAppearance` | Sets the colour a button *looks* like, separately from what it does: red, green, a blend, or grey. | 4, 10, 13, 16-19 |
+| `ButtonColourSchedule` | Switches the look between red and green on a timer. | 4 |
+| `ButtonGazeColour` | Colour reacts to the player's view: turns red when watched, or follows their heading. | 18, 19 |
+| `ButtonSign` | A word painted above the button, in the company's lettering. | 5, 10, 17 |
+| `TalkingButton` | Shows lines of dialogue when approached, looked at, or at day start. | 8, 9, 11, 12 |
+| `WakeableButton` | Starts grey and inert; the first press only wakes it up. | 13 |
+| `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. | 7 |
+| `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
+| `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
+
+Notes for building days with these:
+
+- `ButtonAppearance` owns its own material copy, so tinting one button never recolours the others. Drive it with `Greenness` (0 red, 1 green), `SetRed()`, `SetGreen()`, or `IsDisabledLook`.
+- A button's colour is only its appearance. What it does still comes from its `On Pressed` wiring, which is what makes the mislabelled and repainted days work.
+- `ButtonMover` belongs on the button assembly's root, not the cap, so the whole pedestal moves. Its chase mode presses against the player through the existing contact system.
+- `WakeableButton` uses `SuppressEvents`, so the first press still clicks and feels physical but does not reach the level wiring.
+- `TalkingButton` and `ButtonSign` draw with the shared `CorporateText` look, so signage, dialogue, the day titles and the opening all match.
+
 ### Pressed indicator
 
 Each button has its own indicator settings, so the debug light can be switched off per button:
@@ -119,7 +144,7 @@ Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows *
 
 Select **Tools > Big Red Button > Build Days 1-3**. It generates `Assets/Scenes/Days/Day 1-3.unity` from the README design, registers them in build settings, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1`.
 
-- **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears as the words are spoken, the black fades away onto the room, and then `DAY 1` fades in. The player cannot move until the screen clears.
+- **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears centred at **10.28 seconds**, when the line is spoken, then the black fades away onto the room and `DAY 1` fades in. The player cannot move until the screen clears.
 - **Day 1:** a big red button with the green button directly to its left. The green button dings and ends the day.
 - **Day 2:** the red button is directly in front of the player; the green button is a walk away behind a divider.
 - **Day 3:** the green button is hidden for 5 seconds, then appears.
@@ -151,7 +176,8 @@ To convert a scene you already built by hand, open it, rename it `Day <number>`,
 `OpeningSequence` sits on the `Day` object in `Day 1`. It holds the screen fully black, plays the narration, reveals the warning text, then fades out and raises **On Opening Finished**, which plays the day title.
 
 - **Opening Narration:** the clip to play, normally `Assets/Audio/Opening.mp3`. The timing follows the clip's real length.
-- **Warning Text / Text Start Delay / Text Reveal Duration:** what appears and when, so the words land with the voice line. Defaults are 9 s and 4 s.
+- **Warning Text / Text Start Delay / Text Reveal Duration:** what appears and when, so the words land with the voice line. Defaults are 10.28 s and 4 s.
+- **Letter Spacing:** how far apart the letters sit. The warning and the day titles are uppercase, bold, letter-spaced and shadowed, in off-white on black, so they read as printed company notices rather than game UI.
 - **Hold After Narration / Fade Out Duration:** black-screen hold and fade, default 1.2 s and 3 s.
 - **Frozen During Opening:** the player controller, disabled until the screen clears.
 - `Finish()` ends the opening early, for a skip button.
@@ -167,8 +193,9 @@ To put the opening in another scene, add `OpeningSequence` next to a `DayTitle`,
 ### DayTitle inspector settings
 
 - **Fade In / Hold / Fade Out Duration:** default 0.4 s, 1.6 s, 1.2 s.
-- **Text Height Fraction:** title height relative to screen height, so it stays large on phones and monitors; default 0.16.
-- **Text Color** and **Backdrop Opacity:** default white text over a 55% dark backdrop.
+- **Text Height Fraction:** title height relative to screen height, so it stays large on phones and monitors; default 0.13.
+- **Letter Spacing:** spacing between letters; default 3, which gives the flat corporate look.
+- **Text Color** and **Backdrop Opacity:** default off-white ink over a 55% dark backdrop.
 
 The title uses unscaled time, so it still fades if a day sets `Time.timeScale` to zero. It draws with Unity's built-in IMGUI, so no fonts, Canvas, or TextMeshPro assets are required.
 
@@ -183,6 +210,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 `BigRedButton.Tests.DayFlowTests` covers day order, missing days, reloads, and rejected day numbers.
 
 `BigRedButton.Tests.OpeningAndIndicatorTests` covers the indicator toggle, the black-screen opening, its text reveal, restoring player control, and `TimedReveal`.
+
+`BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, the magnetic push, and the letter-spacing helper.
 
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
 
@@ -202,6 +231,8 @@ Manual Play Mode checklist:
 - Pressing green ends the day and loads the next one; pressing red repeats the same day.
 - Day 3's green button appears after 5 seconds.
 - Unchecking **Show Pressed Indicator** hides the light while the button still works.
+- Every button clicks when pressed; the green button clicks *and* dings.
+- In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.
