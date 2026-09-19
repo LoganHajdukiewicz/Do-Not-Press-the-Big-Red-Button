@@ -14,6 +14,8 @@ namespace BigRedButton
         [SerializeField] private Color textColor = Color.white;
         [Tooltip("Darkens the scene behind the title while it is visible.")]
         [SerializeField, Range(0f, 1f)] private float backdropOpacity = 0.55f;
+        [Tooltip("Uncheck when something else starts the title, such as the opening sequence.")]
+        [SerializeField] private bool playOnStart = true;
 
         private GUIStyle style;
         private Texture2D backdrop;
@@ -40,6 +42,11 @@ namespace BigRedButton
                 return fadeOutDuration <= 0f ? 0f : Mathf.Clamp01(1f - afterHold / fadeOutDuration);
             }
         }
+
+        public bool PlayOnStart => playOnStart;
+
+        /// <summary>Shows the title for the day the player is currently on.</summary>
+        public void PlayCurrentDay() => Play(DayFlow.CurrentDay);
 
         public void Play(int dayNumber)
         {

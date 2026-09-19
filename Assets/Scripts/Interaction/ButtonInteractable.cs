@@ -12,6 +12,13 @@ namespace BigRedButton
         [Tooltip("Also press when the player's CharacterController physically touches this button.")]
         [SerializeField] private bool pressOnContact = true;
         [SerializeField, Min(0f)] private float cooldown = 0.25f;
+
+        [Header("Pressed indicator (debug)")]
+        [Tooltip("Uncheck to keep the indicator hidden, for example in a finished level.")]
+        [SerializeField] private bool showPressedIndicator = true;
+        [Tooltip("Optional object shown when this button is pressed. Leave empty for none.")]
+        [SerializeField] private GameObject pressedIndicator;
+
         [SerializeField] private UnityEvent onPressed = new UnityEvent();
 
         private bool hasBeenPressed;
@@ -22,6 +29,19 @@ namespace BigRedButton
             !(oneShot && hasBeenPressed) && Time.time >= nextPressTime;
         public UnityEvent OnPressed => onPressed;
         public int LastPressedFrame { get; private set; } = -1;
+
+        /// <summary>Shows or hides the pressed indicator, honouring the inspector toggle.</summary>
+        public bool ShowPressedIndicator
+        {
+            get => showPressedIndicator;
+            set
+            {
+                showPressedIndicator = value;
+                ApplyIndicator(value && hasBeenPressed);
+            }
+        }
+
+        private void Awake() => ApplyIndicator(false);
 
         public bool TryPressFromContact(PlayerInteractor player)
         {
@@ -40,6 +60,7 @@ namespace BigRedButton
             hasBeenPressed = true;
             LastPressedFrame = Time.frameCount;
             nextPressTime = Time.time + cooldown;
+            ApplyIndicator(true);
             onPressed.Invoke();
         }
 
@@ -50,6 +71,13 @@ namespace BigRedButton
         {
             hasBeenPressed = false;
             nextPressTime = float.NegativeInfinity;
+            ApplyIndicator(false);
+        }
+
+        private void ApplyIndicator(bool pressed)
+        {
+            if (pressedIndicator != null)
+                pressedIndicator.SetActive(showPressedIndicator && pressed);
         }
 
         public void LogPress() => Debug.Log($"{name} pressed.", this);

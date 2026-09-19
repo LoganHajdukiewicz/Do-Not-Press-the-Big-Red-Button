@@ -35,7 +35,9 @@ namespace BigRedButton
         private void Start()
         {
             DayFlow.ReportDayStarted(DayNumber);
-            title.Play(DayNumber);
+            // The opening sequence plays the title itself once the black screen clears.
+            if (title.PlayOnStart)
+                title.Play(DayNumber);
             onDayStarted.Invoke();
         }
 

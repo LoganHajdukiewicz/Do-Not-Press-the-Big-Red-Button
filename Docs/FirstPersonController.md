@@ -67,7 +67,16 @@ The runtime clones the input asset and enables only the clone's Player map. It d
 3. Set **Prompt**, **Interactable**, **One Shot**, **Press On Contact**, and **Cooldown** as needed.
 4. Connect **On Pressed** in the Inspector to your level logic, animation, AudioSource.Play, etc.
 
-Red and green buttons share the same interaction code; their event wiring determines what they do. No win/fail or day progression is hard-coded into the controller.
+Red and green buttons share the same interaction code; their event wiring determines what they do. No win/fail or day progression is hard-coded into the controller. In the generated days, the green button's `On Pressed` calls `DayLevel.CompleteDay` and the red button's calls `DayLevel.FailDay`.
+
+### Pressed indicator
+
+Each button has its own indicator settings, so the debug light can be switched off per button:
+
+- **Show Pressed Indicator:** uncheck to keep the indicator hidden. The button still works and still raises `On Pressed`.
+- **Pressed Indicator:** the object to show. Leave it empty for no indicator at all.
+
+The indicator starts hidden, appears when the button is pressed, and hides again on `ResetButton()`. Toggling **Show Pressed Indicator** at runtime applies immediately. The generated day scenes ship with indicators off; `TestScene` has them on.
 
 `SetInteractable(bool)` can lock/unlock a button. `ResetButton()` clears the one-shot state and cooldown without overriding the interactable setting. Disabling the component or its GameObject also prevents interaction.
 
@@ -106,7 +115,21 @@ public sealed class DoorInteractable : BigRedButton.Interactable
 
 Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows **DAY N** in large letters, fades it out, and loads the next day when the day is completed.
 
-### Create the days
+### Build the first playable days
+
+Select **Tools > Big Red Button > Build Days 1-3**. It generates `Assets/Scenes/Days/Day 1-3.unity` from the README design, registers them in build settings, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1`.
+
+- **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears as the words are spoken, the black fades away onto the room, and then `DAY 1` fades in. The player cannot move until the screen clears.
+- **Day 1:** a big red button with the green button directly to its left. The green button dings and ends the day.
+- **Day 2:** the red button is directly in front of the player; the green button is a walk away behind a divider.
+- **Day 3:** the green button is hidden for 5 seconds, then appears.
+- **The red button** repeats the current day, so pressing it never advances the game.
+
+The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. The narration, button audio and the title are the only things competing for attention. Re-running the command regenerates these scenes, so keep your own level work in separate scenes or under different day numbers.
+
+`Assets/Scenes/TestScene.unity` is the sandbox: the same wiring as a real day, plus jump platforms, a floor button, and visible pressed indicators. Completing it reloads itself instead of advancing, so it stays available for testing.
+
+### Create further days
 
 1. Open the gameplay scene you want to use as the first day, such as `TestScene`.
 2. Select **Tools > Big Red Button > Create Next Day Scene**. This copies the current/latest day into `Assets/Scenes/Days/Day 1.unity`, adds the `Day` object, and registers the scene in build settings. It never overwrites your original scene.
@@ -122,6 +145,22 @@ To convert a scene you already built by hand, open it, rename it `Day <number>`,
 - **Delay Before Next Day:** seconds after the outcome before the next day loads; default 1.
 - **On Day Started / On Day Completed / On Day Failed:** hooks for audio, dialogue, or animation.
 - **On Final Day Completed:** raised instead of loading when no later day scene exists. Use it for the ending.
+
+### Opening sequence
+
+`OpeningSequence` sits on the `Day` object in `Day 1`. It holds the screen fully black, plays the narration, reveals the warning text, then fades out and raises **On Opening Finished**, which plays the day title.
+
+- **Opening Narration:** the clip to play, normally `Assets/Audio/Opening.mp3`. The timing follows the clip's real length.
+- **Warning Text / Text Start Delay / Text Reveal Duration:** what appears and when, so the words land with the voice line. Defaults are 9 s and 4 s.
+- **Hold After Narration / Fade Out Duration:** black-screen hold and fade, default 1.2 s and 3 s.
+- **Frozen During Opening:** the player controller, disabled until the screen clears.
+- `Finish()` ends the opening early, for a skip button.
+
+To put the opening in another scene, add `OpeningSequence` next to a `DayTitle`, uncheck the title's **Play On Start**, and connect **On Opening Finished** to `DayTitle.PlayCurrentDay`.
+
+### Hiding a button for a few seconds
+
+`TimedReveal` hides a target object and reveals it after a delay; Day 3 uses it with a 5 second delay. Put it on an object that stays active, such as the `Day` object, and set **Target** to the button assembly.
 
 `CompleteDay()` advances, `FailDay()` repeats the day, and `CompleteDayImmediately()` skips the delay. Only the first outcome in a day applies, so extra presses during the transition are ignored.
 
@@ -143,6 +182,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.DayFlowTests` covers day order, missing days, reloads, and rejected day numbers.
 
+`BigRedButton.Tests.OpeningAndIndicatorTests` covers the indicator toggle, the black-screen opening, its text reveal, restoring player control, and `TimedReveal`.
+
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
 
 Manual Play Mode checklist:
@@ -156,8 +197,11 @@ Manual Play Mode checklist:
 - Walk into a button from the side, then move a button horizontally against an idle player: both press it without E or looking at it.
 - Touch the pedestal without touching its separate button: no press. Disable Press On Contact: E works but touching does not.
 - Escape releases the cursor and stops input; clicking resumes without an E-key interaction. Physical contact still works because releasing the cursor does not pause the world.
+- Day 1 starts fully black with narration, shows the warning text, fades in, then shows **DAY 1**.
 - Starting a day shows large **DAY N** text that fades out and does not block later gameplay.
-- Completing a day loads the next day, and the new day shows the next number.
+- Pressing green ends the day and loads the next one; pressing red repeats the same day.
+- Day 3's green button appears after 5 seconds.
+- Unchecking **Show Pressed Indicator** hides the light while the button still works.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

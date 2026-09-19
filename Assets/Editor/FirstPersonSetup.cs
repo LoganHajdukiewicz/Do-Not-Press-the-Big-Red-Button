@@ -86,6 +86,10 @@ namespace BigRedButton.Editor
             return actions;
         }
 
+        /// <summary>Used by the level builder so every day gets an identical player.</summary>
+        internal static GameObject CreatePlayerForLevel(InputActionAsset actions, Vector3 position) =>
+            CreatePlayer(actions, position);
+
         private static GameObject CreatePlayer(InputActionAsset actions, Vector3 position)
         {
             var player = new GameObject("First Person Player");
