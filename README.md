@@ -6,7 +6,13 @@ Walking, running, jumping, mouse/gamepad look, and button interactions are imple
 
 In Unity, choose **Tools > Big Red Button > Create Controller Test Scene**, save the new scene, and press Play. Controls: **WASD** move, **Shift** run, **Space** jump, **E** interact, **Esc** release/capture cursor.
 
-See [controller setup, customization, and tests](Docs/FirstPersonController.md).
+## Day system
+
+Each day is a level in its own scene (`Day 1`, `Day 2`, ...). A day shows **DAY N** in large letters, fades it out, and loads the next day when the day's correct button is pressed.
+
+Create days with **Tools > Big Red Button > Create Next Day Scene**, then connect the correct button's `On Pressed` to `DayLevel.CompleteDay`.
+
+See [controller and day system setup, customization, and tests](Docs/FirstPersonController.md).
 
 ## Game design
 
