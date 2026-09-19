@@ -490,6 +490,7 @@ MonoBehaviour:
   prompt: Press Green Button
   interactable: 1
   oneShot: 0
+  pressOnContact: 1
   cooldown: 0.25
   onPressed:
     m_PersistentCalls:
@@ -607,7 +608,7 @@ Transform:
   m_GameObject: {fileID: 323286037}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.2, y: 0.14, z: -2.76}
+  m_LocalPosition: {x: -1.05, y: 0.14, z: -2.76}
   m_LocalScale: {x: 0.75, y: 0.12, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -755,6 +756,7 @@ MonoBehaviour:
   prompt: Press Big Red Button
   interactable: 1
   oneShot: 0
+  pressOnContact: 1
   cooldown: 0.25
   onPressed:
     m_PersistentCalls:
@@ -969,7 +971,7 @@ Transform:
   m_GameObject: {fileID: 716999045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2, y: 0.5, z: 1.5}
+  m_LocalPosition: {x: -1.05, y: 0.5, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1873,11 +1875,11 @@ Transform:
   m_GameObject: {fileID: 1287080693}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.38, z: -4.36}
+  m_LocalPosition: {x: 3.06, y: 0.120000005, z: -2.8600001}
   m_LocalScale: {x: 0.75, y: 0.12, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1697740415}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1287080695
 MonoBehaviour:
@@ -1894,6 +1896,7 @@ MonoBehaviour:
   prompt: Press Big Red Button
   interactable: 1
   oneShot: 0
+  pressOnContact: 1
   cooldown: 0.25
   onPressed:
     m_PersistentCalls:
@@ -2165,6 +2168,7 @@ MonoBehaviour:
   prompt: Press Green Button
   interactable: 1
   oneShot: 0
+  pressOnContact: 1
   cooldown: 0.25
   onPressed:
     m_PersistentCalls:
@@ -2379,12 +2383,11 @@ Transform:
   m_GameObject: {fileID: 1697740411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2, y: 0.5, z: 1.5}
+  m_LocalPosition: {x: 3.06, y: 0.5, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 538042953}
-  - {fileID: 1287080694}
   - {fileID: 987979472}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2398,6 +2401,7 @@ SceneRoots:
   - {fileID: 241956111}
   - {fileID: 202386225}
   - {fileID: 323286042}
+  - {fileID: 1287080694}
   - {fileID: 1155966578}
   - {fileID: 91717219}
   - {fileID: 1263085078}
