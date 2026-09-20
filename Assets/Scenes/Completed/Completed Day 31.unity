@@ -149,7 +149,7 @@ Transform:
   m_LocalPosition: {x: 0.1875, y: -0.5500001, z: 0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 1278701248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &213543334
@@ -1038,7 +1038,7 @@ Transform:
   m_LocalPosition: {x: 0.1875, y: -0.5500001, z: -0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 1278701248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &756736521
@@ -1304,6 +1304,29 @@ MonoBehaviour:
   lightIntensity: 1.5
   lightRange: 7
   maxRealLights: 12
+--- !u!114 &820000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211017850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831c5f1bb5f44db1ae01e8bef9030a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.BackgroundMusic
+  music: {fileID: 8300000, guid: af237e20d8854550a28e4f090e7a8576, type: 3}
+  volume: 0.42
+  loop: 1
+  startDelay: 0
+  fadeInDuration: 2
+  fadeOutDuration: 3
+  silenceBetweenLoops: 1.5
+  crossFadeDuration: 2
+  continueAcrossDays: 1
+  ignorePause: 1
+  playOnStart: 1
 --- !u!1 &878148101
 GameObject:
   m_ObjectHideFlags: 0
@@ -2620,7 +2643,7 @@ Transform:
   m_LocalPosition: {x: -0.1875, y: -0.5500001, z: -0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 1278701248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1440544546
@@ -3113,8 +3136,8 @@ Transform:
   m_GameObject: {fileID: 1882773435}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.3, z: 246.1}
-  m_LocalScale: {x: 500, y: 0.5, z: 500}
+  m_LocalPosition: {x: 0, y: -0.3, z: 6.2}
+  m_LocalScale: {x: 1000, y: 0.5, z: 1000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3409,7 +3432,7 @@ Transform:
   m_LocalPosition: {x: -0.1875, y: -0.5500001, z: 0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 1278701248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1990111713
@@ -3789,26 +3812,3 @@ SceneRoots:
   - {fileID: 1356515662}
   - {fileID: 1882773438}
   - {fileID: 635290441}
---- !u!114 &820000000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1211017850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 831c5f1bb5f44db1ae01e8bef9030a4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.BackgroundMusic
-  music: {fileID: 8300000, guid: af237e20d8854550a28e4f090e7a8576, type: 3}
-  volume: 0.42
-  loop: 1
-  startDelay: 0
-  fadeInDuration: 2
-  fadeOutDuration: 3
-  silenceBetweenLoops: 1.5
-  crossFadeDuration: 2
-  continueAcrossDays: 1
-  ignorePause: 1
-  playOnStart: 1
