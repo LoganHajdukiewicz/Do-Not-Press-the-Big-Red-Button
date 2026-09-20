@@ -544,7 +544,7 @@ namespace BigRedButton.Editor
                         new Vector3(-2.2f, 0f, 2.4f), level, string.Empty, startGreen: true);
                     SwapPaint(paintedRed, lookGreen: false);
                     CreatePaintBucket(paintedRed, new Color(0.72f, 0.05f, 0.04f),
-                        new Vector3(-1.35f, -1.15f, -0.3f));
+                        new Vector3(-0.92f, -1.15f, 0f));
                     break;
                 }
 
