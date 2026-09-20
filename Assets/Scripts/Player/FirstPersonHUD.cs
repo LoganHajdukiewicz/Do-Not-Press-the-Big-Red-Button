@@ -7,13 +7,11 @@ namespace BigRedButton
     public sealed class FirstPersonHUD : MonoBehaviour
     {
         private FirstPersonController controller;
-        private PlayerInteractor interactor;
         private GUIStyle centered;
 
         private void Awake()
         {
             controller = GetComponent<FirstPersonController>();
-            interactor = GetComponent<PlayerInteractor>();
         }
 
         private void OnGUI()
@@ -26,16 +24,10 @@ namespace BigRedButton
 
             float x = Screen.width * 0.5f;
             float y = Screen.height * 0.5f;
-            if (!controller.HasControl)
-            {
-                GUI.Label(new Rect(0f, y, Screen.width, 40f), "Click / Esc / Start to resume", centered);
-                return;
-            }
-
-            GUI.Label(new Rect(x - 10f, y - 10f, 20f, 20f), "+", centered);
-            if (!string.IsNullOrEmpty(interactor.CurrentPrompt))
-                GUI.Label(new Rect(0f, y + 28f, Screen.width, 40f),
-                    $"[{controller.InteractionHint}] {interactor.CurrentPrompt}", centered);
+            // Deliberately nonverbal: interaction text reveals button states and spoils
+            // the day's surprise. The crosshair remains as a simple aiming reference.
+            if (controller.HasControl)
+                GUI.Label(new Rect(x - 10f, y - 10f, 20f, 20f), "+", centered);
         }
     }
 }

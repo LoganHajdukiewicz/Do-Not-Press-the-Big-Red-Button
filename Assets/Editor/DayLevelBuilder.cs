@@ -536,16 +536,15 @@ namespace BigRedButton.Editor
                 case 17:
                 {
                     // "The Green Button has painted itself red and painted the Red Button green"
-                    GameObject paintedGreen = StateButton("Big Red Button",
-                        new Vector3(2.2f, 0f, 2.4f), level, string.Empty, startGreen: false);
-                    SwapPaint(paintedGreen, lookGreen: true);
-                    CreatePaintBucket(paintedGreen, new Color(0.09f, 0.55f, 0.16f),
-                        new Vector3(1.15f, -1.15f, -0.25f));
+                    // Both caps look red. The only physical clue is a single bucket of
+                    // red paint beside the actual green button, implying what happened.
+                    StateButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level,
+                        string.Empty, startGreen: false);
                     GameObject paintedRed = StateButton("Green Button",
                         new Vector3(-2.2f, 0f, 2.4f), level, string.Empty, startGreen: true);
                     SwapPaint(paintedRed, lookGreen: false);
                     CreatePaintBucket(paintedRed, new Color(0.72f, 0.05f, 0.04f),
-                        new Vector3(-1.15f, -1.15f, -0.25f));
+                        new Vector3(-1.35f, -1.15f, -0.3f));
                     break;
                 }
 
@@ -818,6 +817,7 @@ namespace BigRedButton.Editor
             var bucket = button.AddComponent<PaintBucket>();
             SetPrivateColour(bucket, "paintColour", paint);
             SetPrivate(bucket, "offset", offset);
+            SetPrivate(bucket, "size", 0.9f);
             bucket.Build(); // AddComponent has already made its default preview in edit mode.
         }
 

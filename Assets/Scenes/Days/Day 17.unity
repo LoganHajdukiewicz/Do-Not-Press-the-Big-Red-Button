@@ -3045,7 +3045,6 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 820000001}
   - component: {fileID: 1683840273}
   - component: {fileID: 1683840281}
   - component: {fileID: 1683840280}
@@ -3157,8 +3156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1302ca6d42d4e179a4d6ac7cbdb9bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonAppearance
-  redColour: {r: 0.09, g: 0.55, b: 0.16, a: 1}
-  greenColour: {r: 0.09, g: 0.55, b: 0.16, a: 1}
+  redColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
+  greenColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
   disabledColour: {r: 0.42, g: 0.43, b: 0.44, a: 1}
   greenness: 0
   startDisabled: 0
@@ -3928,22 +3927,6 @@ SceneRoots:
   - {fileID: 175906030}
   - {fileID: 143679081}
   - {fileID: 620956121}
---- !u!114 &820000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683840272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a90c5eaf1e84fd9b0c1bd6d1ce28477, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  paintColour: {r: 0.09, g: 0.55, b: 0.16, a: 1}
-  bucketName: Paint Bucket
-  offset: {x: 1.15, y: -1.15, z: -0.25}
-  size: 0.42
 --- !u!114 &820000002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3958,5 +3941,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
   bucketName: Paint Bucket
-  offset: {x: -1.15, y: -1.15, z: -0.25}
-  size: 0.42
+  offset: {x: -1.35, y: -1.15, z: -0.3}
+  size: 0.9
