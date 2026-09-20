@@ -26,6 +26,8 @@ Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)** to regener
 
 Add more days with **Tools > Big Red Button > Create Next Day Scene**, then connect the green button's `On Pressed` to `DayLevel.CompleteDay`.
 
+The corporate background music loops across Days 1-30 without restarting between days. Day 31 stays quiet until its own happier track is added.
+
 Every ceiling carries LED office panels. Use **Tools > Big Red Button > Add LED Office Lights To Every Level** to fit or refit them all in place, without regenerating any day.
 
 Day 31 needs the Fantasy Skybox FREE pack imported once on your machine; see the [step-by-step skybox instructions](Docs/FirstPersonController.md#step-by-step-adding-the-skybox-and-the-outside-patch).
@@ -54,7 +56,7 @@ Day 2: The Red Button is directly in front of the player. The Green Button is fa
 
 Day 3: The Green Button is hidden for 5 seconds. 
 
-Day 4: The Red Button turns green after 10 seconds. It switches back after 10 seconds. 
+Day 4: The Red Button turns green after 5 seconds. It switches back after 5 seconds.
 
 Day 5: The Green Button has a sign that says "DO NOT PRESS" on it. 
 
@@ -90,4 +92,4 @@ Day 20: Red Buttons will follow you around. They will want to be pressed.
 
 Day 21: The Green Button spawns behind the player and tries to stay behind the player. As they turn to see it, it turns around them so it is behind them. It collides with walls, so the player can wrangle it into a corner and press it.
 
-LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside onto a patch of land and freely explore it for ten seconds. Then a gunshot and white flash cut the exploration short, followed by black. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}
+LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside onto open grass and freely explore for five seconds: a small taste of the outside before it is taken away. Then a gunshot and white flash cut the exploration short, followed by black. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}

@@ -1545,8 +1545,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69ea49ba8ec40e7b7cd44cdc99a6ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonColourSchedule
-  redDuration: 10
-  greenDuration: 10
+  redDuration: 5
+  greenDuration: 5
   blendDuration: 0.6
   startDelay: 0
   startGreen: 0
@@ -1984,6 +1984,7 @@ GameObject:
   - component: {fileID: 1469791679}
   - component: {fileID: 1469791678}
   - component: {fileID: 1469791677}
+  - component: {fileID: 820000000}
   m_Layer: 0
   m_Name: Day
   m_TagString: Untagged
@@ -2434,3 +2435,24 @@ MonoBehaviour:
   lightIntensity: 1.5
   lightRange: 7
   maxRealLights: 12
+--- !u!114 &820000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469791676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831c5f1bb5f44db1ae01e8bef9030a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.BackgroundMusic
+  music: {fileID: 8300000, guid: a8199d38c5cbeca4b9f640e18ea2f6ab, type: 3}
+  volume: 0.32
+  loop: 1
+  startDelay: 0
+  fadeInDuration: 2.5
+  crossFadeDuration: 1.5
+  continueAcrossDays: 1
+  ignorePause: 1
+  playOnStart: 1

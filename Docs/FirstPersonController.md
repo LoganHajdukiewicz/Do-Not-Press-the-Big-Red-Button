@@ -107,7 +107,8 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
 | `TrapdoorTrigger` | Opens a floor panel when the player walks over it. | 15 |
-| `EndingSequence` | Ten seconds outside, gunshot, white flash, black, Employee of the Month. | 31 |
+| `EndingSequence` | Five seconds outside, gunshot, white flash, black, Employee of the Month. | 31 |
+| `BackgroundMusic` | Loops a level's music and carries it across day changes. | all |
 | `OfficeCeilingLights` | Fits a grid of recessed LED panels under a ceiling. | all |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
 
@@ -270,7 +271,7 @@ Every generated day is an ordinary scene. Open any of them and move buttons, res
 | 1 | Red button, green directly to its left | README |
 | 2 | Red button in front, green a walk away | README |
 | 3 | Green button hidden for 5 seconds | README |
-| 4 | Red button turns green for 10 seconds, then back | README |
+| 4 | Red button turns green for 5 seconds, then back | README |
 | 5 | Green button signed `DO NOT PRESS` | README |
 | 6 | Thirty red buttons, one green | README |
 | 7 | Green button pushes your aim away | README |
@@ -315,9 +316,9 @@ Both saved Day 21 and the sneaking button in TestScene are configured; the build
 
 ### Day 31, the ending
 
-The last day has **no buttons at all**. Walk through the open doorway onto a patch of land outside. The camera renders a skybox, and the ground patch is **120 × 120 metres** running from the doorway out to z=126, with a low bank around its open sides so you cannot run off the edge mid-ending.
+The last day has **no buttons at all**. Walk through the open doorway onto open grass. The camera renders the Fantasy Skybox, and the ground is a wide **500 × 500 metre** plane textured with `Assets/LevelMaterials/Outside Grass.mat`, which tiles the pack's grass diffuse and normal maps.
 
-Crossing the outside trigger (centre z=9, radius 1.5m) gives **ten full seconds of free exploration**. Then a **gunshot** plays once with a **white flash** (default 0.12 seconds), followed by a fast transition to **black** (0.06 seconds). Control freezes at the shot, not when stepping outside. After a short black hold, the plain centered **Employee of the Month** card fades in with the worker's name.
+Crossing the outside trigger (centre z=9, radius 1.5m) gives **five seconds of free exploration**: a taste of the outside before it is taken away. Then a **gunshot** plays once with a **white flash** (default 0.12 seconds), followed by a fast transition to **black** (0.06 seconds). Control freezes at the shot, not when stepping outside. After a short black hold, the plain centered **Employee of the Month** card fades in with the worker's name.
 
 The exploration timer starts only once, does not restart if you move away or return indoors, and pauses while gameplay is paused or the first-person controller has released input (Escape/focus loss).
 
@@ -349,12 +350,32 @@ Press **Play** from `Day 31`, walk out of the doorway, and you get ten seconds t
 Keep the imported texture dependencies installed locally; do not publish the vendor pack as a standalone download.
 
 - **Doorway Centre / Radius / Height Tolerance:** the outside area that starts the exploration timer. `Begin()` can also be called from a trigger or door animation.
-- **Exploration Duration:** clear-view free exploration before the gunshot; default **10 seconds**.
+- **Exploration Duration:** clear-view free exploration before the gunshot; default **5 seconds**.
 - **Gunshot / Gunshot Volume / Flash Duration:** assigned to `Assets/Audio/gunshot.mp3`; plays once with a full white flash (default **0.12 seconds**).
 - **Fade To Black Duration / Dark Hold:** flash-to-black transition (default **0.06 seconds**) and pause before the card (default **0.5 seconds**).
 - **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
 - **Player / Frozen During Ending:** optional references, found automatically when empty. Control is disabled at the gunshot/flash, never when stepping outside.
 - **On Ending Started / On Gunshot / On Fade Started / On Card Shown:** separate Inspector events for exploration, the shot/flash, the blackout transition and the card.
+
+### Background music
+
+Every day scene's **Day** object carries a `BackgroundMusic` component. Days 1-30 hold `Assets/Audio/Corporate Background Music.mp3`; Day 31's slot is deliberately empty until the ending's own, happier track is added.
+
+The track **loops, and does not restart between days**. Only the first day's player survives: it detaches from the day object, is marked `DontDestroyOnLoad`, and every later day hands its settings over and destroys its own copy. A later day asking for the same clip is left alone entirely, so the music plays unbroken from Day 1 through Day 30 no matter how many times a day is repeated or failed.
+
+- A day holding a **different** clip cross-fades to it, so the ending's music will replace the corporate track rather than layering over it.
+- A day holding **no** clip fades the music out. That is why Day 31 currently goes quiet: the working-day music must not play over the gunshot.
+- Starting a new month from the menu calls `BackgroundMusic.ClearPersistent()`, so the track begins from the top rather than resuming mid-loop.
+
+Inspector settings on **Day > Background Music**:
+
+- **Music / Volume / Loop:** the clip, its settled volume (default 0.32, low enough that button clicks stay audible), and whether it repeats.
+- **Start Delay:** Day 1 uses **20 seconds** so the music does not talk over the opening narration. Later days use 0.
+- **Fade In Duration / Cross Fade Duration:** the initial ramp, and the fade used when swapping or stopping a track.
+- **Continue Across Days:** uncheck for music that belongs to a single scene, which then never claims the shared player.
+- **Ignore Pause / Play On Start.**
+
+`Stop()`, `StopImmediately()` and `SetVolume(float)` can be wired to a day's events, for example fading the music out on the final day.
 
 ### LED office lights
 
@@ -448,6 +469,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
+`BigRedButton.Tests.BackgroundMusicTests` covers the looping track, a new day not restarting or rewinding it, thirty days keeping one audio source, surviving its own day object, an empty slot fading the music out, a different clip cross-fading, the menu restarting it, Day 1's narration delay, and scene-only music never persisting.
+
 `BigRedButton.Tests.StartMenuTests` covers the title text, START loading Day 1 so the opening plays, always restarting the month, starting only once, staying usable when day scenes are missing, the Team Player switch, and the cursor unlock.
 
 `BigRedButton.Tests.TeamPlayerModeTests` covers the mode being off by default, a red press on a deep day returning to Day 1, the same press only repeating the day with the mode off, completion being unaffected, physical red-button contact also restarting the month, and one outcome per day.
@@ -487,6 +510,7 @@ Manual Play Mode checklist:
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
+- The corporate track fades in after the Day 1 narration and keeps playing across every day change without restarting. It goes quiet on Day 31.
 - The game opens on the start menu. START plays the Day 1 opening. With Team Player Mode on, a red button on any day returns you to Day 1; with it off, the day repeats.
 - On Day 31, explore the outside patch for ten seconds, then hear one gunshot with a white flash, followed by black and Employee of the Month. Controls freeze at the shot.
 - Every room has lit LED panels overhead. Walking and pressing E under a panel is unaffected by it.

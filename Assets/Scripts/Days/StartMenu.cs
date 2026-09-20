@@ -57,8 +57,10 @@ namespace BigRedButton
 
         private void Awake()
         {
-            // Returning to the menu must not inherit a half-finished month.
+            // Returning to the menu must not inherit a half-finished month, nor the
+            // music left running by it: a new month starts the track from the top.
             DayFlow.ResetToFirstDay();
+            BackgroundMusic.ClearPersistent();
             GameSettings.TeamPlayerMode = teamPlayerModeByDefault;
         }
 

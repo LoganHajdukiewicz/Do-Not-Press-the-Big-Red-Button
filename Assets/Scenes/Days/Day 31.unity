@@ -1405,6 +1405,7 @@ GameObject:
   - component: {fileID: 1211017853}
   - component: {fileID: 1211017852}
   - component: {fileID: 1211017851}
+  - component: {fileID: 820000000}
   m_Layer: 0
   m_Name: Day
   m_TagString: Untagged
@@ -1427,7 +1428,7 @@ MonoBehaviour:
   doorwayCentre: {x: 0, y: 0, z: 9}
   doorwayRadius: 1.5
   doorwayHeightTolerance: 2.5
-  explorationDuration: 10
+  explorationDuration: 5
   gunshot: {fileID: 8300000, guid: 749ced96bccf491191488651ae27f168, type: 3}
   gunshotVolume: 1
   flashDuration: 0.12
@@ -2230,7 +2231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 270e522d898063545bc2df864c8b9c10, type: 2}
+  - {fileID: 2100000, guid: be04296d8e114acc831504f660b8b068, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2767,3 +2768,24 @@ SceneRoots:
   - {fileID: 1356515662}
   - {fileID: 1882773438}
   - {fileID: 635290441}
+--- !u!114 &820000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211017850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831c5f1bb5f44db1ae01e8bef9030a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.BackgroundMusic
+  music: {fileID: 0}
+  volume: 0.32
+  loop: 1
+  startDelay: 0
+  fadeInDuration: 2.5
+  crossFadeDuration: 2
+  continueAcrossDays: 1
+  ignorePause: 1
+  playOnStart: 1

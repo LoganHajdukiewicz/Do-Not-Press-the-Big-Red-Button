@@ -22,6 +22,7 @@ namespace BigRedButton.Editor
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
         private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
+        private const string CorporateMusicPath = "Assets/Audio/Corporate Background Music.mp3";
         private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
@@ -364,6 +365,7 @@ namespace BigRedButton.Editor
             var level = dayHost.AddComponent<DayLevel>();
             SetPrivate(level, "dayNumber", day);
             SetPrivate(level, "delayBeforeNextDay", 1.6f);
+            CreateBackgroundMusic(dayHost, day);
 
             // Day 1 opens the game: black screen, narration, then the room fades in.
             if (day == 1)
@@ -408,8 +410,8 @@ namespace BigRedButton.Editor
                     GameObject cycling = StateButton("Big Red Button", new Vector3(0f, 0f, 2.4f),
                         level, "WAIT FOR IT", startGreen: false);
                     var schedule = cycling.AddComponent<ButtonColourSchedule>();
-                    SetPrivate(schedule, "redDuration", 10f);
-                    SetPrivate(schedule, "greenDuration", 10f);
+                    SetPrivate(schedule, "redDuration", 5f);
+                    SetPrivate(schedule, "greenDuration", 5f);
                     break;
                 }
 
@@ -638,33 +640,14 @@ namespace BigRedButton.Editor
             Box("Door frame", new Vector3(0f, doorHeight, wallZ),
                 new Vector3(doorWidth, 0.12f, 0.6f), trimMaterial);
 
-            // Leave the doorway open: an opaque panel would hide the sky.
-            // A patch of land big enough for ten seconds of running in any direction,
-            // with a low wall so the player cannot run off its edge.
-            Material grass = Material("Outside Ground", new Color(0.33f, 0.42f, 0.24f), 0.15f);
-            const float patchWidth = 120f;
-            // Starts just inside the doorway, so there is no gap to fall through, and runs
-            // far enough that ten seconds of sprinting never reaches the far side.
-            const float nearZ = 6f;
-            const float farZ = 126f;
-            float depthOfPatch = farZ - nearZ;
-            float patchCentre = (nearZ + farZ) * 0.5f;
-            Box("Outside ground", new Vector3(0f, -0.3f, patchCentre),
-                new Vector3(patchWidth, 0.5f, depthOfPatch), grass);
-
-            // A low bank around the three open sides. The building itself closes the fourth,
-            // so the player cannot walk off the edge of the patch during the ending.
-            float side = patchWidth * 0.5f;
-            Box("Outside bank", new Vector3(0f, 0.45f, farZ),
-                new Vector3(patchWidth, 1.5f, 0.5f), grass);
-            Box("Outside bank", new Vector3(-side, 0.45f, patchCentre),
-                new Vector3(0.5f, 1.5f, depthOfPatch), grass);
-            Box("Outside bank", new Vector3(side, 0.45f, patchCentre),
-                new Vector3(0.5f, 1.5f, depthOfPatch), grass);
-            Box("Outside bank", new Vector3(-side * 0.5f - 1f, 0.45f, nearZ),
-                new Vector3(patchWidth * 0.5f - 2f, 1.5f, 0.5f), grass);
-            Box("Outside bank", new Vector3(side * 0.5f + 1f, 0.45f, nearZ),
-                new Vector3(patchWidth * 0.5f - 2f, 1.5f, 0.5f), grass);
+            // Leave the doorway open: an opaque panel would hide the sky. A wide open
+            // patch of grass, so the outside feels like somewhere worth reaching.
+            Material grass =
+                AssetDatabase.LoadAssetAtPath<Material>("Assets/LevelMaterials/Outside Grass.mat")
+                ?? Material("Outside Grass", new Color(0.33f, 0.42f, 0.24f), 0.05f);
+            // Starts just inside the doorway, so there is no gap at the threshold.
+            Box("Outside ground", new Vector3(0f, -0.3f, 246.1f),
+                new Vector3(500f, 0.5f, 500f), grass);
             Day31SkyboxSetup.ApplyConfiguredSkybox();
 
             // Light spilling in through the doorway, the only warm light in the game.
@@ -682,7 +665,7 @@ namespace BigRedButton.Editor
             var ending = level.gameObject.AddComponent<EndingSequence>();
             SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 2f));
             SetPrivate(ending, "doorwayRadius", 1.5f);
-            SetPrivate(ending, "explorationDuration", 10f);
+            SetPrivate(ending, "explorationDuration", 5f);
             SetPrivate(ending, "fadeToBlackDuration", 0.06f);
             SetPrivate(ending, "flashDuration", 0.12f);
             SetPrivate(ending, "gunshot", AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
@@ -1027,6 +1010,30 @@ namespace BigRedButton.Editor
             // The DAY 1 title waits for the opening instead of playing under the black screen.
             SetPrivate(title, "playOnStart", false);
             UnityEventTools.AddPersistentListener(opening.OnOpeningFinished, title.PlayCurrentDay);
+        }
+
+        /// <summary>
+        /// The working days share one looping corporate track. Only the first day's
+        /// player survives; later days recognise the same clip and leave it running,
+        /// so the music never restarts between days. Day 31 gets an empty slot, which
+        /// fades the corporate track out and is where the ending's own music goes.
+        /// </summary>
+        private static void CreateBackgroundMusic(GameObject dayHost, int day)
+        {
+            var music = dayHost.AddComponent<BackgroundMusic>();
+            SetPrivate(music, "continueAcrossDays", true);
+            SetPrivate(music, "volume", 0.32f);
+            if (day >= EndingDay)
+            {
+                SetPrivate(music, "music", null);
+                SetPrivate(music, "crossFadeDuration", 2f);
+                return;
+            }
+
+            SetPrivate(music, "music",
+                AssetDatabase.LoadAssetAtPath<AudioClip>(CorporateMusicPath));
+            // Day 1 holds a black screen for the narration, so its music waits for it.
+            SetPrivate(music, "startDelay", day == 1 ? 20f : 0f);
         }
 
         private static void CreateLighting()
