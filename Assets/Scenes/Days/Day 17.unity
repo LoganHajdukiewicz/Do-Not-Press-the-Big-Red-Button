@@ -3941,5 +3941,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
   bucketName: Paint Bucket
-  offset: {x: -1.35, y: -1.15, z: -0.3}
+  offset: {x: -0.92, y: -1.15, z: 0}
   size: 0.9

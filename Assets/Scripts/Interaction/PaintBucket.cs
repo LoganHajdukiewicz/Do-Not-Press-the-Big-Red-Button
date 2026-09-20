@@ -36,7 +36,9 @@ namespace BigRedButton
 
             Material metal = Material(new Color(0.42f, 0.43f, 0.45f), 0.72f);
             Material paint = Material(paintColour, 0.25f, emission: 0.08f);
-            float height = size * 1.05f;
+            // The pedestal is one metre tall. Include the red top when sizing the
+            // pail, so its complete silhouette remains below the 0.5m halfway mark.
+            float height = size * 0.4f;
 
             // A full-sized pail: the primitive is two units tall, so its Y scale is
             // half the desired world height. Its bottom sits exactly on the floor.
