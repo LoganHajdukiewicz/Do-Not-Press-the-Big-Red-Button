@@ -108,8 +108,8 @@ namespace BigRedButton
             rig.localScale = Vector3.one;
             playerCamera.nearClipPlane = 0.03f;
             playerCamera.fieldOfView = 75f;
-            playerCamera.clearFlags = CameraClearFlags.SolidColor;
-            playerCamera.backgroundColor = new Color(0.12f, 0.17f, 0.23f);
+            // Do not overwrite clearFlags/background here. Day 31 deliberately uses
+            // Skybox clear mode; forcing SolidColor every frame hides its panorama.
         }
 
         private void OnEnable()

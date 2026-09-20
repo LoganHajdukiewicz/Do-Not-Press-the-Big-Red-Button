@@ -78,8 +78,14 @@ namespace BigRedButton.Editor
             camera.transform.localScale = Vector3.one;
             camera.nearClipPlane = 0.03f;
             camera.fieldOfView = 75f;
-            camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = new Color(0.12f, 0.17f, 0.23f);
+            // Keep Day 31's panorama visible when repairing a player in that scene.
+            if (RenderSettings.skybox != null)
+                camera.clearFlags = CameraClearFlags.Skybox;
+            else
+            {
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = new Color(0.12f, 0.17f, 0.23f);
+            }
             if (camera.GetComponent<AudioListener>() == null)
                 Undo.AddComponent<AudioListener>(camera.gameObject);
 
