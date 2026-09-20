@@ -3208,9 +3208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonGazeColour
   mode: 0
-  hoverDelay: 0.5
-  blendDuration: 0.25
-  aimTolerance: 0.985
+  hoverDelay: 0.1
+  blendDuration: 0.15
+  aimTolerance: 0.8956
   maxWatchDistance: 0
   unwatchedGreenness: 1
   watchedGreenness: 0
