@@ -38,14 +38,14 @@ namespace BigRedButton
         [SerializeField] private Color folderHover = new Color(1f, 0.99f, 0.82f);
         [SerializeField] private Color folderLabel = Color.black;
         [Tooltip("Width of the stack as a fraction of screen width.")]
-        [SerializeField, Range(0.3f, 0.95f)] private float stackWidthFraction = 0.62f;
+        [SerializeField, Range(0.3f, 0.95f)] private float stackWidthFraction = 0.78f;
         [Tooltip("Height of one folder's visible band, as a fraction of screen height.")]
-        [SerializeField, Range(0.06f, 0.25f)] private float bandHeightFraction = 0.138f;
+        [SerializeField, Range(0.06f, 0.25f)] private float bandHeightFraction = 0.152f;
         [Tooltip("Width of the labelled tab, as a fraction of the folder's width.")]
-        [SerializeField, Range(0.25f, 0.9f)] private float tabWidthFraction = 0.55f;
+        [SerializeField, Range(0.25f, 0.9f)] private float tabWidthFraction = 0.44f;
         [Tooltip("How far the tab rises above the folder body, as a fraction of the " +
             "gap between folders. The rest of the gap shows the body's top edge.")]
-        [SerializeField, Range(0.25f, 0.75f)] private float tabRiseFraction = 0.66f;
+        [SerializeField, Range(0.25f, 0.75f)] private float tabRiseFraction = 0.58f;
         [Tooltip("Thin edge drawn around each folder, so the stack does not merge.")]
         [SerializeField] private Color folderEdge = new Color(0.85f, 0.79f, 0.42f);
         [Tooltip("Where the top folder begins, as a fraction of screen height.")]
@@ -221,7 +221,7 @@ namespace BigRedButton
 
         private void DrawFolders(float alpha)
         {
-            float width = Mathf.Min(Screen.width * stackWidthFraction, 780f);
+            float width = Mathf.Min(Screen.width * stackWidthFraction, 1040f);
             float left = (Screen.width - width) * 0.5f;
             float band = Screen.height * bandHeightFraction;
             float top = Screen.height * stackTopFraction;

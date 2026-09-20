@@ -175,10 +175,10 @@ MonoBehaviour:
   folderBody: {r: 0.99, g: 0.96, b: 0.69, a: 1}
   folderHover: {r: 1, g: 0.99, b: 0.82, a: 1}
   folderLabel: {r: 0, g: 0, b: 0, a: 1}
-  stackWidthFraction: 0.62
-  bandHeightFraction: 0.138
-  tabWidthFraction: 0.55
-  tabRiseFraction: 0.66
+  stackWidthFraction: 0.78
+  bandHeightFraction: 0.152
+  tabWidthFraction: 0.44
+  tabRiseFraction: 0.58
   folderEdge: {r: 0.85, g: 0.79, b: 0.42, a: 1}
   stackTopFraction: 0.26
   stackBottomFraction: 1.06
