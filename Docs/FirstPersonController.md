@@ -361,7 +361,9 @@ Keep the imported texture dependencies installed locally; do not publish the ven
 
 Every day scene's **Day** object carries a `BackgroundMusic` component. Days 1-30 hold `Assets/Audio/Corporate Background Music.mp3`; Day 31's slot is deliberately empty until the ending's own, happier track is added.
 
-The track **loops, and does not restart between days**. Only the first day's player survives: it detaches from the day object, is marked `DontDestroyOnLoad`, and every later day hands its settings over and destroys its own copy. A later day asking for the same clip is left alone entirely, so the music plays unbroken from Day 1 through Day 30 no matter how many times a day is repeated or failed.
+The track **loops, and does not restart between days**. The first day creates a separate `Background Music` object, marks that object `DontDestroyOnLoad`, and plays through it. Every later day hands its settings to the running player and then does nothing further.
+
+The component must **never** persist or destroy its own GameObject: it shares the **Day** object with `DayLevel`, `DayTitle`, `TimedReveal` and `OpeningSequence`. An earlier version did exactly that, which carried a stale `DayLevel` into the next day and deleted later days' logic, so buttons stopped resolving and Day 3's green button never appeared. `DayRegressionTests` now guards this.
 
 - A day holding a **different** clip cross-fades to it, so the ending's music will replace the corporate track rather than layering over it.
 - A day holding **no** clip fades the music out. That is why Day 31 currently goes quiet: the working-day music must not play over the gunshot.
@@ -468,6 +470,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 `BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, and the magnetic push.
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
+
+`BigRedButton.Tests.DayRegressionTests` guards the day object: the music never persists, destroys or reparents it; a later day keeps its own `DayLevel` and `TimedReveal`; Day 3's green button still appears; green still advances and red still restarts on a later day; only one `DayLevel` exists after a scene change; the music survives a day being unloaded; and Day 1's opening still releases the player.
 
 `BigRedButton.Tests.BackgroundMusicTests` covers the looping track, a new day not restarting or rewinding it, thirty days keeping one audio source, surviving its own day object, an empty slot fading the music out, a different clip cross-fading, the menu restarting it, Day 1's narration delay, and scene-only music never persisting.
 

@@ -93,7 +93,11 @@ namespace BigRedButton.Tests
 
             Assert.That(BackgroundMusic.Active, Is.SameAs(persistent),
                 "The running player keeps the music; the new day's copy stands down.");
-            Assert.That(day2 == null, Is.True, "The duplicate destroys itself.");
+            Assert.That(day2 != null, Is.True,
+                "The new day's component must survive: it shares the Day object with " +
+                "DayLevel, so destroying it would delete the day's own logic.");
+            Assert.That(day2.gameObject.GetComponent<AudioSource>(), Is.Null,
+                "A stood-down day adds no second audio source.");
             Assert.That(source.clip, Is.SameAs(corporate));
             Assert.That(source.time, Is.GreaterThanOrEqualTo(before),
                 "Playback must continue, not rewind to the start of the day.");
@@ -115,7 +119,7 @@ namespace BigRedButton.Tests
                 Assert.That(BackgroundMusic.Active, Is.SameAs(persistent), $"Day {day}");
             }
 
-            Assert.That(Object.FindObjectsByType<BackgroundMusic>(FindObjectsSortMode.None).Length,
+            Assert.That(Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None).Length,
                 Is.EqualTo(1), "Thirty days must not stack thirty audio sources.");
             Assert.That(persistent.GetComponent<AudioSource>().time,
                 Is.GreaterThanOrEqualTo(3f), "The same playback position carried through.");
@@ -128,11 +132,14 @@ namespace BigRedButton.Tests
             BackgroundMusic day1 = NewDay(corporate);
             yield return null;
 
-            // The persistent player detaches from the day, so unloading a scene's
-            // objects cannot take the music with it.
-            Assert.That(day1.transform.parent, Is.Null);
+            // The music runs on its own object, so unloading a scene cannot take it
+            // with it, and the day object is left exactly where it was.
+            Assert.That(BackgroundMusic.Active.gameObject, Is.Not.SameAs(day1.gameObject));
+            Assert.That(BackgroundMusic.Active.gameObject.name, Is.EqualTo("Background Music"));
             Assert.That(BackgroundMusic.Active.gameObject.scene.name,
                 Is.EqualTo("DontDestroyOnLoad"));
+            Assert.That(day1.gameObject.scene.name, Is.Not.EqualTo("DontDestroyOnLoad"),
+                "The day object must never be carried between scenes.");
         }
 
         [UnityTest]
@@ -214,8 +221,9 @@ namespace BigRedButton.Tests
             yield return null;
 
             Assert.That(BackgroundMusic.Active, Is.Null, "It never claims the shared slot.");
-            Assert.That(music.transform.parent, Is.Null);
             Assert.That(music.gameObject.scene.name, Is.Not.EqualTo("DontDestroyOnLoad"));
+            Assert.That(music.GetComponent<AudioSource>(), Is.Not.Null,
+                "Scene-only music plays on its own object.");
         }
     }
 }
