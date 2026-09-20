@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace BigRedButton
 {
@@ -11,7 +12,7 @@ namespace BigRedButton
     [DisallowMultipleComponent]
     public sealed class EndingSequence : MonoBehaviour
     {
-        private enum Stage { Waiting, Exploring, Flash, Fading, Dark, Card, Finished }
+        private enum Stage { Waiting, Exploring, Flash, Fading, Dark, Card, CardHold, Returned }
 
         [Header("Outside trigger")]
         [Tooltip("World-space centre of the area just beyond the doorway.")]
@@ -42,6 +43,10 @@ namespace BigRedButton
         [SerializeField, Min(0f)] private float cardFadeIn = 2.5f;
         [SerializeField, Range(0.02f, 0.12f)] private float cardHeightFraction = 0.045f;
         [SerializeField] private Color cardColour = new Color(0.86f, 0.86f, 0.83f);
+        [Tooltip("Seconds the fully visible card remains on screen before returning home.")]
+        [SerializeField, Min(0f)] private float cardHoldDuration = 5f;
+        [Tooltip("Build-settings scene to load after the ending card.")]
+        [SerializeField] private string returnSceneName = "Start Menu";
 
         [Header("Player")]
         [Tooltip("Found from the player controller if left empty.")]
@@ -188,7 +193,17 @@ namespace BigRedButton
                 case Stage.Card:
                     CardAlpha = cardFadeIn <= 0f ? 1f : Mathf.Clamp01(timer / cardFadeIn);
                     if (CardAlpha >= 1f)
-                        stage = Stage.Finished;
+                    {
+                        stage = Stage.CardHold;
+                        timer = 0f;
+                    }
+                    break;
+                case Stage.CardHold:
+                    if (timer < cardHoldDuration)
+                        return;
+                    stage = Stage.Returned;
+                    if (!string.IsNullOrEmpty(returnSceneName))
+                        SceneManager.LoadScene(returnSceneName);
                     break;
             }
         }
@@ -203,7 +218,7 @@ namespace BigRedButton
 
         private void OnEnable()
         {
-            if (stage is Stage.Flash or Stage.Fading or Stage.Dark or Stage.Card or Stage.Finished)
+            if (stage is Stage.Flash or Stage.Fading or Stage.Dark or Stage.Card or Stage.CardHold or Stage.Returned)
                 FreezeControls();
         }
 
