@@ -17,7 +17,9 @@ namespace BigRedButton
             /// <summary>Circles the player to stay behind their back.</summary>
             StayBehindPlayer,
             /// <summary>Slides back and forth between two points.</summary>
-            Patrol
+            Patrol,
+            /// <summary>Travels one fixed straight route, then stops at its end.</summary>
+            OneWayPath
         }
 
         [Header("Movement")]
@@ -57,6 +59,12 @@ namespace BigRedButton
         [Tooltip("Treats the offset as world space rather than relative to its rotation.")]
         [SerializeField] private bool patrolInWorldSpace = true;
 
+        [Header("One-way path")]
+        [Tooltip("Fixed displacement travelled in a straight line before stopping.")]
+        [SerializeField] private Vector3 oneWayPathOffset = new Vector3(0f, 0f, -6f);
+        [Tooltip("Treats the one-way path offset as world space.")]
+        [SerializeField] private bool oneWayPathInWorldSpace = true;
+
         [Header("Behaviour")]
         [Tooltip("Stops moving once the button has been pressed.")]
         [SerializeField] private bool stopOnPress = true;
@@ -71,6 +79,7 @@ namespace BigRedButton
 
         private Vector3 patrolStart;
         private Vector3 patrolEnd;
+        private Vector3 oneWayEnd;
         private float patrolTimer;
         private float delayTimer;
         private float startHeight;
@@ -93,6 +102,8 @@ namespace BigRedButton
             patrolStart = transform.position;
             patrolEnd = patrolStart + (patrolInWorldSpace
                 ? patrolOffset : transform.TransformVector(patrolOffset));
+            oneWayEnd = patrolStart + (oneWayPathInWorldSpace
+                ? oneWayPathOffset : transform.TransformVector(oneWayPathOffset));
             startHeight = transform.position.y;
 
             CacheCollisionShape();
@@ -129,6 +140,12 @@ namespace BigRedButton
             if (mode == MoveMode.Patrol)
             {
                 UpdatePatrol();
+                return;
+            }
+
+            if (mode == MoveMode.OneWayPath)
+            {
+                UpdateOneWayPath();
                 return;
             }
 
@@ -294,6 +311,15 @@ namespace BigRedButton
             }
             transform.position = position;
             IsMoving = (position - original).sqrMagnitude > 0.000001f;
+        }
+
+        private void UpdateOneWayPath()
+        {
+            Vector3 original = transform.position;
+            transform.position = Vector3.MoveTowards(original, oneWayEnd, speed * Time.deltaTime);
+            IsMoving = (transform.position - original).sqrMagnitude > 0.000001f;
+            if (Vector3.Distance(transform.position, oneWayEnd) <= 0.01f)
+                running = false;
         }
 
         private void UpdatePatrol()

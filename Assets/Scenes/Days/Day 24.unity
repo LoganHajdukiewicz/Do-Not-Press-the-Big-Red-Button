@@ -184492,7 +184492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32c4744468045eeb3af528f089f8395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonMover
-  mode: 0
+  mode: 3
   speed: 1.4
   startDelay: 1
   faceThePlayer: 1
@@ -184510,6 +184510,8 @@ MonoBehaviour:
   patrolOffset: {x: 0, y: 0, z: 6}
   patrolPause: 0.5
   patrolInWorldSpace: 1
+  oneWayPathOffset: {x: 0, y: 0, z: -5.8}
+  oneWayPathInWorldSpace: 1
   stopOnPress: 1
   lockHeight: 1
   player: {fileID: 0}
