@@ -59,9 +59,11 @@ namespace BigRedButton
 
         [Header("Text on screen")]
         [Tooltip("Height of the text as a fraction of screen height.")]
-        [SerializeField, Range(0.015f, 0.08f)] private float textHeightFraction = 0.032f;
+        [SerializeField, Range(0.015f, 0.16f)] private float textHeightFraction = 0.032f;
+        [Tooltip("How far across the screen the text sits. 0 is left, 1 is right.")]
+        [SerializeField, Range(0f, 1f)] private float screenHorizontalPosition = 0.5f;
         [Tooltip("How far down the screen the text sits. 0 is the top, 1 the bottom.")]
-        [SerializeField, Range(0.4f, 0.92f)] private float screenPosition = 0.74f;
+        [SerializeField, Range(0f, 1f)] private float screenPosition = 0.74f;
         [SerializeField] private Color textColour = Color.white;
         [Tooltip("Hides the text and relies on the voice clip only.")]
         [SerializeField] private bool hideText;
@@ -346,10 +348,11 @@ namespace BigRedButton
             style.fontSize = Mathf.Max(12, Mathf.RoundToInt(Screen.height * textHeightFraction));
             style.normal.textColor = textColour;
 
-            // Sits low on the screen so it never covers the button being talked about.
+            // Each button can place its line anywhere on screen; most dialogue uses the
+            // centered default, while Day 27 deliberately crowds the player view.
             float width = Mathf.Min(Screen.width * 0.8f, 900f);
-            var area = new Rect((Screen.width - width) * 0.5f, Screen.height * screenPosition, width,
-                Screen.height * 0.24f);
+            float left = Screen.width * screenHorizontalPosition - width * 0.5f;
+            var area = new Rect(left, Screen.height * screenPosition, width, Screen.height * 0.24f);
             GUI.Label(area, line, style);
         }
     }

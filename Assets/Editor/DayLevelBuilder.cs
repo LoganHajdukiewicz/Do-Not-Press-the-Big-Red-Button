@@ -608,6 +608,9 @@ namespace BigRedButton.Editor
                         SetPrivate(redTalking, "advanceOnPress", false);
                         SetPrivate(redTalking, "secondsPerLine", 3f);
                         SetPrivate(redTalking, "loop", true);
+                        SetPrivate(redTalking, "screenHorizontalPosition", 0.17f);
+                        SetPrivate(redTalking, "screenPosition", 0.23f);
+                        SetPrivate(redTalking, "textHeightFraction", 0.09f);
                     }
                     GameObject green = StateButton("Green Button", new Vector3(-2.2f, 0f, 2.4f),
                         level, string.Empty, startGreen: true);

@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - doNtpResSmEdONtpResSmeDONTPressMEDOntpresSME
   secondsPerLine: 3
   loop: 1
   startDelay: 9
@@ -343,8 +343,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0649
-  screenPosition: 0.57
+  textHeightFraction: 0.078
+  screenHorizontalPosition: 0.239
+  screenPosition: 0.037
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -675,7 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - doNtPreSSMEdoNtpReSSmEdonTPRESSMEdontpreSsme
   secondsPerLine: 3
   loop: 1
   startDelay: 9
@@ -689,8 +690,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0649
-  screenPosition: 0.57
+  textHeightFraction: 0.0795
+  screenHorizontalPosition: 0.044
+  screenPosition: 0.755
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -909,7 +911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONtPResSmedOntprESsmedONtPreSsMe
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -923,8 +925,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0483
-  screenPosition: 0.793
+  textHeightFraction: 0.0956
+  screenHorizontalPosition: 0.469
+  screenPosition: 0.814
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -1347,7 +1350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONtpREsSmeDONtPrESSme
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -1361,8 +1364,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0739
-  screenPosition: 0.92
+  textHeightFraction: 0.024
+  screenHorizontalPosition: 0.826
+  screenPosition: 0.635
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -1868,7 +1872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONtprESSMEdOntpreSsmedOnTprESSmeDontPRESSMEDoNTPrEsSme
   secondsPerLine: 3
   loop: 1
   startDelay: 4
@@ -1882,8 +1886,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0526
-  screenPosition: 0.447
+  textHeightFraction: 0.0573
+  screenHorizontalPosition: 0.159
+  screenPosition: 0.221
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -2102,7 +2107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNTprESSMEDOntpressmeDonTPreSSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -2116,8 +2121,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.549
+  textHeightFraction: 0.0289
+  screenHorizontalPosition: 0.628
+  screenPosition: 0.498
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -2662,7 +2668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPReSSME
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -2676,8 +2682,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.549
+  textHeightFraction: 0.1321
+  screenHorizontalPosition: 0.261
+  screenPosition: 0.1
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -2896,7 +2903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONTPResSmEDONTPresSmEDONtpressMedoNtpReSsme
   secondsPerLine: 3
   loop: 1
   startDelay: 12
@@ -2910,8 +2917,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0659
-  screenPosition: 0.68
+  textHeightFraction: 0.1186
+  screenHorizontalPosition: 0.392
+  screenPosition: 0.167
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -3367,7 +3375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPResSmedonTprEsSmEDoNtprESSMedonTpRESsme
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -3381,8 +3389,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0455
-  screenPosition: 0.556
+  textHeightFraction: 0.0604
+  screenHorizontalPosition: 0.793
+  screenPosition: 0.867
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -3601,7 +3610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNtpressMEdoNtprESsme
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -3615,8 +3624,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0577
-  screenPosition: 0.541
+  textHeightFraction: 0.0685
+  screenHorizontalPosition: 0.587
+  screenPosition: 0.106
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -3835,7 +3845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontpReSsmeDONtpresSMedONtprESSmedONTPrEssmE
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -3849,8 +3859,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0301
-  screenPosition: 0.769
+  textHeightFraction: 0.0567
+  screenHorizontalPosition: 0.274
+  screenPosition: 0.133
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -4069,7 +4080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOntPReSsMedONtPrEssmEdONTPReSSMedoNtpreSSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -4083,8 +4094,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0234
-  screenPosition: 0.672
+  textHeightFraction: 0.1136
+  screenHorizontalPosition: 0.373
+  screenPosition: 0.405
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -4303,7 +4315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNTPrESsMeDONtPresSmedOnTPrEsSme
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -4317,8 +4329,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0483
-  screenPosition: 0.425
+  textHeightFraction: 0.0964
+  screenHorizontalPosition: 0.278
+  screenPosition: 0.676
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -4649,7 +4662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DontPResSmEdoNtPRESSMEdoNtPRESsmedONTpRESsmE
   secondsPerLine: 3
   loop: 1
   startDelay: 9
@@ -4663,8 +4676,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.725
+  textHeightFraction: 0.1089
+  screenHorizontalPosition: 0.806
+  screenPosition: 0.265
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -4883,7 +4897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOnTpReSsmeDontPRESSMeDONTPreSSmEDoNtPrESSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -4897,8 +4911,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.717
+  textHeightFraction: 0.094
+  screenHorizontalPosition: 0.654
+  screenPosition: 0.877
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -5404,7 +5419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DonTpressmEdOnTpresSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 4
@@ -5418,8 +5433,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0667
-  screenPosition: 0.511
+  textHeightFraction: 0.0375
+  screenHorizontalPosition: 0.31
+  screenPosition: 0.171
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -5638,7 +5654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - donTpresSMEdOnTPReSsMEdonTpresSMEDoNTpREssMe
   secondsPerLine: 3
   loop: 1
   startDelay: 10
@@ -5652,8 +5668,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0736
-  screenPosition: 0.576
+  textHeightFraction: 0.0238
+  screenHorizontalPosition: 0.54
+  screenPosition: 0.389
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -5872,7 +5889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNtPreSSme
   secondsPerLine: 3
   loop: 1
   startDelay: 11
@@ -5886,8 +5903,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0309
-  screenPosition: 0.607
+  textHeightFraction: 0.0604
+  screenHorizontalPosition: 0.066
+  screenPosition: 0.734
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -6106,7 +6124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOnTPreSSMEDOntPreSSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -6120,8 +6138,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0687
-  screenPosition: 0.76
+  textHeightFraction: 0.0874
+  screenHorizontalPosition: 0.188
+  screenPosition: 0.372
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -6517,7 +6536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPresSMEDONTPrEsSMEDonTprESSMeDoNTpresSMeDONtPrEsSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -6531,8 +6550,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0739
-  screenPosition: 0.92
+  textHeightFraction: 0.1146
+  screenHorizontalPosition: 0.169
+  screenPosition: 0.599
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -6628,7 +6648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNtpRessMEDOntPREssme
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -6642,8 +6662,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.75
+  textHeightFraction: 0.0865
+  screenHorizontalPosition: 0.364
+  screenPosition: 0.066
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -7101,7 +7122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOnTPresSmeDoNtpREsSmeDONtpResSmeDontprEssmEdONTprEssMe
   secondsPerLine: 3
   loop: 1
   startDelay: 4
@@ -7115,8 +7136,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0667
-  screenPosition: 0.511
+  textHeightFraction: 0.1356
+  screenHorizontalPosition: 0.162
+  screenPosition: 0.408
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -7335,7 +7357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONTPReSSMedonTPRESSmedonTpREssmedOnTpressme
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -7349,8 +7371,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0498
-  screenPosition: 0.5
+  textHeightFraction: 0.1138
+  screenHorizontalPosition: 0.928
+  screenPosition: 0.804
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -7569,7 +7592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOntPREsSMedonTpResSMedOnTPREssMEDOnTPressmE
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -7583,8 +7606,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0467
-  screenPosition: 0.756
+  textHeightFraction: 0.0999
+  screenHorizontalPosition: 0.813
+  screenPosition: 0.152
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -7803,7 +7827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPrESsmE
   secondsPerLine: 3
   loop: 1
   startDelay: 12
@@ -7817,8 +7841,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0659
-  screenPosition: 0.68
+  textHeightFraction: 0.1443
+  screenHorizontalPosition: 0.457
+  screenPosition: 0.175
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -8037,7 +8062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - doNTpReSSME
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -8051,8 +8076,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0234
-  screenPosition: 0.672
+  textHeightFraction: 0.0486
+  screenHorizontalPosition: 0.172
+  screenPosition: 0.56
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -8271,7 +8297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - doNtprESSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -8285,8 +8311,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0577
-  screenPosition: 0.541
+  textHeightFraction: 0.1364
+  screenHorizontalPosition: 0.569
+  screenPosition: 0.269
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -8505,7 +8532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOnTPReSsME
   secondsPerLine: 3
   loop: 1
   startDelay: 11
@@ -8519,8 +8546,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0542
-  screenPosition: 0.818
+  textHeightFraction: 0.0825
+  screenHorizontalPosition: 0.18
+  screenPosition: 0.779
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -8739,7 +8767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DontpREsSmeDOnTPrESsMedOntPReSsMe
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -8753,8 +8781,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0498
-  screenPosition: 0.5
+  textHeightFraction: 0.0476
+  screenHorizontalPosition: 0.922
+  screenPosition: 0.772
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -9085,7 +9114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOnTpReSSmEdoNtprEsSmEDoNTPREsSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -9099,8 +9128,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.717
+  textHeightFraction: 0.0426
+  screenHorizontalPosition: 0.263
+  screenPosition: 0.678
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -9431,7 +9461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONtpreSsmE
   secondsPerLine: 3
   loop: 1
   startDelay: 12
@@ -9445,8 +9475,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.68
+  textHeightFraction: 0.0687
+  screenHorizontalPosition: 0.127
+  screenPosition: 0.136
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -9665,7 +9696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONtPrESsMEDoNTpResSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -9679,8 +9710,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0483
-  screenPosition: 0.793
+  textHeightFraction: 0.1085
+  screenHorizontalPosition: 0.454
+  screenPosition: 0.453
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -10011,7 +10043,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONtpREsSMedontprESsmedoNtPrESsMEDONTPReSsMe
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -10025,8 +10057,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0344
-  screenPosition: 0.84
+  textHeightFraction: 0.1014
+  screenHorizontalPosition: 0.924
+  screenPosition: 0.672
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -10245,7 +10278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONTPrEssMe
   secondsPerLine: 3
   loop: 1
   startDelay: 11
@@ -10259,8 +10292,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0542
-  screenPosition: 0.818
+  textHeightFraction: 0.0478
+  screenHorizontalPosition: 0.285
+  screenPosition: 0.311
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -10479,7 +10513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONTPrEssmedOnTpRESSmeDONtPRESSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 4
@@ -10493,8 +10527,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0526
-  screenPosition: 0.447
+  textHeightFraction: 0.0321
+  screenHorizontalPosition: 0.14
+  screenPosition: 0.092
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -10713,7 +10748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNtpRESsmedOnTpresSMEdonTprEssMEdonTpReSSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -10727,8 +10762,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0483
-  screenPosition: 0.425
+  textHeightFraction: 0.1107
+  screenHorizontalPosition: 0.7
+  screenPosition: 0.489
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -10947,7 +10983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DonTpReSsmEdoNTPRessmeDontprESSme
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -10961,8 +10997,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0194
-  screenPosition: 0.816
+  textHeightFraction: 0.0622
+  screenHorizontalPosition: 0.273
+  screenPosition: 0.606
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -11181,7 +11218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOntPREssme
   secondsPerLine: 3
   loop: 1
   startDelay: 10
@@ -11195,8 +11232,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0552
-  screenPosition: 0.84
+  textHeightFraction: 0.1385
+  screenHorizontalPosition: 0.427
+  screenPosition: 0.085
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -11639,7 +11677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - donTPreSsMeDOntPrESSmEdonTPRESSMeDONtpressME
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -11653,8 +11691,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0498
-  screenPosition: 0.5
+  textHeightFraction: 0.1364
+  screenHorizontalPosition: 0.218
+  screenPosition: 0.618
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -11873,7 +11912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DoNtpresSme
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -11887,8 +11926,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0741
-  screenPosition: 0.824
+  textHeightFraction: 0.0986
+  screenHorizontalPosition: 0.192
+  screenPosition: 0.158
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -12107,7 +12147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontpreSsME
   secondsPerLine: 3
   loop: 1
   startDelay: 10
@@ -12121,8 +12161,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0736
-  screenPosition: 0.576
+  textHeightFraction: 0.0334
+  screenHorizontalPosition: 0.525
+  screenPosition: 0.564
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -12454,7 +12495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPrEssMe
   secondsPerLine: 3
   loop: 1
   startDelay: 10
@@ -12468,8 +12509,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0552
-  screenPosition: 0.84
+  textHeightFraction: 0.0986
+  screenHorizontalPosition: 0.193
+  screenPosition: 0.484
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -12688,7 +12730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOnTpReSSmEDOnTpRessMe
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -12702,8 +12744,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0467
-  screenPosition: 0.756
+  textHeightFraction: 0.059
+  screenHorizontalPosition: 0.764
+  screenPosition: 0.24
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -12922,7 +12965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dontPRESSMedOntPRessMeDOnTpRESSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 12
@@ -12936,8 +12979,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.68
+  textHeightFraction: 0.0379
+  screenHorizontalPosition: 0.267
+  screenPosition: 0.634
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -13268,7 +13312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOnTpRESSmeDOnTprESSmedontpresSmeDOnTPRessmE
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -13282,8 +13326,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0344
-  screenPosition: 0.84
+  textHeightFraction: 0.0976
+  screenHorizontalPosition: 0.423
+  screenPosition: 0.772
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -13502,7 +13547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOntprEssmeDONTPresSme
   secondsPerLine: 3
   loop: 1
   startDelay: 9
@@ -13516,8 +13561,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.725
+  textHeightFraction: 0.0703
+  screenHorizontalPosition: 0.943
+  screenPosition: 0.552
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -13938,7 +13984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONtPreSSmEDonTprESSmEDOntpresSME
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -13952,8 +13998,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.599
+  textHeightFraction: 0.1225
+  screenHorizontalPosition: 0.208
+  screenPosition: 0.66
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -14262,7 +14309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DonTPrESSmEdONtpRESSmEdONtPResSmeDONTpRessMEdONtPREsSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -14276,8 +14323,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0687
-  screenPosition: 0.76
+  textHeightFraction: 0.0237
+  screenHorizontalPosition: 0.451
+  screenPosition: 0.027
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -14496,7 +14544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DonTpresSme
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -14510,8 +14558,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0455
-  screenPosition: 0.556
+  textHeightFraction: 0.1036
+  screenHorizontalPosition: 0.847
+  screenPosition: 0.292
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -14820,7 +14869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONTpRESsmeDontpResSMEdONtPrEsSmeDonTPReSSmE
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -14834,8 +14883,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0498
-  screenPosition: 0.5
+  textHeightFraction: 0.0989
+  screenHorizontalPosition: 0.83
+  screenPosition: 0.867
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -15369,7 +15419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DOnTPRessmEDONTPResSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 6
@@ -15383,8 +15433,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0194
-  screenPosition: 0.816
+  textHeightFraction: 0.1001
+  screenHorizontalPosition: 0.637
+  screenPosition: 0.619
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -15692,7 +15743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dONtprESSme
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -15706,8 +15757,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0741
-  screenPosition: 0.824
+  textHeightFraction: 0.0267
+  screenHorizontalPosition: 0.592
+  screenPosition: 0.228
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -16038,7 +16090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - donTPressmedONtpreSsmeDONtPReSSmEDoNTPressMe
   secondsPerLine: 3
   loop: 1
   startDelay: 5
@@ -16052,8 +16104,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.75
+  textHeightFraction: 0.0555
+  screenHorizontalPosition: 0.432
+  screenPosition: 0.726
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -16364,7 +16417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - dOntPrEssMedonTPreSsMedoNTprESsme
   secondsPerLine: 3
   loop: 1
   startDelay: 8
@@ -16378,8 +16431,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0301
-  screenPosition: 0.769
+  textHeightFraction: 0.1351
+  screenHorizontalPosition: 0.305
+  screenPosition: 0.698
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -16598,7 +16652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DONtPressMedOntPrEsSMeDONtPrESsmEDontPrEssMedoNtpResSMe
   secondsPerLine: 3
   loop: 1
   startDelay: 11
@@ -16612,8 +16666,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.0309
-  screenPosition: 0.607
+  textHeightFraction: 0.0837
+  screenHorizontalPosition: 0.713
+  screenPosition: 0.432
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
@@ -16832,7 +16887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
   lines:
-  - dontpressmedontpressmedontpressme
+  - DonTprEsSmedOntpREssMedoNTPrEsSME
   secondsPerLine: 3
   loop: 1
   startDelay: 7
@@ -16846,8 +16901,9 @@ MonoBehaviour:
   voiceVolume: 0.9
   lineClips: []
   spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.599
+  textHeightFraction: 0.1095
+  screenHorizontalPosition: 0.482
+  screenPosition: 0.519
   textColour: {r: 1, g: 1, b: 1, a: 1}
   hideText: 0
   onStartedTalking:
