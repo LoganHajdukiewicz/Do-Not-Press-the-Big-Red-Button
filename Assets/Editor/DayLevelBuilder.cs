@@ -23,6 +23,7 @@ namespace BigRedButton.Editor
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
         private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
         private const string CorporateMusicPath = "Assets/Audio/Corporate Background Music.mp3";
+        private const string HappyMusicPath = "Assets/Audio/Happy Ending Music.mp3";
         private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
@@ -670,6 +671,11 @@ namespace BigRedButton.Editor
             SetPrivate(ending, "flashDuration", 0.12f);
             SetPrivate(ending, "gunshot", AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
 
+            // The music stops dead on the shot, so the silence lands with it.
+            var music = level.GetComponent<BackgroundMusic>();
+            if (music != null)
+                UnityEventTools.AddPersistentListener(ending.OnGunshot, music.StopImmediately);
+
             // No red button to fail and no green button to complete. Walking into the
             // doorway starts the ending itself, so nothing else needs wiring here.
             SetPrivate(level, "delayBeforeNextDay", 0f);
@@ -1025,7 +1031,12 @@ namespace BigRedButton.Editor
             SetPrivate(music, "volume", 0.32f);
             if (day >= EndingDay)
             {
-                SetPrivate(music, "music", null);
+                // The ending gets its own, happier track, which cross-fades in over
+                // the corporate one as the player steps outside.
+                SetPrivate(music, "music",
+                    AssetDatabase.LoadAssetAtPath<AudioClip>(HappyMusicPath));
+                SetPrivate(music, "volume", 0.42f);
+                SetPrivate(music, "fadeInDuration", 2f);
                 SetPrivate(music, "crossFadeDuration", 2f);
                 return;
             }

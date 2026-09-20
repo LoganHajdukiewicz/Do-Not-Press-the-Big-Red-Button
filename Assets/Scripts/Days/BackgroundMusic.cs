@@ -46,7 +46,23 @@ namespace BigRedButton
         /// <summary>The persistent carrier this day's component delegates to.</summary>
         private BackgroundMusic player;
 
-        private BackgroundMusic Voice => player != null ? player : this;
+        /// <summary>
+        /// Whichever instance actually owns the AudioSource. A day component that
+        /// created the carrier points at it; one that handed over to an already-running
+        /// carrier finds it through Active. Without this, a day's own Stop/SetVolume
+        /// would silently do nothing, because its source is null.
+        /// </summary>
+        private BackgroundMusic Voice
+        {
+            get
+            {
+                if (player != null)
+                    return player;
+                if (handedOver && Active != null)
+                    return Active;
+                return this;
+            }
+        }
         public AudioClip CurrentClip => Voice.source == null ? null : Voice.source.clip;
         public bool IsPlaying => Voice.source != null && Voice.source.isPlaying;
         public float CurrentVolume => Voice.source == null ? 0f : Voice.source.volume;
@@ -161,9 +177,10 @@ namespace BigRedButton
 
         public void Play()
         {
-            if (player != null)
+            BackgroundMusic voice = Voice;
+            if (voice != this)
             {
-                player.Play();
+                voice.Play();
                 return;
             }
 
@@ -180,9 +197,10 @@ namespace BigRedButton
         /// <summary>Fades the music out and stops it, for the ending or a menu return.</summary>
         public void Stop()
         {
-            if (player != null)
+            BackgroundMusic voice = Voice;
+            if (voice != this)
             {
-                player.Stop();
+                voice.Stop();
                 return;
             }
 
@@ -192,11 +210,13 @@ namespace BigRedButton
             fade = StartCoroutine(FadeOutAndStop());
         }
 
+        /// <summary>Cuts the music dead, with no fade. Day 31 calls this on the gunshot.</summary>
         public void StopImmediately()
         {
-            if (player != null)
+            BackgroundMusic voice = Voice;
+            if (voice != this)
             {
-                player.StopImmediately();
+                voice.StopImmediately();
                 return;
             }
 
@@ -223,9 +243,10 @@ namespace BigRedButton
         public void SetVolume(float value)
         {
             volume = Mathf.Clamp01(value);
-            if (player != null)
+            BackgroundMusic voice = Voice;
+            if (voice != this)
             {
-                player.SetVolume(volume);
+                voice.SetVolume(volume);
                 return;
             }
 

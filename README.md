@@ -26,7 +26,7 @@ Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)** to regener
 
 Add more days with **Tools > Big Red Button > Create Next Day Scene**, then connect the green button's `On Pressed` to `DayLevel.CompleteDay`.
 
-The corporate background music loops across Days 1-30 without restarting between days. Day 31 stays quiet until its own happier track is added.
+The corporate background music loops across Days 1-30 without restarting between days. Day 31 plays its own happier track, which cuts out the instant the gunshot fires.
 
 Every ceiling carries LED office panels. Use **Tools > Big Red Button > Add LED Office Lights To Every Level** to fit or refit them all in place, without regenerating any day.
 

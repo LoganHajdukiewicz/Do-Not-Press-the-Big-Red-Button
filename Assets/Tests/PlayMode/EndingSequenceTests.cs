@@ -193,6 +193,34 @@ namespace BigRedButton.Tests
             Assert.That(controls.enabled, Is.True);
         }
 
+        [UnityTest]
+        public IEnumerator GunshotCutsTheMusicDead()
+        {
+            // Day 31 wires On Gunshot to BackgroundMusic.StopImmediately, so the
+            // silence lands with the shot rather than fading afterwards.
+            BackgroundMusic.ClearPersistent();
+            var host = new GameObject("Day");
+            objects.Add(host);
+            var track = host.AddComponent<BackgroundMusic>();
+            AudioClip happy = AudioClip.Create("Happy", 44100, 1, 44100, false);
+            Set(track, "music", happy);
+            Set(track, "fadeInDuration", 0f);
+            yield return null;
+
+            Assert.That(track.IsPlaying, Is.True, "The ending's music is playing.");
+
+            EndingSequence ending = BuildEnding();
+            ending.OnGunshot.AddListener(track.StopImmediately);
+            ending.Begin();
+            Advance(ending, 5f); // Reaches the gunshot.
+
+            Assert.That(ending.HasFiredGunshot, Is.True);
+            Assert.That(track.IsPlaying, Is.False,
+                "The music must stop on the shot, not keep playing under the card.");
+            BackgroundMusic.ClearPersistent();
+            Object.DestroyImmediate(happy);
+        }
+
         [Test]
         public void CardNamesTheWorker()
         {
