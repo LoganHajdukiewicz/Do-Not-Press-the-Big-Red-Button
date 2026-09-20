@@ -221,7 +221,9 @@ namespace BigRedButton
 
         private void DrawFolders(float alpha)
         {
-            float width = Mathf.Min(Screen.width * stackWidthFraction, 1040f);
+            // Deliberately uncapped: the Inspector fraction should use all available
+            // screen width on ultrawide displays instead of stopping at a fixed pixel size.
+            float width = Screen.width * stackWidthFraction;
             float left = (Screen.width - width) * 0.5f;
             float band = Screen.height * bandHeightFraction;
             float top = Screen.height * stackTopFraction;
