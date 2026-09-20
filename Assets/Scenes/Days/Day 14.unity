@@ -27543,6 +27543,44 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500750337}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &501400115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037452721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines:
+  - AHHHH!!!!!
+  secondsPerLine: 2
+  loop: 0
+  startDelay: 10
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.16
+  screenHorizontalPosition: 0.5
+  screenPosition: 0.205
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &502033655
 GameObject:
   m_ObjectHideFlags: 0
@@ -54587,8 +54625,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 501400115}
   - component: {fileID: 1037452722}
+  - component: {fileID: 501400115}
   - component: {fileID: 1037452728}
   - component: {fileID: 1037452727}
   - component: {fileID: 1037452726}
@@ -76795,6 +76833,242 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443183458}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1444338956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444338957}
+  - component: {fileID: 1444338964}
+  - component: {fileID: 1444338963}
+  - component: {fileID: 1444338962}
+  - component: {fileID: 1444338961}
+  - component: {fileID: 1444338960}
+  - component: {fileID: 1444338959}
+  - component: {fileID: 1444338958}
+  m_Layer: 0
+  m_Name: Green Button (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1444338957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.227, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.11, z: 0.7}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1590575804}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1444338958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9cdfeb6055f4abd93580b0e7f45e4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonSound
+  pressClip: {fileID: 8300000, guid: 9814df6f2c5d4f7480f3b20a8885e3a7, type: 3}
+  pressVolume: 0.9
+  greenClip: {fileID: 8300000, guid: e9408f8e13eb44f383a73c10de0595bd, type: 3}
+  greenVolume: 1
+  greenDelay: 0.06
+  dingOnlyWhenGreen: 1
+  redClip: {fileID: 0}
+  redVolume: 0.9
+  redDelay: 0.06
+  spatialBlend: 0.85
+  minDistance: 2
+  maxDistance: 25
+--- !u!114 &1444338959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1302ca6d42d4e179a4d6ac7cbdb9bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonAppearance
+  redColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
+  greenColour: {r: 0.09, g: 0.55, b: 0.16, a: 1}
+  disabledColour: {r: 0.42, g: 0.43, b: 0.44, a: 1}
+  greenness: 1
+  startDisabled: 0
+  targetRenderer: {fileID: 0}
+  additionalRenderers: []
+  emissionStrength: 0
+--- !u!114 &1444338960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd203799be8a46a288bac477f08f8b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonInteractable
+  prompt: Press the green button
+  interactable: 1
+  oneShot: 1
+  pressOnContact: 1
+  cooldown: 0.25
+  requiredPresses: 1
+  showPressedIndicator: 0
+  pressedIndicator: {fileID: 0}
+  onPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 427389570}
+        m_TargetAssemblyTypeName: BigRedButton.DayLevel, BigRedButton.Runtime
+        m_MethodName: CompleteDay
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!23 &1444338961
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 358126d3af8e4874fbb3a75bca0d8a42, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1444338962
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1444338963
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1444338964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444338956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines:
+  - 'You almost hit a red button there buddy. '
+  - 'Wouldn''t want you to slip '
+  secondsPerLine: 2
+  loop: 0
+  startDelay: 12
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenHorizontalPosition: 0.5
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1451163759
 GameObject:
   m_ObjectHideFlags: 0
@@ -84882,6 +85156,7 @@ Transform:
   m_Children:
   - {fileID: 1324452788}
   - {fileID: 1037452722}
+  - {fileID: 1444338957}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591235170
@@ -118885,39 +119160,3 @@ SceneRoots:
   - {fileID: 357668198}
   - {fileID: 1312911019}
   - {fileID: 1590575804}
---- !u!114 &501400115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1037452721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
-  lines: []
-  secondsPerLine: 3
-  loop: 0
-  startDelay: 0
-  advanceOnPress: 0
-  speaksWhen: 2
-  triggerDistance: 5
-  aimTolerance: 0.9
-  canRetrigger: 0
-  silenceOnPress: 1
-  voice: {fileID: 0}
-  voiceVolume: 0.9
-  lineClips: []
-  spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.74
-  textColour: {r: 1, g: 1, b: 1, a: 1}
-  hideText: 0
-  onStartedTalking:
-    m_PersistentCalls:
-      m_Calls: []
-  onFinishedTalking:
-    m_PersistentCalls:
-      m_Calls: []
