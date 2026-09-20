@@ -17,12 +17,12 @@ namespace BigRedButton.Tests
                 Is.EqualTo(Enumerable.Range(6, 26).ToArray()));
         }
 
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        public void FinishedDayIsNeverInTheRebuildPlan(int day)
+        [TestCase("1")]
+        [TestCase("2")]
+        [TestCase("3")]
+        [TestCase("4")]
+        [TestCase("5")]
+        public void FinishedDayIsNeverInTheRebuildPlan(string day)
         {
             Assert.That(DayLevelBuilder.RebuildDayNumbers(), Does.Not.Contain(day));
         }
