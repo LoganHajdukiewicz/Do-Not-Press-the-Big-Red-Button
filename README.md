@@ -1,4 +1,16 @@
-# Do Not Press the Big Red Button
+# Employee of the Month
+
+A first-person game for the Sisyphusian Company Co. You have one job: **do not press the big red button.**
+
+## Start menu
+
+The game opens on `Assets/Scenes/Start Menu.unity`, which is scene 0 in build settings, so both a build and the Editor's Play button begin there.
+
+- **START** loads `Day 1`, which plays the `Opening.mp3` black-screen cinematic and then fades into the first room.
+- **TEAM PLAYER MODE** sends you back to Day 1 whenever you touch or press a red button, instead of just repeating the day. Off by default.
+- **QUIT** leaves the game.
+
+While building a single level, use **Tools > Big Red Button > Play From The Open Scene Instead** so Play tests the open scene; run **Make Start Menu The First Scene** to switch back.
 
 ## First-person controller
 
@@ -8,9 +20,9 @@ In Unity, choose **Tools > Big Red Button > Create Controller Test Scene**, save
 
 ## Day system
 
-Each day is a level in its own scene (`Day 1`, `Day 2`, ...). A day shows **DAY N** in large letters, fades it out, and loads the next day when the green button is pressed. The red button repeats the day.
+Each day is a level in its own scene (`Day 1`, `Day 2`, ...). A day shows **DAY N** in large letters, fades it out, and loads the next day when the green button is pressed. The red button repeats the day, or returns you to Day 1 in Team Player Mode.
 
-Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)** to regenerate Days 6–31 and the mechanics sandbox in `TestScene`. **Days 1–5 are finished and are never regenerated.** Existing shared materials are also preserved. If a protected scene is missing, restore it from Git or a backup; rebuilding will not replace it. Every day remains an ordinary editable scene. Press **Play** from `Day 1`: the game opens on a black screen with `Opening.mp3`, the warning text appears as it is spoken, then the room fades in.
+Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)** to regenerate Days 6–31 and the mechanics sandbox in `TestScene`. **Days 1–5 are finished and are never regenerated.** Existing shared materials are also preserved. If a protected scene is missing, restore it from Git or a backup; rebuilding will not replace it. Every day remains an ordinary editable scene. Press **Play** from the start menu and choose START: the game opens on a black screen with `Opening.mp3`, the warning text appears as it is spoken, then the room fades in.
 
 Add more days with **Tools > Big Red Button > Create Next Day Scene**, then connect the green button's `On Pressed` to `DayLevel.CompleteDay`.
 

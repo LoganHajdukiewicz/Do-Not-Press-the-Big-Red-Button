@@ -210,11 +210,49 @@ public sealed class DoorInteractable : BigRedButton.Interactable
 }
 ```
 
+## Start menu
+
+`Assets/Scenes/Start Menu.unity` is the front page and **scene 0 in build settings**, so a build and the Editor's Play button both begin there. It shows the game's name, **EMPLOYEE OF THE MONTH**, over a plain dark page with the company's name beneath it.
+
+- **START** loads `Day 1`, which plays the `Opening.mp3` black-screen narration itself, then fades into the room and the `DAY 1` title. Enter, Space or the gamepad's south button also start it.
+- **TEAM PLAYER MODE** is the switch under START. With it on, **touching or pressing a red button sends you back to Day 1** instead of repeating the day you were on. Off by default, which keeps the original behaviour of repeating the current day.
+- **QUIT** exits the build, or leaves play mode in the Editor.
+
+START always begins a new month at day one, so returning to the menu never resumes a half-finished run. The menu releases the gameplay cursor lock, so the pointer is usable.
+
+### Editing the menu
+
+Select the **Start Menu** object:
+
+- **Game Title / Subtitle** and their height fractions and colours. The title scales with screen height, so it stays prominent on a phone and a monitor. Text is plain and centred, like the day titles.
+- **Start Label / Quit Label / Team Player Label / Team Player Note:** the wording, including the one-line explanation under the switch.
+- **Start At Day:** which day START loads. Leave it at 1 so the opening plays.
+- **Team Player Mode By Default:** the switch's state when the menu opens.
+- **Fade In Duration** and **Keyboard And Gamepad Can Start**.
+- **On Start Pressed:** an event for a click sound or an animation.
+
+### Menu commands
+
+- **Tools > Big Red Button > Build Start Menu** regenerates the scene and puts it first in build settings.
+- **Make Start Menu The First Scene** re-registers it as scene 0 and as the Play Mode start scene, without touching the scene itself.
+- **Play From The Open Scene Instead** clears the Play Mode start scene, so pressing Play tests whichever day you have open. Builds still start at the menu. Use this while building a single level, then switch back.
+
+Refreshing the day scene list and rebuilding Days 6-31 both keep the menu at index 0.
+
+### Team Player Mode in code
+
+`GameSettings.TeamPlayerMode` holds the switch for the session, next to `DayFlow`'s day progress; neither is written to disk. `GameSettings.DayAfterFailure(currentDay)` returns the day a failure sends the player to, and `DayLevel.FailDay()` uses it. `TeamPlayerModeChanged` is raised when the value actually changes, for a HUD or a sound.
+
+The mode only changes **failure**. Completing a day still advances by one, and green buttons are unaffected. It applies to any route into `FailDay()`, including red buttons resolved by colour and red buttons pressed by physical contact.
+
 ## Day system (levels)
 
 Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows **DAY N** in large letters, fades it out, and loads the next day when the day is completed.
 
 ### Build the month (30 button days plus the Day 31 ending)
+
+The game starts at the **start menu**, not at a day. See [Start menu](#start-menu).
+
 
 Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)**. It regenerates `Assets/Scenes/Days/Day 6.unity` through `Day 31.unity` and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. **Days 1–5 are protected:** their scene files are never regenerated. All 31 days remain registered in build settings in numeric order. Press **Play** from `Day 1` and each day leads to the next.
 
@@ -360,6 +398,7 @@ To extend past day 30, use **Create Next Day Scene**, which copies the last day 
 - **Day Number:** which day the scene is. It sets the on-screen number and which day loads next.
 - **Delay Before Next Day:** seconds after the outcome before the next day loads; default 1.
 - **On Day Started / On Day Completed / On Day Failed:** hooks for audio, dialogue, or animation.
+- **Delay Before Next Day** also applies to a failure, including the trip back to Day 1 in Team Player Mode.
 - **On Final Day Completed:** raised instead of loading when no later day scene exists. Use it for the ending.
 
 ### Opening sequence
@@ -409,6 +448,10 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
+`BigRedButton.Tests.StartMenuTests` covers the title text, START loading Day 1 so the opening plays, always restarting the month, starting only once, staying usable when day scenes are missing, the Team Player switch, and the cursor unlock.
+
+`BigRedButton.Tests.TeamPlayerModeTests` covers the mode being off by default, a red press on a deep day returning to Day 1, the same press only repeating the day with the mode off, completion being unaffected, physical red-button contact also restarting the month, and one outcome per day.
+
 `BigRedButton.Tests.CeilingLightTests` covers panels hanging below the ceiling and inside the room, the absence of colliders on every fitting, the real-light cap, safe rebuilding, and the cool-white glow.
 
 `BigRedButton.Tests.EndingSequenceTests` covers the exploration window before the shot, a single gunshot/white flash/black sequence, the outside trigger, no timer restart, pause handling, freezing at the shot, restoring controls, zero-duration settings and the Employee of the Month card.
@@ -444,6 +487,7 @@ Manual Play Mode checklist:
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
+- The game opens on the start menu. START plays the Day 1 opening. With Team Player Mode on, a red button on any day returns you to Day 1; with it off, the day repeats.
 - On Day 31, explore the outside patch for ten seconds, then hear one gunshot with a white flash, followed by black and Employee of the Month. Controls freeze at the shot.
 - Every room has lit LED panels overhead. Walking and pressing E under a panel is unaffected by it.
 - On Day 15, both **W** and the **Up arrow** delete the floor and drop you onto the big red button.

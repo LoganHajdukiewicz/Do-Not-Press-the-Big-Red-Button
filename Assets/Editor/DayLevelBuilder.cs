@@ -80,10 +80,12 @@ namespace BigRedButton.Editor
             BuildTestScene(actions);
             AssetDatabase.SaveAssets();
             DaySetup.RefreshDayScenes();
-            EditorSceneManager.OpenScene($"{DayFolder}/Day 1.unity", OpenSceneMode.Single);
+            // The front page keeps its place at the top of the build order.
+            StartMenuSetup.MakeFirstInBuildSettings();
+            EditorSceneManager.OpenScene(StartMenuSetup.ScenePath, OpenSceneMode.Single);
             Debug.Log($"Rebuilt {builtCount} scenes (Days 6-31) and Assets/Scenes/TestScene.unity. " +
-                "Days 1-5 and existing shared materials were preserved. " +
-                "All 31 days remain registered in build settings. Press Play from Day 1. " +
+                "Days 1-5, the start menu and existing shared materials were preserved. " +
+                "Press Play from \"Start Menu\": START runs the Day 1 opening. " +
                 "Future rebuilds overwrite only Days 6-31 and TestScene.");
         }
 

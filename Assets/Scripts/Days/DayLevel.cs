@@ -80,7 +80,12 @@ namespace BigRedButton
 
             if (!wasAdvancing)
             {
-                DayFlow.ReloadCurrentDay();
+                // Team Player Mode sends a failed day back to the very first day.
+                int retryDay = GameSettings.DayAfterFailure(DayNumber);
+                if (retryDay == DayNumber)
+                    DayFlow.ReloadCurrentDay();
+                else
+                    DayFlow.LoadDay(retryDay);
                 return;
             }
 

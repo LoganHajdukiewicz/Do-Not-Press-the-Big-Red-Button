@@ -31,7 +31,17 @@ namespace BigRedButton.Editor
                 .Where(s => !DayPattern.IsMatch(Path.GetFileNameWithoutExtension(s.path)))
                 .ToList();
             var ordered = days.Select(d => new EditorBuildSettingsScene(d.path, true)).ToList();
-            EditorBuildSettings.scenes = kept.Concat(ordered).ToArray();
+
+            // The start menu must stay scene 0, or the game would boot into a day.
+            EditorBuildSettingsScene menu = kept.FirstOrDefault(s => s.path == StartMenuSetup.ScenePath);
+            if (menu != null)
+                kept.Remove(menu);
+            var all = new List<EditorBuildSettingsScene>();
+            if (menu != null)
+                all.Add(menu);
+            all.AddRange(kept);
+            all.AddRange(ordered);
+            EditorBuildSettings.scenes = all.ToArray();
 
             string missing = string.Join(", ", Enumerable.Range(DayFlow.FirstDay, days[^1].day)
                 .Where(day => days.All(d => d.day != day)).Select(day => "Day " + day));
