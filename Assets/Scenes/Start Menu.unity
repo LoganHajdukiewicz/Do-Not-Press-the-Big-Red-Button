@@ -281,7 +281,7 @@ MonoBehaviour:
   startLabel: START
   quitLabel: QUIT
   teamPlayerLabel: TEAM PLAYER MODE
-  teamPlayerNote: Touching a red button returns you to Day 1.
+  teamPlayerNote: 
   startAtDay: 1
   teamPlayerModeByDefault: 0
   fadeInDuration: 1.4
