@@ -361,7 +361,9 @@ Keep the imported texture dependencies installed locally; do not publish the ven
 
 Every day scene's **Day** object carries a `BackgroundMusic` component. Days 1-30 hold `Assets/Audio/Corporate Background Music.mp3`. Day 31 holds `Assets/Audio/Happy Ending Music.mp3`, which cross-fades in over the corporate track as the player steps outside, then **stops dead on the gunshot**: Day 31's `On Gunshot` event calls `BackgroundMusic.StopImmediately`, so the silence lands with the shot rather than fading afterwards.
 
-The track **loops, and does not restart between days**. The first day creates a separate `Background Music` object, marks that object `DontDestroyOnLoad`, and plays through it. Every later day hands its settings to the running player and then does nothing further.
+The track **breathes rather than droning**. Each pass fades up from silence, holds, fades back down to silence, then waits before the next one, so the room is quiet about as often as it is scored. Unity's own loop flag is deliberately left off: it restarts at full volume and would cut a fade off mid-breath, so the passes are driven by a coroutine instead. The hold length subtracts both fades, so the fade-out always finishes before the clip ends.
+
+The track also **does not restart between days**. The first day creates a separate `Background Music` object, marks that object `DontDestroyOnLoad`, and plays through it. Every later day hands its settings to the running player and then does nothing further.
 
 The component must **never** persist or destroy its own GameObject: it shares the **Day** object with `DayLevel`, `DayTitle`, `TimedReveal` and `OpeningSequence`. An earlier version did exactly that, which carried a stale `DayLevel` into the next day and deleted later days' logic, so buttons stopped resolving and Day 3's green button never appeared. `DayRegressionTests` now guards this.
 
@@ -371,9 +373,10 @@ The component must **never** persist or destroy its own GameObject: it shares th
 
 Inspector settings on **Day > Background Music**:
 
-- **Music / Volume / Loop:** the clip, its settled volume (default 0.32, low enough that button clicks stay audible), and whether it repeats.
+- **Music / Volume / Loop:** the clip, its volume at the top of a pass (default 0.32, low enough that button clicks stay audible), and whether it repeats.
 - **Start Delay:** Day 1 uses **20 seconds** so the music does not talk over the opening narration. Later days use 0.
-- **Fade In Duration / Cross Fade Duration:** the initial ramp, and the fade used when swapping or stopping a track.
+- **Fade In Duration / Fade Out Duration / Silence Between Loops:** the shape of one pass. Working days use 4s up, 5s down and 4s of silence; the ending uses 2s, 3s and 1.5s.
+- **Cross Fade Duration:** the fade used when swapping tracks or stopping one.
 - **Continue Across Days:** uncheck for music that belongs to a single scene, which then never claims the shared player.
 - **Ignore Pause / Play On Start.**
 

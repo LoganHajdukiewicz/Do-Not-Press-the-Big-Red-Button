@@ -205,6 +205,9 @@ namespace BigRedButton.Tests
             AudioClip happy = AudioClip.Create("Happy", 44100, 1, 44100, false);
             Set(track, "music", happy);
             Set(track, "fadeInDuration", 0f);
+            // Keep the pass continuous, so the stop is what silences it, not a fade.
+            Set(track, "fadeOutDuration", 0f);
+            Set(track, "silenceBetweenLoops", 0f);
             yield return null;
 
             Assert.That(track.IsPlaying, Is.True, "The ending's music is playing.");

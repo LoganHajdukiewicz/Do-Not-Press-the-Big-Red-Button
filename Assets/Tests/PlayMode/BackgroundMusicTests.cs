@@ -40,6 +40,10 @@ namespace BigRedButton.Tests
             Set(music, "fadeInDuration", fade);
             Set(music, "crossFadeDuration", fade);
             Set(music, "startDelay", delay);
+            // Long pass, no silence: these tests are about persistence across days,
+            // not the fade rhythm, so keep playback continuous and predictable.
+            Set(music, "fadeOutDuration", 0f);
+            Set(music, "silenceBetweenLoops", 0f);
             return music;
         }
 
@@ -61,6 +65,78 @@ namespace BigRedButton.Tests
         }
 
         [UnityTest]
+        public IEnumerator EachPassRisesFromSilenceAndSinksBackIntoIt()
+        {
+            // A short clip with quick fades, so a whole pass fits in a test.
+            AudioClip corporate = Track(AudioClip.Create("Short", 44100, 1, 44100, false));
+            var host = new GameObject("Day");
+            objects.Add(host);
+            var music = host.AddComponent<BackgroundMusic>();
+            Set(music, "music", corporate);
+            Set(music, "loop", true);
+            Set(music, "fadeInDuration", 0.2f);
+            Set(music, "fadeOutDuration", 0.2f);
+            Set(music, "silenceBetweenLoops", 0.3f);
+            yield return null;
+
+            AudioSource source = BackgroundMusic.Active.GetComponent<AudioSource>();
+            Assert.That(source.loop, Is.False,
+                "Unity's own loop flag would restart at full volume; passes are driven manually.");
+
+            // Starts from silence, not at full volume.
+            Assert.That(source.volume, Is.LessThan(0.1f), "A pass begins silent.");
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.That(source.volume, Is.EqualTo(music.TargetVolume).Within(0.02f),
+                "It reaches full volume after fading in.");
+
+            // Then sinks back to silence at the end of the pass.
+            yield return new WaitForSecondsRealtime(0.85f);
+            Assert.That(source.volume, Is.LessThan(0.1f),
+                "The pass fades back down to silence rather than cutting off.");
+        }
+
+        [UnityTest]
+        public IEnumerator ThePassRepeatsAfterItsSilence()
+        {
+            AudioClip corporate = Track(AudioClip.Create("Short", 44100, 1, 44100, false));
+            var host = new GameObject("Day");
+            objects.Add(host);
+            var music = host.AddComponent<BackgroundMusic>();
+            Set(music, "music", corporate);
+            Set(music, "loop", true);
+            Set(music, "fadeInDuration", 0.1f);
+            Set(music, "fadeOutDuration", 0.1f);
+            Set(music, "silenceBetweenLoops", 0.2f);
+            yield return null;
+
+            BackgroundMusic player = BackgroundMusic.Active;
+            Assert.That(player.LoopsPlayed, Is.EqualTo(1), "The first pass has begun.");
+            yield return new WaitForSecondsRealtime(1.6f);
+            Assert.That(player.LoopsPlayed, Is.GreaterThan(1),
+                "After the silence, the track comes back rather than stopping for good.");
+        }
+
+        [UnityTest]
+        public IEnumerator ASinglePassStaysUpWhenLoopingIsOff()
+        {
+            AudioClip jingle = Clip("Once");
+            var host = new GameObject("Day");
+            objects.Add(host);
+            var music = host.AddComponent<BackgroundMusic>();
+            Set(music, "music", jingle);
+            Set(music, "loop", false);
+            Set(music, "fadeInDuration", 0.1f);
+            yield return null;
+
+            yield return new WaitForSecondsRealtime(0.25f);
+            AudioSource source = BackgroundMusic.Active.GetComponent<AudioSource>();
+            Assert.That(source.volume, Is.EqualTo(music.TargetVolume).Within(0.02f),
+                "With looping off it fades up once and holds, as before.");
+            Assert.That(BackgroundMusic.Active.LoopsPlayed, Is.Zero,
+                "No pass counting when it is not looping.");
+        }
+
+        [UnityTest]
         public IEnumerator MusicStartsAndLoops()
         {
             AudioClip corporate = Clip("Corporate");
@@ -70,7 +146,11 @@ namespace BigRedButton.Tests
             Assert.That(BackgroundMusic.Active, Is.Not.Null, "The first day owns the music.");
             AudioSource source = BackgroundMusic.Active.GetComponent<AudioSource>();
             Assert.That(source.clip, Is.SameAs(corporate));
-            Assert.That(source.loop, Is.True, "The corporate track loops.");
+            Assert.That(source.loop, Is.False,
+                "Looping is driven by the pass coroutine, not Unity's loop flag, so each " +
+                "pass can fade up from silence and back down again.");
+            Assert.That(BackgroundMusic.Active.LoopsPlayed, Is.GreaterThanOrEqualTo(1),
+                "The first pass has started.");
             Assert.That(source.spatialBlend, Is.Zero, "Music is not positional.");
             Assert.That(day1, Is.Not.Null);
         }
@@ -86,7 +166,8 @@ namespace BigRedButton.Tests
             AudioSource source = persistent.GetComponent<AudioSource>();
 
             // Let the track get somewhere, then a new day arrives with the same clip.
-            source.time = 7f;
+            // Stays inside the 2 second test clip, so the position is valid.
+            source.time = 1f;
             float before = source.time;
             BackgroundMusic day2 = NewDay(corporate);
             yield return null;
@@ -110,7 +191,7 @@ namespace BigRedButton.Tests
             NewDay(corporate);
             yield return null;
             BackgroundMusic persistent = BackgroundMusic.Active;
-            persistent.GetComponent<AudioSource>().time = 3f;
+            persistent.GetComponent<AudioSource>().time = 0.5f;
 
             for (int day = 2; day <= 30; day++)
             {
@@ -122,7 +203,7 @@ namespace BigRedButton.Tests
             Assert.That(Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None).Length,
                 Is.EqualTo(1), "Thirty days must not stack thirty audio sources.");
             Assert.That(persistent.GetComponent<AudioSource>().time,
-                Is.GreaterThanOrEqualTo(3f), "The same playback position carried through.");
+                Is.GreaterThanOrEqualTo(0.5f), "The same playback position carried through.");
         }
 
         [UnityTest]
@@ -182,7 +263,7 @@ namespace BigRedButton.Tests
             AudioClip corporate = Clip("Corporate");
             NewDay(corporate);
             yield return null;
-            BackgroundMusic.Active.GetComponent<AudioSource>().time = 9f;
+            BackgroundMusic.Active.GetComponent<AudioSource>().time = 1f;
 
             // The start menu clears the player, so a new month begins from the top.
             BackgroundMusic.ClearPersistent();

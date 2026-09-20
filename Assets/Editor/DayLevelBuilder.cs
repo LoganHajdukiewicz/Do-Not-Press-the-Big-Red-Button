@@ -1029,6 +1029,12 @@ namespace BigRedButton.Editor
             var music = dayHost.AddComponent<BackgroundMusic>();
             SetPrivate(music, "continueAcrossDays", true);
             SetPrivate(music, "volume", 0.32f);
+            // Each pass rises out of silence and sinks back into it, so the room is
+            // quiet as often as it is scored.
+            SetPrivate(music, "loop", true);
+            SetPrivate(music, "fadeInDuration", 4f);
+            SetPrivate(music, "fadeOutDuration", 5f);
+            SetPrivate(music, "silenceBetweenLoops", 4f);
             if (day >= EndingDay)
             {
                 // The ending gets its own, happier track, which cross-fades in over
@@ -1037,6 +1043,8 @@ namespace BigRedButton.Editor
                     AssetDatabase.LoadAssetAtPath<AudioClip>(HappyMusicPath));
                 SetPrivate(music, "volume", 0.42f);
                 SetPrivate(music, "fadeInDuration", 2f);
+                SetPrivate(music, "fadeOutDuration", 3f);
+                SetPrivate(music, "silenceBetweenLoops", 1.5f);
                 SetPrivate(music, "crossFadeDuration", 2f);
                 return;
             }

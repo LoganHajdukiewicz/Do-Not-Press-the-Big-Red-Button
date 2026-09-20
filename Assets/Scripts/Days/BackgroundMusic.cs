@@ -23,8 +23,12 @@ namespace BigRedButton
         [Header("Timing")]
         [Tooltip("Seconds before the music starts. Day 1 waits for the opening narration.")]
         [SerializeField, Min(0f)] private float startDelay;
-        [Tooltip("Seconds to fade up when the music first starts.")]
+        [Tooltip("Seconds to fade up from silence at the start of every pass.")]
         [SerializeField, Min(0f)] private float fadeInDuration = 2.5f;
+        [Tooltip("Seconds to fade back down to silence at the end of every pass.")]
+        [SerializeField, Min(0f)] private float fadeOutDuration = 3f;
+        [Tooltip("Seconds of silence between passes, once the track has faded out.")]
+        [SerializeField, Min(0f)] private float silenceBetweenLoops = 1.5f;
         [Tooltip("Seconds to cross-fade when a later day supplies a different clip.")]
         [SerializeField, Min(0f)] private float crossFadeDuration = 1.5f;
 
@@ -67,6 +71,8 @@ namespace BigRedButton
         public bool IsPlaying => Voice.source != null && Voice.source.isPlaying;
         public float CurrentVolume => Voice.source == null ? 0f : Voice.source.volume;
         public float TargetVolume => volume;
+        /// <summary>How many times a pass has begun, so looping can be observed.</summary>
+        public int LoopsPlayed { get; private set; }
         /// <summary>Seconds into the track, so a continued day can be told apart from a restart.</summary>
         public float PlaybackTime => Voice.source == null ? 0f : Voice.source.time;
 
@@ -106,6 +112,8 @@ namespace BigRedButton
             player.loop = loop;
             player.startDelay = startDelay;
             player.fadeInDuration = fadeInDuration;
+            player.fadeOutDuration = fadeOutDuration;
+            player.silenceBetweenLoops = silenceBetweenLoops;
             player.crossFadeDuration = crossFadeDuration;
             player.ignorePause = ignorePause;
             player.playOnStart = false; // Started from Start(), after configuration.
@@ -160,14 +168,17 @@ namespace BigRedButton
 
             if (request.music == source.clip)
             {
-                // Same track: do not restart, do not even reset the volume ramp.
-                if (!source.isPlaying && request.playOnStart)
+                // Same track: leave it completely alone. It may be mid-fade or in the
+                // silence between passes, and restarting would break the rhythm.
+                if (fade == null && !source.isPlaying && request.playOnStart)
                     Play();
                 return;
             }
 
             crossFadeDuration = request.crossFadeDuration;
             fadeInDuration = request.fadeInDuration;
+            fadeOutDuration = request.fadeOutDuration;
+            silenceBetweenLoops = request.silenceBetweenLoops;
             startDelay = 0f; // The hand-over already happened mid-game.
             music = request.music;
             loop = request.loop;
@@ -262,19 +273,54 @@ namespace BigRedButton
             fade = null;
         }
 
+        /// <summary>
+        /// Plays the track in passes. Each pass fades up from silence, holds, fades
+        /// back down to silence, then waits before the next one. Unity's own loop flag
+        /// would restart at full volume with an audible seam, so the passes are driven
+        /// here instead.
+        /// </summary>
         private IEnumerator FadeIn()
         {
             if (startDelay > 0f)
                 yield return new WaitForSecondsRealtime(startDelay);
 
-            if (!source.isPlaying)
+            // A single pass keeps the old behaviour: fade up and stay there.
+            if (!loop)
             {
-                source.volume = 0f;
-                source.Play();
+                source.loop = false;
+                if (!source.isPlaying)
+                {
+                    source.volume = 0f;
+                    source.Play();
+                }
+
+                yield return Ramp(source.volume, volume, fadeInDuration);
+                fade = null;
+                yield break;
             }
 
-            yield return Ramp(source.volume, volume, fadeInDuration);
-            fade = null;
+            // Driven manually, so the clip is never cut off mid-fade by Unity looping it.
+            source.loop = false;
+            while (true)
+            {
+                source.volume = 0f;
+                source.time = 0f;
+                source.Play();
+                LoopsPlayed++;
+                yield return Ramp(0f, volume, fadeInDuration);
+
+                // Hold at volume until it is time to fade out before the clip ends.
+                float length = source.clip != null ? source.clip.length : 0f;
+                float hold = length - fadeInDuration - fadeOutDuration;
+                if (hold > 0f)
+                    yield return new WaitForSecondsRealtime(hold);
+
+                yield return Ramp(source.volume, 0f, fadeOutDuration);
+                source.Stop();
+
+                if (silenceBetweenLoops > 0f)
+                    yield return new WaitForSecondsRealtime(silenceBetweenLoops);
+            }
         }
 
         private IEnumerator CrossFadeTo(AudioClip next)
@@ -282,10 +328,10 @@ namespace BigRedButton
             yield return Ramp(source.volume, 0f, crossFadeDuration);
             source.Stop();
             source.clip = next;
-            source.loop = loop;
-            source.Play();
-            yield return Ramp(0f, volume, crossFadeDuration);
             fade = null;
+            // Hand back to the pass loop, so the new track also breathes in and out
+            // rather than playing flat out on Unity's own loop flag.
+            Play();
         }
 
         private IEnumerator FadeOutAndStop()

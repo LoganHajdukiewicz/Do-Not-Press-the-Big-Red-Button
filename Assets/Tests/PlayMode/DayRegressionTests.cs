@@ -83,6 +83,8 @@ namespace BigRedButton.Tests
             Set(track, "music", music);
             Set(track, "fadeInDuration", 0f);
             Set(track, "crossFadeDuration", 0f);
+            Set(track, "fadeOutDuration", 0f);
+            Set(track, "silenceBetweenLoops", 0f);
             return (host, day, track);
         }
 
@@ -210,7 +212,7 @@ namespace BigRedButton.Tests
             yield return null;
             BackgroundMusic persistent = BackgroundMusic.Active;
             AudioSource source = persistent.GetComponent<AudioSource>();
-            source.time = 4f;
+            source.time = 0.5f;
 
             Object.DestroyImmediate(host1);
             objects.Remove(host1);
@@ -223,7 +225,7 @@ namespace BigRedButton.Tests
 
             BuildDayObject(2, corporate);
             yield return null;
-            Assert.That(source.time, Is.GreaterThanOrEqualTo(4f),
+            Assert.That(source.time, Is.GreaterThanOrEqualTo(0.5f),
                 "The next day continues the track instead of restarting it.");
         }
 

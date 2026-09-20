@@ -5272,7 +5272,9 @@ MonoBehaviour:
   volume: 0.32
   loop: 1
   startDelay: 0
-  fadeInDuration: 2.5
+  fadeInDuration: 4
+  fadeOutDuration: 5
+  silenceBetweenLoops: 4
   crossFadeDuration: 1.5
   continueAcrossDays: 1
   ignorePause: 1
