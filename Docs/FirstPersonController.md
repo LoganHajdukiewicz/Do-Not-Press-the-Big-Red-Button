@@ -351,7 +351,7 @@ Keep the imported texture dependencies installed locally; do not publish the ven
 
 - **Doorway Centre / Radius / Height Tolerance:** the outside area that starts the exploration timer. `Begin()` can also be called from a trigger or door animation.
 - **Exploration Duration:** clear-view free exploration before the gunshot; default **5 seconds**.
-- **Gunshot / Gunshot Volume / Flash Duration:** assigned to `Assets/Audio/gunshot.mp3`; plays once with a full white flash (default **0.12 seconds**).
+- **Gunshot / Gunshot Volume / Flash Duration:** assigned to `Assets/Audio/gunshot.mp3`; plays once with a full white flash (default **0.12 seconds**). **On Gunshot** also cuts the ending music.
 - **Fade To Black Duration / Dark Hold:** flash-to-black transition (default **0.06 seconds**) and pause before the card (default **0.5 seconds**).
 - **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
 - **Player / Frozen During Ending:** optional references, found automatically when empty. Control is disabled at the gunshot/flash, never when stepping outside.
@@ -359,12 +359,14 @@ Keep the imported texture dependencies installed locally; do not publish the ven
 
 ### Background music
 
-Every day scene's **Day** object carries a `BackgroundMusic` component. Days 1-30 hold `Assets/Audio/Corporate Background Music.mp3`; Day 31's slot is deliberately empty until the ending's own, happier track is added.
+Every day scene's **Day** object carries a `BackgroundMusic` component. Days 1-30 hold `Assets/Audio/Corporate Background Music.mp3`. Day 31 holds `Assets/Audio/Happy Ending Music.mp3`, which cross-fades in over the corporate track as the player steps outside, then **stops dead on the gunshot**: Day 31's `On Gunshot` event calls `BackgroundMusic.StopImmediately`, so the silence lands with the shot rather than fading afterwards.
 
-The track **loops, and does not restart between days**. Only the first day's player survives: it detaches from the day object, is marked `DontDestroyOnLoad`, and every later day hands its settings over and destroys its own copy. A later day asking for the same clip is left alone entirely, so the music plays unbroken from Day 1 through Day 30 no matter how many times a day is repeated or failed.
+The track **loops, and does not restart between days**. The first day creates a separate `Background Music` object, marks that object `DontDestroyOnLoad`, and plays through it. Every later day hands its settings to the running player and then does nothing further.
+
+The component must **never** persist or destroy its own GameObject: it shares the **Day** object with `DayLevel`, `DayTitle`, `TimedReveal` and `OpeningSequence`. An earlier version did exactly that, which carried a stale `DayLevel` into the next day and deleted later days' logic, so buttons stopped resolving and Day 3's green button never appeared. `DayRegressionTests` now guards this.
 
 - A day holding a **different** clip cross-fades to it, so the ending's music will replace the corporate track rather than layering over it.
-- A day holding **no** clip fades the music out. That is why Day 31 currently goes quiet: the working-day music must not play over the gunshot.
+- A day holding **no** clip fades the music out, for a level that should be silent.
 - Starting a new month from the menu calls `BackgroundMusic.ClearPersistent()`, so the track begins from the top rather than resuming mid-loop.
 
 Inspector settings on **Day > Background Music**:
@@ -375,7 +377,7 @@ Inspector settings on **Day > Background Music**:
 - **Continue Across Days:** uncheck for music that belongs to a single scene, which then never claims the shared player.
 - **Ignore Pause / Play On Start.**
 
-`Stop()`, `StopImmediately()` and `SetVolume(float)` can be wired to a day's events, for example fading the music out on the final day.
+`Stop()` (fade out), `StopImmediately()` (hard cut) and `SetVolume(float)` can be wired to any day's events. They work from a day's own component even after it has handed playback to the persistent carrier, so wiring them in the Inspector behaves as expected.
 
 ### LED office lights
 
@@ -468,6 +470,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 `BigRedButton.Tests.ButtonTypeTests` covers the shared press sound, suppressed events, per-button colour instancing, the timed and gaze-driven colour changes, the wake-up button, the chasing and patrolling movers, the talking button, and the magnetic push.
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
+
+`BigRedButton.Tests.DayRegressionTests` guards the day object: the music never persists, destroys or reparents it; a later day keeps its own `DayLevel` and `TimedReveal`; Day 3's green button still appears; green still advances and red still restarts on a later day; only one `DayLevel` exists after a scene change; the music survives a day being unloaded; and Day 1's opening still releases the player.
 
 `BigRedButton.Tests.BackgroundMusicTests` covers the looping track, a new day not restarting or rewinding it, thirty days keeping one audio source, surviving its own day object, an empty slot fading the music out, a different clip cross-fading, the menu restarting it, Day 1's narration delay, and scene-only music never persisting.
 

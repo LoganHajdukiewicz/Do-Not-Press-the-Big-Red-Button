@@ -42,48 +42,100 @@ namespace BigRedButton
         private AudioSource source;
         private Coroutine fade;
         private bool isPersistentInstance;
+        private bool handedOver;
+        /// <summary>The persistent carrier this day's component delegates to.</summary>
+        private BackgroundMusic player;
 
-        public AudioClip CurrentClip => source == null ? null : source.clip;
-        public bool IsPlaying => source != null && source.isPlaying;
-        public float CurrentVolume => source == null ? 0f : source.volume;
+        /// <summary>
+        /// Whichever instance actually owns the AudioSource. A day component that
+        /// created the carrier points at it; one that handed over to an already-running
+        /// carrier finds it through Active. Without this, a day's own Stop/SetVolume
+        /// would silently do nothing, because its source is null.
+        /// </summary>
+        private BackgroundMusic Voice
+        {
+            get
+            {
+                if (player != null)
+                    return player;
+                if (handedOver && Active != null)
+                    return Active;
+                return this;
+            }
+        }
+        public AudioClip CurrentClip => Voice.source == null ? null : Voice.source.clip;
+        public bool IsPlaying => Voice.source != null && Voice.source.isPlaying;
+        public float CurrentVolume => Voice.source == null ? 0f : Voice.source.volume;
         public float TargetVolume => volume;
         /// <summary>Seconds into the track, so a continued day can be told apart from a restart.</summary>
-        public float PlaybackTime => source == null ? 0f : source.time;
+        public float PlaybackTime => Voice.source == null ? 0f : Voice.source.time;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ClearOnPlay() => Active = null;
 
         private void Awake()
         {
-            if (continueAcrossDays && Active != null && Active != this)
+            if (!continueAcrossDays)
             {
-                // Another day already has the music running. Hand over the clip and go,
-                // so the track continues from where it is rather than starting again.
-                Active.AdoptFrom(this);
-                Destroy(gameObject);
+                // Scene-only music, or the persistent carrier itself.
+                source = ConfigureSource(gameObject);
                 return;
             }
 
-            source = gameObject.AddComponent<AudioSource>();
-            source.clip = music;
-            source.loop = loop;
-            source.playOnAwake = false;
-            source.spatialBlend = 0f; // Music is not positional.
-            source.volume = 0f;
-            source.ignoreListenerPause = ignorePause;
-
-            if (!continueAcrossDays)
+            if (Active != null)
+            {
+                // The music is already running. Hand over the settings so the track
+                // continues from where it is rather than starting again.
+                Active.AdoptFrom(this);
+                handedOver = true;
                 return;
+            }
 
-            // Detach from the day, or loading the next day would destroy the music with it.
-            transform.SetParent(null, true);
-            DontDestroyOnLoad(gameObject);
-            isPersistentInstance = true;
-            Active = this;
+            // The player lives on its own object. This component usually shares the
+            // "Day" object with DayLevel, DayTitle, TimedReveal and OpeningSequence,
+            // so it must never mark that object DontDestroyOnLoad or destroy it: that
+            // would carry a stale DayLevel between days, or delete the day's own logic.
+            var host = new GameObject("Background Music");
+            host.SetActive(false); // Configure before its Awake caches the clip.
+            DontDestroyOnLoad(host);
+            player = host.AddComponent<BackgroundMusic>();
+            player.continueAcrossDays = false; // The carrier never re-enters this branch.
+            player.isPersistentInstance = true;
+            player.music = music;
+            player.volume = volume;
+            player.loop = loop;
+            player.startDelay = startDelay;
+            player.fadeInDuration = fadeInDuration;
+            player.crossFadeDuration = crossFadeDuration;
+            player.ignorePause = ignorePause;
+            player.playOnStart = false; // Started from Start(), after configuration.
+            Active = player;
+            host.SetActive(true);
+        }
+
+        private AudioSource ConfigureSource(GameObject host)
+        {
+            var audio = host.AddComponent<AudioSource>();
+            audio.clip = music;
+            audio.loop = loop;
+            audio.playOnAwake = false;
+            audio.spatialBlend = 0f; // Music is not positional.
+            audio.volume = 0f;
+            audio.ignoreListenerPause = ignorePause;
+            return audio;
         }
 
         private void Start()
         {
+            if (handedOver)
+                return;
+            if (player != null)
+            {
+                if (playOnStart)
+                    player.Play();
+                return;
+            }
+
             if (source != null && playOnStart)
                 Play();
         }
@@ -95,6 +147,8 @@ namespace BigRedButton
         private void AdoptFrom(BackgroundMusic request)
         {
             volume = request.volume;
+            if (source == null)
+                source = ConfigureSource(gameObject);
             if (request.music == null)
             {
                 // An empty slot means this day wants its own music, or none. Either way
@@ -123,8 +177,19 @@ namespace BigRedButton
 
         public void Play()
         {
-            if (source == null || music == null)
+            BackgroundMusic voice = Voice;
+            if (voice != this)
+            {
+                voice.Play();
                 return;
+            }
+
+            if (source == null)
+                source = ConfigureSource(gameObject);
+            if (music == null)
+                return;
+            if (source.clip != music)
+                source.clip = music;
             StopFade();
             fade = StartCoroutine(FadeIn());
         }
@@ -132,14 +197,29 @@ namespace BigRedButton
         /// <summary>Fades the music out and stops it, for the ending or a menu return.</summary>
         public void Stop()
         {
+            BackgroundMusic voice = Voice;
+            if (voice != this)
+            {
+                voice.Stop();
+                return;
+            }
+
             if (source == null)
                 return;
             StopFade();
             fade = StartCoroutine(FadeOutAndStop());
         }
 
+        /// <summary>Cuts the music dead, with no fade. Day 31 calls this on the gunshot.</summary>
         public void StopImmediately()
         {
+            BackgroundMusic voice = Voice;
+            if (voice != this)
+            {
+                voice.StopImmediately();
+                return;
+            }
+
             StopFade();
             if (source == null)
                 return;
@@ -163,6 +243,13 @@ namespace BigRedButton
         public void SetVolume(float value)
         {
             volume = Mathf.Clamp01(value);
+            BackgroundMusic voice = Voice;
+            if (voice != this)
+            {
+                voice.SetVolume(volume);
+                return;
+            }
+
             if (source != null && source.isPlaying && fade == null)
                 source.volume = volume;
         }
@@ -229,6 +316,9 @@ namespace BigRedButton
 
         private void OnDestroy()
         {
+            // Only the persistent carrier owns the shared slot. A day's own component
+            // being destroyed with its scene must not clear it, or the next day would
+            // start the track over from the beginning.
             if (Active == this)
                 Active = null;
         }
