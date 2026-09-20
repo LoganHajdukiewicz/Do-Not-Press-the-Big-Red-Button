@@ -284,31 +284,23 @@ namespace BigRedButton.Tests
         [UnityTest]
         public IEnumerator MagneticButtonPushesTheAimAwayAndStopsWhenPressed()
         {
-            GameObject player = Track(new GameObject("Player"));
-            player.AddComponent<CharacterController>();
-            player.AddComponent<PlayerInteractor>();
-            player.AddComponent<FirstPersonController>();
-            player.transform.position = Vector3.zero;
-
             GameObject cameraObject = Track(new GameObject("Camera", typeof(Camera)));
-            cameraObject.tag = "MainCamera";
-            cameraObject.transform.SetParent(player.transform, false);
-            cameraObject.transform.localPosition = Vector3.up * 1.6f;
-
+            Camera camera = cameraObject.GetComponent<Camera>();
+            camera.transform.position = Vector3.up * 1.6f;
             GameObject cap = CreateCap();
-            cap.transform.position = new Vector3(0f, 1.6f, 5f); // Dead ahead.
+            cap.transform.position = new Vector3(0f, 1.6f, 5f);
             var repel = cap.AddComponent<CursorRepellingButton>();
             Set(repel, "pushStrength", 120f);
+            yield return null;
 
-            float startYaw = player.transform.eulerAngles.y;
-            yield return new WaitForSeconds(0.25f);
-            Assert.That(repel.IsPushing, Is.True, "Aiming at it starts the push.");
-            Assert.That(Mathf.Abs(Mathf.DeltaAngle(startYaw, player.transform.eulerAngles.y)),
-                Is.GreaterThan(1f), "The view is pushed off target.");
+            Vector2 deflection = repel.GetLookOffset(camera, 1f / 60f);
+            Assert.That(deflection.magnitude, Is.EqualTo(2f).Within(0.01f));
+            camera.transform.rotation = Quaternion.Euler(deflection.y, deflection.x, 0f);
+            Assert.That(Vector3.Angle(camera.transform.forward, Vector3.forward), Is.GreaterThan(1f));
 
             cap.GetComponent<ButtonInteractable>().Interact(null);
-            yield return null;
-            Assert.That(repel.IsPushing, Is.False, "Pressing it stops the push.");
+            Assert.That(repel.GetLookOffset(camera, 1f / 60f), Is.EqualTo(Vector2.zero),
+                "Pressing it stops the push.");
         }
     }
 }

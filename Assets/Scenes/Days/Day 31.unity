@@ -1368,7 +1368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e80f17a9e0c4201b2cfc13e3032a229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.EndingSequence
-  doorwayCentre: {x: 0, y: 0, z: 7}
+  doorwayCentre: {x: 0, y: 0, z: 10}
   doorwayRadius: 1.5
   sunshineFadeIn: 1.4
   sunshineHold: 1.1
@@ -2136,8 +2136,9 @@ GameObject:
   - component: {fileID: 1882773438}
   - component: {fileID: 1882773437}
   - component: {fileID: 1882773436}
+  - component: {fileID: 1882773439}
   m_Layer: 0
-  m_Name: Outside
+  m_Name: Outside ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2168,7 +2169,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 735898b5732693540969b5997b185419, type: 2}
+  - {fileID: 2100000, guid: 270e522d898063545bc2df864c8b9c10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2200,6 +2201,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882773435}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1882773439
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882773435}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1882773438
 Transform:
   m_ObjectHideFlags: 0
@@ -2209,8 +2231,8 @@ Transform:
   m_GameObject: {fileID: 1882773435}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: 7.4}
-  m_LocalScale: {x: 1.8, y: 2.4, z: 0.1}
+  m_LocalPosition: {x: 0, y: -0.25, z: 17}
+  m_LocalScale: {x: 30, y: 0.5, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2451,7 +2473,7 @@ Camera:
   m_GameObject: {fileID: 2116314524}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.12, g: 0.17, b: 0.23, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

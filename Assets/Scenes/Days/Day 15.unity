@@ -225,8 +225,8 @@ Transform:
   m_GameObject: {fileID: 56354440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 4.1}
-  m_LocalScale: {x: 5, y: 4.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: -2, z: 7}
+  m_LocalScale: {x: 12, y: 4.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -449,8 +449,8 @@ Transform:
   m_GameObject: {fileID: 357668197}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.75, y: -2, z: 1.6}
-  m_LocalScale: {x: 0.5, y: 4.5, z: 5}
+  m_LocalPosition: {x: -6, y: -2, z: 1}
+  m_LocalScale: {x: 0.5, y: 4.5, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -480,7 +480,7 @@ Transform:
   m_GameObject: {fileID: 573889934}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.2}
+  m_LocalPosition: {x: 0, y: 0, z: -2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -725,7 +725,6 @@ GameObject:
   - component: {fileID: 768219170}
   - component: {fileID: 768219169}
   - component: {fileID: 768219167}
-  - component: {fileID: 768219168}
   m_Layer: 0
   m_Name: Day
   m_TagString: Untagged
@@ -765,23 +764,19 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768219166}
+  m_GameObject: {fileID: 1588251475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fda848479144ac2a9a919fa62470172, type: 3}
+  m_Script: {fileID: 11500000, guid: 6204f1c326c04bb2be0f00c492e78ac3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TrapdoorTrigger
-  lid: {fileID: 1590575803}
-  delay: 0.15
-  closeAfter: 0
-  triggerCentre: {x: 0, y: 0, z: 0}
-  triggerRadius: 2.1
-  maxTriggerHeight: 1.5
-  oneShot: 1
-  safeButton: {fileID: 1995434768}
-  openClip: {fileID: 0}
-  openVolume: 0.9
-  onOpened:
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ForwardTrapFloor
+  player: {fileID: 0}
+  gamepadForwardAlsoTriggers: 1
+  forwardThreshold: 0.5
+  safeButton: {fileID: 1995434774}
+  collapseClip: {fileID: 0}
+  volume: 0.9
+  onCollapsed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &768219169
@@ -1368,7 +1363,7 @@ Transform:
   m_GameObject: {fileID: 1037452721}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4, z: 1.6}
+  m_LocalPosition: {x: 0, y: -4, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1483,8 +1478,8 @@ Transform:
   m_GameObject: {fileID: 1102401822}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: -0.9}
-  m_LocalScale: {x: 5, y: 4.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: -2, z: -5}
+  m_LocalScale: {x: 12, y: 4.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1731,7 +1726,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1312911019
 Transform:
   m_ObjectHideFlags: 0
@@ -1857,8 +1852,8 @@ Transform:
   m_GameObject: {fileID: 1324452787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3499999, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.11, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalScale: {x: 12, y: 0.3, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1037452722}
@@ -1999,8 +1994,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1324452794
-CapsuleCollider:
+--- !u!65 &1324452794
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2017,10 +2012,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1324452795
 MeshFilter:
@@ -2029,7 +2022,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324452787}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1344308725
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,8 +2129,8 @@ Transform:
   m_GameObject: {fileID: 1344308725}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.75, y: -2, z: 1.6}
-  m_LocalScale: {x: 0.5, y: 4.5, z: 5}
+  m_LocalPosition: {x: 6, y: -2, z: 1}
+  m_LocalScale: {x: 0.5, y: 4.5, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2154,6 +2147,7 @@ GameObject:
   - component: {fileID: 1588251478}
   - component: {fileID: 1588251477}
   - component: {fileID: 1588251476}
+  - component: {fileID: 768219168}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -2267,12 +2261,12 @@ GameObject:
   - component: {fileID: 1590575805}
   - component: {fileID: 1590575804}
   m_Layer: 0
-  m_Name: Trapdoor
+  m_Name: Old Trapdoor (unused)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1590575804
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2496,7 +2490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1656103902
 Transform:
   m_ObjectHideFlags: 0
@@ -3485,8 +3479,8 @@ Transform:
   m_GameObject: {fileID: 2122783600}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.25, z: 1.6}
-  m_LocalScale: {x: 5, y: 0.5, z: 5}
+  m_LocalPosition: {x: 0, y: -4.25, z: 1}
+  m_LocalScale: {x: 12, y: 0.5, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

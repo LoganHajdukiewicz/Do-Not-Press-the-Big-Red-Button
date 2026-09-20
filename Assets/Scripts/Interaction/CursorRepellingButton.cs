@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,14 +41,24 @@ namespace BigRedButton
         [SerializeField] private UnityEvent onStartedPushing = new UnityEvent();
 
         private bool running = true;
-        private bool wasPushing;
+        private static readonly List<CursorRepellingButton> active = new List<CursorRepellingButton>();
+        private ButtonInteractable button;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetRegistry() => active.Clear();
+
+        private void OnEnable()
+        {
+            if (!active.Contains(this))
+                active.Add(this);
+        }
 
         public bool IsPushing { get; private set; }
         public UnityEvent OnStartedPushing => onStartedPushing;
 
         private void Awake()
         {
-            var button = GetComponentInChildren<ButtonInteractable>();
+            button = GetComponentInChildren<ButtonInteractable>();
             if (stopOnPress && button != null)
                 button.OnPressed.AddListener(Stop);
         }
@@ -58,71 +69,71 @@ namespace BigRedButton
             IsPushing = false;
         }
 
-        private void LateUpdate()
+        /// <summary>Called by the player after input look, before its interaction ray.</summary>
+        public static void ApplyAll(FirstPersonController controller, Camera camera, float deltaTime)
         {
-            IsPushing = false;
-            if (!running)
-                return;
-
-            if (viewer == null)
+            // Iterate backwards so a Stop/disable event can remove the current magnet.
+            for (int i = active.Count - 1; i >= 0; i--)
             {
-                viewer = Camera.main;
-                if (viewer == null)
-                    return;
+                if (i >= active.Count)
+                    continue;
+                var magnet = active[i];
+                if (magnet == null)
+                    continue;
+                if ((magnet.playerRoot != null && magnet.playerRoot != controller.transform) ||
+                    (magnet.viewer != null && magnet.viewer != camera))
+                    continue;
+                Vector2 offset = controller.enabled && controller.HasControl
+                    ? magnet.GetLookOffset(camera, deltaTime) : Vector2.zero;
+                bool wasPushing = magnet.IsPushing;
+                magnet.IsPushing = offset.sqrMagnitude > 0f;
+                controller.ApplyLookOffset(offset.x, offset.y);
+                if (magnet.IsPushing && !wasPushing)
+                    magnet.onStartedPushing.Invoke();
             }
-
-            if (playerRoot == null)
-            {
-                var controller = viewer.GetComponentInParent<FirstPersonController>();
-                if (controller == null)
-                    controller = FindFirstObjectByType<FirstPersonController>();
-                if (controller == null)
-                    return;
-                playerRoot = controller.transform;
-            }
-
-            Vector3 toButton = transform.position - viewer.transform.position;
-            float distance = toButton.magnitude;
-            if (distance < 0.05f || distance > maxDistance || distance <= safeDistance)
-                return;
-
-            Vector3 direction = toButton / distance;
-            float aim = Vector3.Dot(viewer.transform.forward, direction);
-            if (aim < aimTolerance)
-                return;
-
-            float closeness = strongerWhenCloser
-                ? Mathf.InverseLerp(aimTolerance, 1f, aim) : 1f;
-            IsPushing = true;
-            if (!wasPushing)
-                onStartedPushing.Invoke();
-            wasPushing = true;
-
-            Vector3 flatToButton = direction;
-            flatToButton.y = 0f;
-            if (flatToButton.sqrMagnitude < 0.0001f)
-                return;
-
-            // Push around the player's own yaw so the controller keeps its pitch clamp.
-            float side = Vector3.Dot(playerRoot.right, flatToButton.normalized);
-            float sign = side >= 0f ? -1f : 1f;
-            if (attractInstead)
-                sign = -sign;
-
-            playerRoot.Rotate(Vector3.up, sign * pushStrength * closeness * Time.deltaTime, Space.Self);
-
-            if (verticalPush <= 0f)
-                return;
-
-            // Nudge the camera's pitch as well, within the controller's own limits.
-            Transform cameraTransform = viewer.transform;
-            float pitch = cameraTransform.localEulerAngles.x;
-            if (pitch > 180f)
-                pitch -= 360f;
-            float nudged = Mathf.Clamp(pitch - verticalPush * closeness * Time.deltaTime, -85f, 85f);
-            cameraTransform.localRotation = Quaternion.Euler(nudged, 0f, 0f);
         }
 
-        private void OnDisable() => wasPushing = false;
+        /// <summary>Yaw/pitch deflection in degrees. Does not alter transforms.</summary>
+        public Vector2 GetLookOffset(Camera camera, float deltaTime)
+        {
+            if (!running || !isActiveAndEnabled || camera == null || deltaTime <= 0f)
+                return Vector2.zero;
+            Vector3 toButton = transform.position - camera.transform.position;
+            float distance = toButton.magnitude;
+            if (distance < 0.05f || distance > maxDistance || distance <= safeDistance)
+                return Vector2.zero;
+
+            Vector3 local = camera.transform.InverseTransformDirection(toButton / distance);
+            if (local.z <= aimTolerance)
+                return Vector2.zero;
+            float strength = strongerWhenCloser ? Mathf.InverseLerp(aimTolerance, 1f, local.z) : 1f;
+            // Positive pitch looks down. Repel vertically as well as horizontally.
+            Vector2 away = new Vector2(-local.x, local.y);
+            if (away.sqrMagnitude < 0.000001f)
+                away = attractInstead ? Vector2.zero : Vector2.right;
+            else
+                away.Normalize();
+
+            float amount = pushStrength * strength * deltaTime;
+            if (attractInstead)
+            {
+                // Attraction must stop on target rather than overshooting every frame.
+                amount = Mathf.Min(amount, Mathf.Acos(Mathf.Clamp(local.z, -1f, 1f)) * Mathf.Rad2Deg);
+                away = -away;
+            }
+            return away * amount + Vector2.down * (verticalPush * strength * deltaTime);
+        }
+
+        private void OnDisable()
+        {
+            active.Remove(this);
+            IsPushing = false;
+        }
+
+        private void OnDestroy()
+        {
+            if (button != null)
+                button.OnPressed.RemoveListener(Stop);
+        }
     }
 }

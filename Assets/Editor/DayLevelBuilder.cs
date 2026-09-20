@@ -61,7 +61,7 @@ namespace BigRedButton.Editor
                 "Assets/Scenes/TestScene.unity. Press Play from \"Day 1\" for the real opening; " +
                 "each day leads to the next. Every day is a normal scene, so open any of them " +
                 "and rearrange the buttons, rooms and settings in the inspector. Re-running this " +
-                "command overwrites Day 1-30, so save custom work under a different name.");
+                "command overwrites Day 1-31, so save custom work under a different name.");
         }
 
         [MenuItem("Tools/Big Red Button/Rebuild Test Scene")]
@@ -405,7 +405,7 @@ namespace BigRedButton.Editor
                     GameObject slippery = StateButton("Green Button", new Vector3(2.6f, 0f, 5.2f),
                         level, "GOOD LUCK", startGreen: true);
                     var repel = slippery.AddComponent<CursorRepellingButton>();
-                    SetPrivate(repel, "safeDistance", 1.8f);
+                    SetPrivate(repel, "safeDistance", 0f);
                     break;
                 }
 
@@ -486,7 +486,7 @@ namespace BigRedButton.Editor
                 {
                     // "The Green Button is directly in front of you. If you click forward a
                     // trapdoor will open under you, causing you to fall onto a BIG RED BUTTON."
-                    GameObject trapGreen = StateButton("Green Button", new Vector3(0f, 0f, 3.2f),
+                    GameObject trapGreen = StateButton("Green Button", new Vector3(0f, 0f, -2.2f),
                         level, "STEP CAREFULLY", startGreen: true);
                     CreateTrapdoor(level, trapGreen);
                     break;
@@ -606,10 +606,10 @@ namespace BigRedButton.Editor
             Box("Door frame", new Vector3(0f, doorHeight, wallZ),
                 new Vector3(doorWidth, 0.12f, 0.6f), trimMaterial);
 
-            Material daylight = Material("Daylight", new Color(1f, 0.98f, 0.9f), 0f);
-            GameObject outside = Box("Outside", new Vector3(0f, doorHeight * 0.5f, wallZ + 0.4f),
-                new Vector3(doorWidth - 0.1f, doorHeight - 0.1f, 0.1f), daylight);
-            Object.DestroyImmediate(outside.GetComponent<Collider>());
+            // Leave the doorway open: an opaque panel would hide the fantasy skybox.
+            Box("Outside ground", new Vector3(0f, -0.25f, 17f),
+                new Vector3(30f, 0.5f, 20f), floorMaterial);
+            Day31SkyboxSetup.ApplyConfiguredSkybox();
 
             // Light spilling in through the doorway, the only warm light in the game.
             var sunlight = new GameObject("Doorway light");
@@ -624,7 +624,7 @@ namespace BigRedButton.Editor
             sunlight.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
             var ending = level.gameObject.AddComponent<EndingSequence>();
-            SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ));
+            SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 3f));
             SetPrivate(ending, "doorwayRadius", 1.5f);
             SetPrivate(ending, "gunshot",
                 AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
@@ -722,17 +722,20 @@ namespace BigRedButton.Editor
         /// </summary>
         private static void CreateTrapdoor(DayLevel level, GameObject greenButton)
         {
-            // The pit sits under the approach, with its own floor well below the room.
-            Box("Pit floor", new Vector3(0f, -4.25f, 1.6f), new Vector3(5f, 0.5f, 5f), floorMaterial);
-            Box("Pit wall", new Vector3(-2.75f, -2f, 1.6f), new Vector3(0.5f, 4.5f, 5f), wallMaterial);
-            Box("Pit wall", new Vector3(2.75f, -2f, 1.6f), new Vector3(0.5f, 4.5f, 5f), wallMaterial);
-            Box("Pit wall", new Vector3(0f, -2f, 4.1f), new Vector3(5f, 4.5f, 0.5f), wallMaterial);
-            Box("Pit wall", new Vector3(0f, -2f, -0.9f), new Vector3(5f, 4.5f, 0.5f), wallMaterial);
+            // The entire chamber floor disappears on W; there is no solid floor beneath it.
+            GameObject floor = GameObject.Find("Floor");
+            var trap = floor.AddComponent<ForwardTrapFloor>();
+            SetPrivate(trap, "safeButton", greenButton.GetComponent<ButtonInteractable>());
+            Box("Pit floor", new Vector3(0f, -4.25f, 1f), new Vector3(12f, 0.5f, 12f), floorMaterial);
+            Box("Pit wall", new Vector3(-6f, -2f, 1f), new Vector3(0.5f, 4.5f, 12f), wallMaterial);
+            Box("Pit wall", new Vector3(6f, -2f, 1f), new Vector3(0.5f, 4.5f, 12f), wallMaterial);
+            Box("Pit wall", new Vector3(0f, -2f, 7f), new Vector3(12f, 4.5f, 0.5f), wallMaterial);
+            Box("Pit wall", new Vector3(0f, -2f, -5f), new Vector3(12f, 4.5f, 0.5f), wallMaterial);
 
-            // Landing on this one is a press, through the normal contact system.
-            GameObject pitButton = CreateButtonBody("Big Red Button", new Vector3(0f, -4f, 1.6f),
-                redMaterial, 0.35f);
-            var pitPress = pitButton.GetComponent<ButtonInteractable>();
+            // A genuinely big contact surface catches the player wherever W was pressed.
+            GameObject pitButton = Box("Big Red Button", new Vector3(0f, -3.85f, 1f),
+                new Vector3(12f, 0.3f, 12f), redMaterial);
+            var pitPress = pitButton.AddComponent<ButtonInteractable>();
             SetPrivate(pitPress, "prompt", "Press the big red button");
             SetPrivate(pitPress, "showPressedIndicator", false);
             pitButton.AddComponent<ButtonAppearance>();
@@ -740,14 +743,6 @@ namespace BigRedButton.Editor
             var pitResolver = pitButton.AddComponent<StatefulDayButton>();
             SetPrivate(pitResolver, "day", level);
 
-            // The lid looks like ordinary floor until it is removed.
-            GameObject lid = Box("Trapdoor", new Vector3(0f, -0.1f, 1.6f),
-                new Vector3(4.6f, 0.2f, 4.6f), floorMaterial);
-            var trap = level.gameObject.AddComponent<TrapdoorTrigger>();
-            SetPrivate(trap, "lid", lid);
-            SetPrivate(trap, "triggerCentre", new Vector3(0f, 0f, 1.6f));
-            SetPrivate(trap, "triggerRadius", 2.1f);
-            SetPrivate(trap, "safeButton", greenButton);
         }
 
         /// <summary>Day 16: red and green both read as the same washed-out colour.</summary>
@@ -1048,6 +1043,7 @@ namespace BigRedButton.Editor
                 case float f: property.floatValue = f; break;
                 case bool b: property.boolValue = b; break;
                 case string s: property.stringValue = s; break;
+                case Vector3 v: property.vector3Value = v; break;
                 case null: property.objectReferenceValue = null; break;
                 case Object o: property.objectReferenceValue = o; break;
                 default:

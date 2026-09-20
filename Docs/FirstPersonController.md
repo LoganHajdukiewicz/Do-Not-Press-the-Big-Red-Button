@@ -192,13 +192,13 @@ public sealed class DoorInteractable : BigRedButton.Interactable
 
 Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows **DAY N** in large letters, fades it out, and loads the next day when the day is completed.
 
-### Build the 30 days
+### Build the month (30 button days plus the Day 31 ending)
 
 Select **Tools > Big Red Button > Build Days 1-31**. It generates `Assets/Scenes/Days/Day 1.unity` through `Day 31.unity`, registers them in build settings in numeric order, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1` and each day leads to the next.
 
 Every generated day is an ordinary scene. Open any of them and move buttons, resize the room, change the sign text, retime the colour cycles, or replace a whole layout in the inspector. Nothing about a day is locked.
 
-**Re-running the command overwrites `Day 1-30` and `TestScene`.** Once you start editing a day by hand, either stop re-running it or save your version under a different name first.
+**Re-running the command overwrites `Day 1-31` and `TestScene`.** Once you start editing a day by hand, either stop re-running it or save your version under a different name first.
 
 - **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears centred at **10.28 seconds**, when the line is spoken, then the black fades away onto the room and `DAY 1` fades in. The player cannot move until the screen clears.
 - **The red button** repeats the current day, so pressing it never advances the game. Any button showing green completes the day.
@@ -219,7 +219,7 @@ Every generated day is an ordinary scene. Open any of them and move buttons, res
 | 12 | Green button poses the trolley problem | README |
 | 13 | Green button is grey until woken | README |
 | 14 | Maze of red buttons, one green at the end | README |
-| 15 | Trapdoor drops you onto a big red button | README |
+| 15 | W deletes the floor, dropping you onto a big red button | README |
 | 16 | Red and green look identical | README |
 | 17 | Buttons have repainted each other | README |
 | 18 | Green button reddens when you stare at it | README |
@@ -231,9 +231,29 @@ Every generated day is an ordinary scene. Open any of them and move buttons, res
 
 Days 22 to 30 are not described in the design yet, so each is generated as a plain, completable day for you to turn into its own idea. A month of work, then it is over.
 
+### Day 7: magnetic aim
+
+`CursorRepellingButton` now feeds yaw and pitch into `FirstPersonController` after input look and before movement/interaction. Pitch persists instead of being overwritten next frame. Default strength remains 210 degrees/second (3× the original). Day 7 has **Safe Distance = 0**, so magnetism does not disappear when you approach. Physical contact still works normally. Escape, disabled player control and pausing prevent aim deflection.
+
+### Day 15: the W-triggered floor
+
+`ForwardTrapFloor` is attached to the actual **Floor** object in the saved scene and the builder. A fresh **W** press disables the floor's renderer/collider immediately, then destroys that object. It is not a second panel sitting on a solid floor. Gamepad forward also triggers it after returning the stick to neutral; turn that option off in the Inspector for W-only behaviour. Paused/unfocused input does not trigger it.
+
+The pit and its large red contact button cover the chamber underneath. The green button is within E range from spawn, so look at it and press E without moving forward. A successful green press disarms the floor during the day transition. Optional collapse sound, volume and On Collapsed event are editable on Floor. Day 15 no longer uses `TrapdoorTrigger`; that component is retained for other custom scenes.
+
 ### Day 31, the ending
 
-The last day has **no buttons at all**. The back wall has a doorway with daylight behind it, and the only warm light in the game spills through it. Walking into the doorway runs `EndingSequence`: the screen bleaches to sunshine, the gunshot from `Assets/Audio/gunshot.mp3` lands on the brightest frame, the light is cut to black, and after a silence the card fades in naming the player **Employee of the Year**.
+The last day has **no buttons at all**. The back wall has an open doorway and an outdoor ground surface; the old opaque daylight panel no longer blocks the sky. The camera renders a skybox. The ending trigger is outside the doorway, at z=10 with a 1.5m radius, so you can see the sky and step through before the fade begins. Walking outside runs `EndingSequence`: the screen bleaches to sunshine, the gunshot from `Assets/Audio/gunshot.mp3` lands on the brightest frame, the light is cut to black, and after a silence the card fades in naming the player **Employee of the Year**.
+
+#### Fantasy Skybox FREE import (required once in your Unity Editor)
+
+The Render Knight pack is not included in this repository and has not been downloaded by the bot. To use the actual asset rather than Unity's default sky:
+
+1. Add [Fantasy Skybox FREE by Render Knight](https://assetstore.unity.com/packages/2d/textures-materials/sky/fantasy-skybox-free-18353) to your Unity account, then download/import it using **Package Manager > My Assets**. Import the daytime skybox material and its required textures.
+2. Select a daytime **skybox material** in the Project window.
+3. Run **Tools > Big Red Button > Day 31 > Apply Selected Skybox Material**. This saves a configured material at `Assets/LevelMaterials/Day 31 Skybox.mat` and assigns it to Day 31 only. It does not rebuild any levels. Future full builds reuse that material.
+
+The skybox menu preserves the previous open scene setup. Keep the imported texture dependencies installed locally; do not publish the vendor pack as a standalone download.
 
 - **Doorway Centre / Radius:** the area that starts the ending. `Begin()` can also be called from a door animation or trigger.
 - **Sunshine Fade In / Hold / Colour:** how long the outside blinds the player before the shot.

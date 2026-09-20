@@ -156,6 +156,9 @@ namespace BigRedButton
             else
                 interactor.ClearFocus();
 
+            // Deflect the actual controller look before movement and the interaction ray.
+            // LateUpdate camera edits were too late for E and lost pitch on the next frame.
+            CursorRepellingButton.ApplyAll(this, playerCamera, Time.deltaTime);
             UpdateMovement();
             if (!HasControl)
                 return;
@@ -181,9 +184,16 @@ namespace BigRedButton
             // Mouse delta already represents this frame's displacement. Sticks are rates.
             float scale = look.activeControl?.device is Pointer
                 ? mouseSensitivity : stickSensitivity * Time.deltaTime;
-            transform.Rotate(Vector3.up, delta.x * scale, Space.Self);
-            pitch = Mathf.Clamp(pitch + delta.y * scale * (invertY ? 1f : -1f),
-                -pitchLimit, pitchLimit);
+            ApplyLookOffset(delta.x * scale, delta.y * scale * (invertY ? 1f : -1f));
+        }
+
+        /// <summary>Applies yaw and pitch in degrees, retaining the controller's pitch clamp.</summary>
+        public void ApplyLookOffset(float yawDegrees, float pitchDegrees)
+        {
+            if (playerCamera == null)
+                return;
+            transform.Rotate(Vector3.up, yawDegrees, Space.Self);
+            pitch = Mathf.Clamp(pitch + pitchDegrees, -pitchLimit, pitchLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
 

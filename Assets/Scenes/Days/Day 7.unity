@@ -1508,7 +1508,7 @@ MonoBehaviour:
   strongerWhenCloser: 1
   attractInstead: 0
   stopOnPress: 1
-  safeDistance: 1.8
+  safeDistance: 0
   playerRoot: {fileID: 0}
   viewer: {fileID: 0}
   onStartedPushing:
