@@ -678,9 +678,14 @@ namespace BigRedButton.Editor
             Material grass =
                 AssetDatabase.LoadAssetAtPath<Material>("Assets/LevelMaterials/Outside Grass.mat")
                 ?? Material("Outside Grass", new Color(0.33f, 0.42f, 0.24f), 0.05f);
-            // Starts just inside the doorway, so there is no gap at the threshold.
-            Box("Outside ground", new Vector3(0f, -0.3f, 246.1f),
-                new Vector3(500f, 0.5f, 500f), grass);
+            // Starts just inside the doorway, so there is no gap at the threshold. This is
+            // deliberately a modest strip rather than a kilometre-scale shadow receiver:
+            // five seconds of running cannot reach its far edge.
+            GameObject outsideGround = Box("Outside ground", new Vector3(0f, -0.3f, 66.9f),
+                new Vector3(120f, 0.5f, 120f), grass);
+            var outsideRenderer = outsideGround.GetComponent<MeshRenderer>();
+            outsideRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            outsideRenderer.receiveShadows = false;
             Day31SkyboxSetup.ApplyConfiguredSkybox();
 
             // Light spilling in through the doorway, the only warm light in the game.
