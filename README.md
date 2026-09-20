@@ -14,6 +14,10 @@ Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)** to regener
 
 Add more days with **Tools > Big Red Button > Create Next Day Scene**, then connect the green button's `On Pressed` to `DayLevel.CompleteDay`.
 
+Every ceiling carries LED office panels. Use **Tools > Big Red Button > Add LED Office Lights To Every Level** to fit or refit them all in place, without regenerating any day.
+
+Day 31 needs the Fantasy Skybox FREE pack imported once on your machine; see the [step-by-step skybox instructions](Docs/FirstPersonController.md#step-by-step-adding-the-skybox-and-the-outside-patch).
+
 See [controller and day system setup, customization, and tests](Docs/FirstPersonController.md).
 
 ## Game design
@@ -60,7 +64,7 @@ Day 13: The Green Button is disabled, it is Grey, once clicked once it becomes g
 
 Day 14: There is a Maze of Red Buttons. Clicking any of them will fail. At the end there is a single Green Button.
 
-Day 15: The Green Button is directly in front of you. If you click forward a trapdoor will open under you, causing you to fall onto a BIG RED BUTTON. 
+Day 15: The Green Button is directly in front of you. If you press forward (W or the Up arrow) the floor vanishes under you, causing you to fall onto a BIG RED BUTTON.
 
 Day 16: A Red/Green Colorblind filter is placed in front of a player. Causing Red and Green colors to look the same. 
 
@@ -74,4 +78,4 @@ Day 20: Red Buttons will follow you around. They will want to be pressed.
 
 Day 21: The Green Button spawns behind the player and tries to stay behind the player. As they turn to see it, it turns around them so it is behind them. It collides with walls, so the player can wrangle it into a corner and press it.
 
-LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside and freely explore this large world for five seconds. Then a gunshot and white flash cut the exploration short, followed by black. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}
+LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside onto a patch of land and freely explore it for ten seconds. Then a gunshot and white flash cut the exploration short, followed by black. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}

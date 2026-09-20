@@ -107,7 +107,8 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
 | `TrapdoorTrigger` | Opens a floor panel when the player walks over it. | 15 |
-| `EndingSequence` | Five seconds outside, gunshot, white flash, black, Employee of the Month. | 31 |
+| `EndingSequence` | Ten seconds outside, gunshot, white flash, black, Employee of the Month. | 31 |
+| `OfficeCeilingLights` | Fits a grid of recessed LED panels under a ceiling. | all |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
 
 ### Judging a button by the colour it is showing
@@ -258,9 +259,11 @@ Days 22 to 30 are not described in the design yet, so each is generated as a pla
 
 `CursorRepellingButton` now feeds yaw and pitch into `FirstPersonController` after input look and before movement/interaction. Pitch persists instead of being overwritten next frame. Default strength remains 210 degrees/second (3× the original). Day 7 has **Safe Distance = 0**, so magnetism does not disappear when you approach. Physical contact still works normally. Escape, disabled player control and pausing prevent aim deflection.
 
-### Day 15: the W-triggered floor
+### Day 15: the forward-triggered floor
 
-`ForwardTrapFloor` is attached to the actual **Floor** object in the saved scene and the builder. A fresh **W** press disables the floor's renderer/collider immediately, then destroys that object. It is not a second panel sitting on a solid floor. Gamepad forward also triggers it after returning the stick to neutral; turn that option off in the Inspector for W-only behaviour. Paused/unfocused input does not trigger it.
+`ForwardTrapFloor` is attached to the actual **Floor** object in the saved scene and the builder. A fresh press of **W or the Up arrow** disables the floor's renderer/collider immediately, then destroys that object. It is not a second panel sitting on a solid floor. Gamepad forward also triggers it after returning the stick to neutral. Paused/unfocused input does not trigger it.
+
+All three inputs have their own Inspector toggles on **Floor → Forward Trap Floor**: **W Key Triggers**, **Up Arrow Triggers** and **Gamepad Forward Also Triggers**. Turn any of them off if you want a narrower trap.
 
 The pit and its large red contact button cover the chamber underneath. The green button is within E range from spawn, so look at it and press E without moving forward. A successful green press disarms the floor during the day transition. Optional collapse sound, volume and On Collapsed event are editable on Floor. Day 15 no longer uses `TrapdoorTrigger`; that component is retained for other custom scenes.
 
@@ -274,31 +277,69 @@ Both saved Day 21 and the sneaking button in TestScene are configured; the build
 
 ### Day 31, the ending
 
-The last day has **no buttons at all**. Walk through the open doorway into the outdoor space. The camera renders a skybox, and the walkable outdoor ground is now **300 × 300 metres**, with room to sprint in any direction without reaching its edge during the ending.
+The last day has **no buttons at all**. Walk through the open doorway onto a patch of land outside. The camera renders a skybox, and the ground patch is **120 × 120 metres** running from the doorway out to z=126, with a low bank around its open sides so you cannot run off the edge mid-ending.
 
-Crossing the outside trigger (centre z=9, radius 1.5m) still gives **five full seconds of free exploration**. Then a **gunshot** plays once with a **white flash** (default 0.12 seconds), followed by a fast transition to **black** (0.06 seconds). Control freezes at the shot, not when stepping outside. After a short black hold, the plain centered **Employee of the Month** card fades in with the worker's name.
+Crossing the outside trigger (centre z=9, radius 1.5m) gives **ten full seconds of free exploration**. Then a **gunshot** plays once with a **white flash** (default 0.12 seconds), followed by a fast transition to **black** (0.06 seconds). Control freezes at the shot, not when stepping outside. After a short black hold, the plain centered **Employee of the Month** card fades in with the worker's name.
 
 The exploration timer starts only once, does not restart if you move away or return indoors, and pauses while gameplay is paused or the first-person controller has released input (Escape/focus loss).
 
-#### Fantasy Skybox FREE import (required once in your Unity Editor)
+#### Step-by-step: adding the skybox and the outside patch
 
-The Render Knight pack is not included in this repository and has not been downloaded by the bot. To use the actual asset rather than Unity's default sky:
+The land patch and the ten-second timer are **already in the saved `Day 31` scene**, so after pulling you only need the skybox. The Fantasy Skybox pack cannot be committed to this repository (Asset Store licence), so it has to be imported on your machine once.
 
-1. Add [Fantasy Skybox FREE by Render Knight](https://assetstore.unity.com/packages/2d/textures-materials/sky/fantasy-skybox-free-18353) to your Unity account, then download/import it using **Package Manager > My Assets**. Import the daytime skybox material and its required textures.
-2. Select a daytime **skybox material** in the Project window.
-3. Run **Tools > Big Red Button > Day 31 > Apply Selected Skybox Material**. This saves a configured material at `Assets/LevelMaterials/Day 31 Skybox.mat` and assigns it to Day 31 only. It does not rebuild any levels. Future full builds reuse that material.
+**1. Import the pack**
 
-The skybox menu preserves the previous open scene setup. Keep the imported texture dependencies installed locally; do not publish the vendor pack as a standalone download.
+1. Open <https://assetstore.unity.com/packages/2d/textures-materials/sky/fantasy-skybox-free-18353> while signed in and press **Add to My Assets**.
+2. In Unity, open **Window > Package Manager**, switch the dropdown at the top left to **My Assets**, and search for `Fantasy Skybox FREE`.
+3. Press **Download**, then **Import**. Leave everything ticked in the import dialog and press **Import** again. It lands in `Assets/Fantasy Skybox FREE/`.
+
+**2. Point Day 31 at a sky**
+
+1. In the Project window, open `Assets/Fantasy Skybox FREE/Materials/Classic` (or `Panoramic`) and click a daytime material, for example `FS000_Day_01`. Make sure you select the **material**, not the texture.
+2. Run **Tools > Big Red Button > Day 31 > Apply Selected Skybox Material**.
+
+That copies your choice to `Assets/LevelMaterials/Day 31 Skybox.mat`, assigns it as the scene skybox, and sets the camera to **Skybox** clear flags. It saves `Day 31` and touches nothing else: no day is rebuilt, and no other level changes. Re-run it any time with a different material selected to change the sky. Later full rebuilds reuse the same configured material.
+
+If you skip this, Day 31 still works and is completable; you simply get Unity's default blue-grey sky instead of the pack's.
+
+**3. Try it**
+
+Press **Play** from `Day 31`, walk out of the doorway, and you get ten seconds to wander the patch and look at the sky before the gunshot.
+
+**Adjusting the outside yourself:** select **Outside ground** to resize the land, or the five **Outside bank** boxes to move the invisible edges. Set **Day > Ending Sequence > Exploration Duration** to change the ten seconds. If you enlarge the patch a lot, raise that duration too, or the ending will arrive before the player reaches the far side.
+
+Keep the imported texture dependencies installed locally; do not publish the vendor pack as a standalone download.
 
 - **Doorway Centre / Radius / Height Tolerance:** the outside area that starts the exploration timer. `Begin()` can also be called from a trigger or door animation.
-- **Exploration Duration:** clear-view free exploration before fading; default **5 seconds**.
+- **Exploration Duration:** clear-view free exploration before the gunshot; default **10 seconds**.
 - **Gunshot / Gunshot Volume / Flash Duration:** assigned to `Assets/Audio/gunshot.mp3`; plays once with a full white flash (default **0.12 seconds**).
 - **Fade To Black Duration / Dark Hold:** flash-to-black transition (default **0.06 seconds**) and pause before the card (default **0.5 seconds**).
 - **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
 - **Player / Frozen During Ending:** optional references, found automatically when empty. Control is disabled at the gunshot/flash, never when stepping outside.
 - **On Ending Started / On Gunshot / On Fade Started / On Card Shown:** separate Inspector events for exploration, the shot/flash, the blackout transition and the card.
 
-The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
+### LED office lights
+
+Every ceiling in every scene carries `OfficeCeilingLights`, which builds a centred grid of recessed LED panels from the ceiling's own size. The panels glow cool white, and the middle ones also cast real point lights, so a room reads as fitted-out office rather than an evenly-lit void.
+
+Menu commands:
+
+- **Tools > Big Red Button > Add LED Office Lights To Every Level** fits or refits every scene under `Assets/Scenes/`, editing them in place. It does **not** regenerate any day, so hand-made layouts and the finished Days 1-5 survive. Run it again after resizing a room to refit that room.
+- **Add LED Office Lights To Current Scene** does only the open scene; save afterwards.
+- **Remove LED Office Lights From Every Level** strips them again.
+
+Newly generated rooms are already fitted, so rebuilding Days 6-31 needs no extra step.
+
+Select a **Ceiling** object to edit its fittings:
+
+- **Ceiling / Drop Below Ceiling / Edge Margin:** which slab to line, how far the panels hang, and how far they stay from the walls.
+- **Spacing X / Spacing Z / Panel Size / Max Panels:** the grid pitch, the fitting size, and a hard cap so a huge surface cannot spawn thousands of panels.
+- **Light Colour / Emission / Show Housing:** the office white, how brightly the panel face glows, and the thin frame around each one.
+- **Cast Light / Light Intensity / Light Range / Max Real Lights:** real point lights and their cap, since forward rendering has a per-object light limit. Panels beyond the cap still glow.
+
+The panels and housings have **no colliders**, so they never block movement or an E raycast, and their lights cast no shadows. `Build()` replaces the previous fittings instead of stacking more, so re-running is safe.
+
+The rooms are otherwise plain and quiet, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
 
 `Assets/Scenes/TestScene.unity` is the sandbox: the same wiring as a real day, plus jump platforms, a floor button, and visible pressed indicators. Completing it reloads itself instead of advancing, so it stays available for testing.
 
@@ -368,7 +409,9 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
-`BigRedButton.Tests.EndingSequenceTests` covers five seconds before the shot, a single gunshot/white flash/black sequence, the outside trigger, no timer restart, pause handling, freezing at the shot, restoring controls, zero-duration settings and the Employee of the Month card.
+`BigRedButton.Tests.CeilingLightTests` covers panels hanging below the ceiling and inside the room, the absence of colliders on every fitting, the real-light cap, safe rebuilding, and the cool-white glow.
+
+`BigRedButton.Tests.EndingSequenceTests` covers the exploration window before the shot, a single gunshot/white flash/black sequence, the outside trigger, no timer restart, pause handling, freezing at the shot, restoring controls, zero-duration settings and the Employee of the Month card.
 
 `DialogueProgressionTests` covers blocking day completion until the last line is acknowledged, parent-mounted dialogue, automatic first-line triggers, cooldown/one-shot/wake behaviour, no timed skipping, reset, and the real DayLevel load hook. `ButtonWallCollisionTests` covers thin walls, sliding, corner pinning with a clickable cap, triggers, floors, wall masks and the collision toggle.
 
@@ -401,7 +444,9 @@ Manual Play Mode checklist:
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
-- On Day 31, explore outside for five seconds, then hear one gunshot with a white flash, followed by black and Employee of the Month. Controls freeze at the shot.
+- On Day 31, explore the outside patch for ten seconds, then hear one gunshot with a white flash, followed by black and Employee of the Month. Controls freeze at the shot.
+- Every room has lit LED panels overhead. Walking and pressing E under a panel is unaffected by it.
+- On Day 15, both **W** and the **Up arrow** delete the floor and drop you onto the big red button.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

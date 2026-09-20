@@ -24,6 +24,14 @@ namespace BigRedButton.Tests
                 Object.DestroyImmediate(floor);
         }
 
+        [Test]
+        public void EitherForwardKeyCollapsesTheFloor()
+        {
+            // W and the Up arrow both walk forward, so both must spring the trap.
+            trap.ProcessInput(true, false, true);
+            Assert.That(trap.HasCollapsed, Is.True);
+        }
+
         [UnityTest]
         public IEnumerator WRemovesCollisionImmediatelyThenDeletesTheFloor()
         {

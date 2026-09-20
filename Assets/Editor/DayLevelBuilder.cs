@@ -636,11 +636,33 @@ namespace BigRedButton.Editor
             Box("Door frame", new Vector3(0f, doorHeight, wallZ),
                 new Vector3(doorWidth, 0.12f, 0.6f), trimMaterial);
 
-            // Leave the doorway open: an opaque panel would hide the fantasy skybox.
-            // Large enough to sprint in any direction throughout exploration and the fade.
-            // Slightly lower than the chamber floor avoids overlapping visible surfaces.
-            Box("Outside ground", new Vector3(0f, -0.3f, 1f),
-                new Vector3(300f, 0.5f, 300f), floorMaterial);
+            // Leave the doorway open: an opaque panel would hide the sky.
+            // A patch of land big enough for ten seconds of running in any direction,
+            // with a low wall so the player cannot run off its edge.
+            Material grass = Material("Outside Ground", new Color(0.33f, 0.42f, 0.24f), 0.15f);
+            const float patchWidth = 120f;
+            // Starts just inside the doorway, so there is no gap to fall through, and runs
+            // far enough that ten seconds of sprinting never reaches the far side.
+            const float nearZ = 6f;
+            const float farZ = 126f;
+            float depthOfPatch = farZ - nearZ;
+            float patchCentre = (nearZ + farZ) * 0.5f;
+            Box("Outside ground", new Vector3(0f, -0.3f, patchCentre),
+                new Vector3(patchWidth, 0.5f, depthOfPatch), grass);
+
+            // A low bank around the three open sides. The building itself closes the fourth,
+            // so the player cannot walk off the edge of the patch during the ending.
+            float side = patchWidth * 0.5f;
+            Box("Outside bank", new Vector3(0f, 0.45f, farZ),
+                new Vector3(patchWidth, 1.5f, 0.5f), grass);
+            Box("Outside bank", new Vector3(-side, 0.45f, patchCentre),
+                new Vector3(0.5f, 1.5f, depthOfPatch), grass);
+            Box("Outside bank", new Vector3(side, 0.45f, patchCentre),
+                new Vector3(0.5f, 1.5f, depthOfPatch), grass);
+            Box("Outside bank", new Vector3(-side * 0.5f - 1f, 0.45f, nearZ),
+                new Vector3(patchWidth * 0.5f - 2f, 1.5f, 0.5f), grass);
+            Box("Outside bank", new Vector3(side * 0.5f + 1f, 0.45f, nearZ),
+                new Vector3(patchWidth * 0.5f - 2f, 1.5f, 0.5f), grass);
             Day31SkyboxSetup.ApplyConfiguredSkybox();
 
             // Light spilling in through the doorway, the only warm light in the game.
@@ -658,7 +680,7 @@ namespace BigRedButton.Editor
             var ending = level.gameObject.AddComponent<EndingSequence>();
             SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 2f));
             SetPrivate(ending, "doorwayRadius", 1.5f);
-            SetPrivate(ending, "explorationDuration", 5f);
+            SetPrivate(ending, "explorationDuration", 10f);
             SetPrivate(ending, "fadeToBlackDuration", 0.06f);
             SetPrivate(ending, "flashDuration", 0.12f);
             SetPrivate(ending, "gunshot", AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
@@ -865,8 +887,10 @@ namespace BigRedButton.Editor
 
             Box("Floor", new Vector3(0f, -0.25f, (back - front) * 0.5f),
                 new Vector3(halfWidth * 2f, 0.5f, depth), floorMaterial);
-            Box("Ceiling", new Vector3(0f, height, (back - front) * 0.5f),
+            GameObject ceiling = Box("Ceiling", new Vector3(0f, height, (back - front) * 0.5f),
                 new Vector3(halfWidth * 2f, 0.4f, depth), wallMaterial);
+            // Recessed LED panels, so a newly generated room is already fitted out.
+            CeilingLightSetup.FitCeiling(ceiling);
             Box("Wall (back)", new Vector3(0f, height * 0.5f, back),
                 new Vector3(halfWidth * 2f, height, 0.5f), wallMaterial);
             Box("Wall (front)", new Vector3(0f, height * 0.5f, -front),

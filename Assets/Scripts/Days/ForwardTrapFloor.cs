@@ -11,7 +11,11 @@ namespace BigRedButton
     {
         [Header("Input")]
         [SerializeField] private FirstPersonController player;
-        [Tooltip("Gamepad forward movement also springs the trap. Keyboard trigger is W.")]
+        [Tooltip("W springs the trap.")]
+        [SerializeField] private bool wKeyTriggers = true;
+        [Tooltip("The Up arrow springs the trap too, since it also walks forward.")]
+        [SerializeField] private bool upArrowTriggers = true;
+        [Tooltip("Gamepad forward movement also springs the trap.")]
         [SerializeField] private bool gamepadForwardAlsoTriggers = true;
         [SerializeField, Range(0.1f, 1f)] private float forwardThreshold = 0.5f;
         [Tooltip("Completing the day disarms the floor during the transition.")]
@@ -41,15 +45,20 @@ namespace BigRedButton
                 Gamepad.current.leftStick.ReadValue().y >= forwardThreshold;
             bool playable = player != null && player.isActiveAndEnabled && player.HasControl &&
                 Time.timeScale > 0f;
-            ProcessInput(Keyboard.current?.wKey.wasPressedThisFrame == true, forward, playable);
+            Keyboard keys = Keyboard.current;
+            // Either forward key springs it, so arrow-key players are not exempt.
+            bool keyPressed = keys != null &&
+                ((wKeyTriggers && keys.wKey.wasPressedThisFrame) ||
+                    (upArrowTriggers && keys.upArrowKey.wasPressedThisFrame));
+            ProcessInput(keyPressed, forward, playable);
         }
 
         /// <summary>Explicit edge handling also keeps pause/resume from consuming held input.</summary>
-        public void ProcessInput(bool wPressed, bool forwardHeld, bool hasControl)
+        public void ProcessInput(bool forwardKeyPressed, bool forwardHeld, bool hasControl)
         {
             bool freshForward = forwardHeld && !forwardWasHeld;
             forwardWasHeld = forwardHeld;
-            if (hasControl && !disarmed && (wPressed || freshForward))
+            if (hasControl && !disarmed && (forwardKeyPressed || freshForward))
                 Collapse();
         }
 

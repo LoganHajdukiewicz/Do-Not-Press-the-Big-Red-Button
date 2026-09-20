@@ -1168,6 +1168,7 @@ GameObject:
   - component: {fileID: 1038419551}
   - component: {fileID: 1038419550}
   - component: {fileID: 1038419549}
+  - component: {fileID: 800000000}
   m_Layer: 0
   m_Name: Ceiling
   m_TagString: Untagged
@@ -2407,3 +2408,29 @@ SceneRoots:
   - {fileID: 1875765135}
   - {fileID: 1469791679}
   - {fileID: 865462697}
+--- !u!114 &800000000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038419548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52b1612a2cd94015914abfeb00873b09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.OfficeCeilingLights
+  ceiling: {fileID: 0}
+  dropBelowCeiling: 0.02
+  edgeMargin: 1.6
+  spacingX: 4.5
+  spacingZ: 4.5
+  panelSize: {x: 1.2, y: 0.3}
+  maxPanels: 80
+  lightColour: {r: 0.94, g: 0.96, b: 1, a: 1}
+  emission: 2.6
+  showHousing: 1
+  castLight: 1
+  lightIntensity: 1.5
+  lightRange: 7
+  maxRealLights: 12
