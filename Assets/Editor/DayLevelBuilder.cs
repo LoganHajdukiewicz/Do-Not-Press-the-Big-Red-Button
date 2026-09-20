@@ -817,7 +817,8 @@ namespace BigRedButton.Editor
             var bucket = button.AddComponent<PaintBucket>();
             SetPrivateColour(bucket, "paintColour", paint);
             SetPrivate(bucket, "offset", offset);
-            SetPrivate(bucket, "size", 0.9f);
+            SetPrivate(bucket, "bucketDiameter", 0.9f);
+            SetPrivate(bucket, "bucketHeight", 0.36f);
             bucket.Build(); // AddComponent has already made its default preview in edit mode.
         }
 

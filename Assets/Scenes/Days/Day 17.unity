@@ -3939,7 +3939,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90c5eaf1e84fd9b0c1bd6d1ce28477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
-  bucketName: Paint Bucket
   offset: {x: -0.92, y: -1.15, z: 0}
-  size: 0.9
+  bucketName: Paint Bucket
+  bucketDiameter: 0.9
+  bucketHeight: 0.36
+  bodyColour: {r: 0.42, g: 0.43, b: 0.45, a: 1}
+  rimColour: {r: 0.28, g: 0.29, b: 0.31, a: 1}
+  rimThickness: 0.07
+  paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
+  paintBarDiameterFraction: 0.88
+  paintBarThickness: 0.11
+  paintBarLift: 0.02
