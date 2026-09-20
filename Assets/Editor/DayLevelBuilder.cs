@@ -596,7 +596,19 @@ namespace BigRedButton.Editor
                 case 30:
                 {
                     // The green button begins speaking as soon as the room loads.
-                    CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
+                    GameObject red = CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
+                    if (day == 27)
+                    {
+                        var redTalking = red.AddComponent<TalkingButton>();
+                        SetPrivateStringList(redTalking, "lines", new[]
+                        {
+                            "dontpressmedontpressmedontpressmedontpressme"
+                        });
+                        SetPrivate(redTalking, "speaksWhen", (int)TalkingButton.Trigger.DayStart);
+                        SetPrivate(redTalking, "advanceOnPress", false);
+                        SetPrivate(redTalking, "secondsPerLine", 3f);
+                        SetPrivate(redTalking, "loop", true);
+                    }
                     GameObject green = StateButton("Green Button", new Vector3(-2.2f, 0f, 2.4f),
                         level, string.Empty, startGreen: true);
                     var talking = green.AddComponent<TalkingButton>();
