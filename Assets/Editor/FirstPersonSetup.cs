@@ -27,6 +27,90 @@ namespace BigRedButton.Editor
             Selection.activeGameObject = player;
         }
 
+        [MenuItem("Tools/Big Red Button/Repair First Person Player In Current Scene")]
+        public static void RepairPlayerInCurrentScene()
+        {
+            FirstPersonController controller = Object.FindFirstObjectByType<FirstPersonController>();
+            if (controller == null)
+            {
+                Debug.LogError("No FirstPersonController was found in the open scene. " +
+                    "Use GameObject > Big Red Button > First Person Player to create one.");
+                return;
+            }
+
+            InputActionAsset actions = LoadActions();
+            if (actions == null)
+                return;
+
+            GameObject player = controller.gameObject;
+            Undo.RecordObject(player.transform, "Repair First Person Player");
+            player.transform.position = new Vector3(0f, 0.1f, -4.5f);
+            player.transform.rotation = Quaternion.identity;
+            player.transform.localScale = Vector3.one;
+            player.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            CharacterController character = player.GetComponent<CharacterController>();
+            if (character == null)
+                character = Undo.AddComponent<CharacterController>(player);
+            Undo.RecordObject(character, "Repair Character Controller");
+            character.height = 1.8f;
+            character.radius = 0.3f;
+            character.center = new Vector3(0f, 0.9f, 0f);
+            character.stepOffset = 0.3f;
+            character.slopeLimit = 45f;
+            character.skinWidth = 0.03f;
+            character.minMoveDistance = 0f;
+
+            Camera camera = player.GetComponentInChildren<Camera>(true);
+            if (camera == null)
+            {
+                var cameraObject = new GameObject("Player Camera", typeof(Camera), typeof(AudioListener));
+                cameraObject.transform.SetParent(player.transform, false);
+                camera = cameraObject.GetComponent<Camera>();
+                Undo.RegisterCreatedObjectUndo(cameraObject, "Repair Player Camera");
+            }
+            Undo.RecordObject(camera.transform, "Repair Player Camera");
+            camera.name = "Player Camera";
+            camera.tag = "MainCamera";
+            camera.transform.SetParent(player.transform, false);
+            camera.transform.localPosition = new Vector3(0f, 1.6f, 0f);
+            camera.transform.localRotation = Quaternion.identity;
+            camera.transform.localScale = Vector3.one;
+            camera.nearClipPlane = 0.03f;
+            camera.fieldOfView = 75f;
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.12f, 0.17f, 0.23f);
+            if (camera.GetComponent<AudioListener>() == null)
+                Undo.AddComponent<AudioListener>(camera.gameObject);
+
+            var interactor = player.GetComponent<PlayerInteractor>();
+            if (interactor == null)
+                interactor = Undo.AddComponent<PlayerInteractor>(player);
+            interactor.SetCamera(camera);
+            if (player.GetComponent<FirstPersonHUD>() == null)
+                Undo.AddComponent<FirstPersonHUD>(player);
+
+            Undo.RecordObject(controller, "Repair First Person Controller");
+            var serialized = new SerializedObject(controller);
+            serialized.FindProperty("inputActions").objectReferenceValue = actions;
+            serialized.FindProperty("playerCamera").objectReferenceValue = camera;
+            serialized.FindProperty("walkSpeed").floatValue = 4f;
+            serialized.FindProperty("runSpeed").floatValue = 7f;
+            serialized.FindProperty("jumpHeight").floatValue = 1.2f;
+            serialized.FindProperty("gravity").floatValue = -20f;
+            serialized.FindProperty("terminalSpeed").floatValue = 50f;
+            serialized.FindProperty("mouseSensitivity").floatValue = 0.1f;
+            serialized.FindProperty("stickSensitivity").floatValue = 150f;
+            serialized.FindProperty("pitchLimit").floatValue = 85f;
+            serialized.FindProperty("invertY").boolValue = false;
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            controller.enabled = true;
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            Selection.activeGameObject = player;
+            Debug.Log("Repaired the First Person Player: restored its safe spawn, controller, " +
+                "camera rig, normal movement, and nonverbal crosshair HUD.");
+        }
+
         [MenuItem("Tools/Big Red Button/Create Controller Test Scene")]
         public static void CreateTestScene()
         {

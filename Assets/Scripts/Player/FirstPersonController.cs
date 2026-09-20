@@ -59,6 +59,11 @@ namespace BigRedButton
                 return;
             }
 
+            // A moved Scene-view camera is easy to leave tilted, scaled, or inside
+            // geometry. The first-person rig is always a 1.6m child camera; restoring
+            // it here prevents that accidental edit from becoming a wobbly Play Mode view.
+            RestoreCameraRig();
+
             // Own the enabled state; never disable the project's shared input asset.
             ownedActions = Instantiate(inputActions);
             move = ownedActions.FindAction("Player/Move");
@@ -82,6 +87,18 @@ namespace BigRedButton
             if (buttonContact == null)
                 buttonContact = gameObject.AddComponent<PlayerButtonContact>();
             buttonContact.enabled = enabled;
+        }
+
+        private void RestoreCameraRig()
+        {
+            Transform rig = playerCamera.transform;
+            rig.localPosition = new Vector3(0f, 1.6f, 0f);
+            rig.localRotation = Quaternion.identity;
+            rig.localScale = Vector3.one;
+            playerCamera.nearClipPlane = 0.03f;
+            playerCamera.fieldOfView = 75f;
+            playerCamera.clearFlags = CameraClearFlags.SolidColor;
+            playerCamera.backgroundColor = new Color(0.12f, 0.17f, 0.23f);
         }
 
         private void OnEnable()
