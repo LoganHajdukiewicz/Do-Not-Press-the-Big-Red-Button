@@ -17,7 +17,8 @@ namespace BigRedButton
 
         [Header("Placement")]
         [SerializeField] private Vector3 offset = new Vector3(1.2f, 0f, -0.15f);
-        [SerializeField, Min(0.1f)] private float size = 0.42f;
+        [Tooltip("Bucket diameter in metres. Kept deliberately large enough to read at a glance.")]
+        [SerializeField, Min(0.1f)] private float size = 0.9f;
 
         private const string GeneratedName = "Paint Bucket (generated)";
         private readonly List<Material> materials = new List<Material>();
@@ -35,13 +36,17 @@ namespace BigRedButton
 
             Material metal = Material(new Color(0.42f, 0.43f, 0.45f), 0.72f);
             Material paint = Material(paintColour, 0.25f, emission: 0.08f);
+            float height = size * 1.05f;
 
-            Cylinder("Bucket", root.transform, new Vector3(0f, size * 0.46f, 0f),
-                new Vector3(size, size * 0.92f, size), metal);
-            Cylinder("Paint surface", root.transform, new Vector3(0f, size * 0.93f, 0f),
-                new Vector3(size * 0.83f, size * 0.06f, size * 0.83f), paint);
-            Cylinder("Bucket rim", root.transform, new Vector3(0f, size * 0.96f, 0f),
-                new Vector3(size * 1.06f, size * 0.09f, size * 1.06f), metal);
+            // A full-sized pail: the primitive is two units tall, so its Y scale is
+            // half the desired world height. Its bottom sits exactly on the floor.
+            Cylinder("Paint bucket", root.transform, new Vector3(0f, height * 0.5f, 0f),
+                new Vector3(size, height * 0.5f, size), metal);
+            // A thick, unmistakable band of paint across the open top—not a tiny dot.
+            Cylinder("Red paint bar", root.transform, new Vector3(0f, height + 0.055f, 0f),
+                new Vector3(size * 0.88f, 0.055f, size * 0.88f), paint);
+            Cylinder("Bucket rim", root.transform, new Vector3(0f, height + 0.025f, 0f),
+                new Vector3(size * 1.08f, 0.035f, size * 1.08f), metal);
         }
 
         private void Clear()

@@ -12,8 +12,11 @@ namespace BigRedButton
     [DisallowMultipleComponent]
     public sealed class ColourblindWorldFilter : MonoBehaviour
     {
-        [Tooltip("Also tints unlit/emissive surfaces such as the ceiling strips.")]
+        [Tooltip("The single indistinguishable red/green colour used by the entire room.")]
+        [SerializeField] private Color colourblindColour = new Color(0.62f, 0.55f, 0.16f);
+        [Tooltip("Also colours emissive surfaces such as the ceiling strips.")]
         [SerializeField] private bool includeEmission = true;
+        [SerializeField, Min(0f)] private float emissionStrength = 1.8f;
 
         private readonly List<Material> generatedMaterials = new List<Material>();
 
@@ -57,30 +60,23 @@ namespace BigRedButton
         {
             var copy = new Material(source);
             generatedMaterials.Add(copy);
-            Tint(copy, "_BaseColor");
-            Tint(copy, "_Color");
+            SetUniformColour(copy, "_BaseColor");
+            SetUniformColour(copy, "_Color");
             if (includeEmission)
-                Tint(copy, "_EmissionColor");
+                SetUniformColour(copy, "_EmissionColor", emissionStrength);
             return copy;
         }
 
-        private static void Tint(Material material, string property)
+        private void SetUniformColour(Material material, string property, float brightness = 1f)
         {
             if (!material.HasProperty(property))
                 return;
-            Color original = material.GetColor(property);
-            material.SetColor(property, Deuteranopia(original));
-        }
-
-        // A standard red/green deficiency approximation. It preserves brightness but
-        // brings red and green hues toward the same yellow-brown range.
-        private static Color Deuteranopia(Color colour)
-        {
-            return new Color(
-                colour.r * 0.625f + colour.g * 0.375f,
-                colour.r * 0.700f + colour.g * 0.300f,
-                colour.g * 0.300f + colour.b * 0.700f,
-                colour.a);
+            // Keep a transparent material transparent, but make every visible hue
+            // the same. There is no remaining wall/floor/button colour information.
+            float alpha = material.GetColor(property).a;
+            Color uniform = colourblindColour * brightness;
+            uniform.a = alpha;
+            material.SetColor(property, uniform);
         }
 
         private void OnDestroy()
