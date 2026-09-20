@@ -17,21 +17,33 @@ namespace BigRedButton.Tests
                 Is.EqualTo(Enumerable.Range(6, 26).ToArray()));
         }
 
-        [TestCase("1")]
-        [TestCase("2")]
-        [TestCase("3")]
-        [TestCase("4")]
-        [TestCase("5")]
-        public void FinishedDayIsNeverInTheRebuildPlan(string day)
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        public void FinishedDayIsNeverInTheRebuildPlan(int day)
         {
-            // Compare ints against ints. Passing the string straight to Does.Not.Contain
-            // always passes, because a string never equals an int, which would hide a
-            // regression that made Days 1-5 rebuildable.
-            int protectedDay = int.Parse(day);
             int[] plan = DayLevelBuilder.RebuildDayNumbers().ToArray();
-            Assert.That(plan, Does.Not.Contain(protectedDay),
-                $"Day {protectedDay} is finished work and must never be regenerated.");
+
+            // Deliberately plain LINQ instead of Does.Not.Contain. That constraint has
+            // both (object) and (string) overloads, so passing an int is an ambiguous
+            // call, and passing a string compiles but always passes: a string never
+            // equals an int, which would hide Days 1-5 becoming rebuildable.
+            Assert.That(plan.Contains(day), Is.False,
+                $"Day {day} is finished work and must never be regenerated. Plan: " +
+                string.Join(", ", plan));
             Assert.That(plan, Is.Not.Empty, "A silently empty plan must not pass this test.");
+        }
+
+        [Test]
+        public void TheGuardItselfIsTestable()
+        {
+            // Proves the assertion above can fail: the same check against a day that IS
+            // in the plan must report true, so a passing suite means something.
+            int[] plan = DayLevelBuilder.RebuildDayNumbers().ToArray();
+            Assert.That(plan.Contains(6), Is.True, "Day 6 is rebuildable, so it is in the plan.");
+            Assert.That(plan.Contains(31), Is.True, "Day 31 is rebuildable, so it is in the plan.");
         }
 
         [Test]
