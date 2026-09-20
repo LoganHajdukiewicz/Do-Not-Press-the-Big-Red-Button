@@ -42,6 +42,9 @@ namespace BigRedButton.Tests
         private TalkingButton AddDialogue(params string[] lines)
         {
             var talking = button.gameObject.AddComponent<TalkingButton>();
+            // This suite retains coverage of the optional legacy per-click popup mode.
+            // DialogueProgressionTests covers the new default completion gate.
+            Set(talking, "advanceOnPress", false);
             Set(talking, "speaksWhen", TalkingButton.Trigger.ButtonPress);
             Set(talking, "lines", new List<string>(lines));
             return talking;

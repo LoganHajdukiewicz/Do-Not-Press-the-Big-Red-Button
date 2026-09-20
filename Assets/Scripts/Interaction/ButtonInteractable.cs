@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,8 +16,8 @@ namespace BigRedButton
         [SerializeField, Min(0f)] private float cooldown = 0.25f;
 
         [Header("Click requirement")]
-        [Tooltip("Active clicks needed to fire On Pressed. Grey/wake-up clicks do not count. " +
-            "After completion the count restarts, unless One Shot is enabled.")]
+        [Tooltip("Minimum active clicks needed to fire On Pressed. Dialogue must also be fully acknowledged. " +
+            "Grey/wake-up clicks do not count. After completion the count restarts, unless One Shot is enabled.")]
         [SerializeField, Min(1)] private int requiredPresses = 1;
 
         [Header("Pressed indicator (debug)")]
@@ -25,13 +26,22 @@ namespace BigRedButton
         [Tooltip("Optional object shown when this button is pressed. Leave empty for none.")]
         [SerializeField] private GameObject pressedIndicator;
 
-        [Tooltip("Runs once the required active clicks have been reached, not for wake-up clicks.")]
+        [Tooltip("Runs after the required active clicks AND the last dialogue line is acknowledged, never for wake-up clicks.")]
         [SerializeField] private UnityEvent onPressed = new UnityEvent();
 
         private bool hasBeenPressed;
         private bool hasCompleted;
         private bool dispatching;
         private int activePresses;
+        private readonly List<TalkingButton> dialogueControllers = new List<TalkingButton>();
+
+        internal void RegisterDialogue(TalkingButton dialogue)
+        {
+            if (!dialogueControllers.Contains(dialogue))
+                dialogueControllers.Add(dialogue);
+        }
+
+        internal void UnregisterDialogue(TalkingButton dialogue) => dialogueControllers.Remove(dialogue);
         private float nextPressTime = float.NegativeInfinity;
         private string originalPrompt;
         private bool hasOriginalPrompt;
@@ -107,17 +117,7 @@ namespace BigRedButton
 
             bool disabledAtPress = IsDeactivated;
             bool greenAtPress = CountsAsGreen;
-            if (!disabledAtPress)
-                activePresses++;
-            bool completes = !disabledAtPress && activePresses >= RequiredPresses;
-            if (completes)
-            {
-                activePresses = 0;
-                hasCompleted = true;
-            }
-
-            var press = new ButtonPress(++AcceptedPressCount, disabledAtPress, greenAtPress, completes);
-            LastPress = press;
+            int clickNumber = ++AcceptedPressCount;
             hasBeenPressed = true;
             LastPressedFrame = Time.frameCount;
             nextPressTime = Time.time + cooldown;
@@ -128,6 +128,24 @@ namespace BigRedButton
             dispatching = true;
             try
             {
+                bool dialogueConsumedClick = false;
+                // Present dialogue before deciding completion. The final displayed line
+                // needs a further acknowledgement click, so it is never cut off by a load.
+                foreach (var dialogue in dialogueControllers.ToArray())
+                    if (dialogue != null && dialogue.ConsumeClick())
+                        dialogueConsumedClick = true;
+
+                if (!disabledAtPress)
+                    activePresses = Mathf.Min(RequiredPresses, activePresses + 1);
+                bool completes = !disabledAtPress && !dialogueConsumedClick &&
+                    activePresses >= RequiredPresses;
+                if (completes)
+                {
+                    activePresses = 0;
+                    hasCompleted = true;
+                }
+                var press = new ButtonPress(clickNumber, disabledAtPress, greenAtPress, completes);
+                LastPress = press;
                 Pressed?.Invoke();
                 PressAccepted?.Invoke(press);
                 if (press.CompletesSequence)
@@ -170,6 +188,9 @@ namespace BigRedButton
                 LastPress = default;
             nextPressTime = float.NegativeInfinity;
             ApplyIndicator(false);
+            foreach (var dialogue in dialogueControllers.ToArray())
+                if (dialogue != null)
+                    dialogue.ResetClickProgression();
         }
 
         private void ApplyIndicator(bool pressed)

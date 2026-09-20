@@ -907,6 +907,11 @@ MonoBehaviour:
   orbitRadius: 3.5
   orbitSpeed: 110
   orbitSpeedMultiplier: 2
+  collideWithWalls: 1
+  wallLayers:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  wallSkin: 0.03
   patrolOffset: {x: 0, y: 0, z: 6}
   patrolPause: 0.5
   patrolInWorldSpace: 1

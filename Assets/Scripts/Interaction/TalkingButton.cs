@@ -32,6 +32,12 @@ namespace BigRedButton
         [Tooltip("Seconds to wait before the first line.")]
         [SerializeField, Min(0f)] private float startDelay;
 
+        [Header("Click-through conversation")]
+        [Tooltip("Each click shows the next line instead of completing the button. After the final line, " +
+            "one more click acknowledges it and allows the outcome. Disables timed advance/looping. " +
+            "Uncheck for the legacy timed or per-click popup behaviour.")]
+        [SerializeField] private bool advanceOnPress = true;
+
         [Header("When it speaks")]
         [SerializeField] private Trigger speaksWhen = Trigger.PlayerIsNear;
         [Tooltip("Metres the player must be within to set it talking.")]
@@ -74,6 +80,10 @@ namespace BigRedButton
         private bool waitingToStart;
         private bool talking;
         private bool finished;
+        private int dialogueCursor = -1;
+        private bool dialogueExhausted;
+        public bool DialogueExhausted => dialogueExhausted;
+        private bool ClickThrough => advanceOnPress && button != null;
 
         public string CurrentLine => talking && !waitingToStart && lineIndex < lines.Count
             ? lines[lineIndex] : string.Empty;
@@ -94,6 +104,7 @@ namespace BigRedButton
             button = GetComponentInChildren<ButtonInteractable>();
             if (button != null)
             {
+                button.RegisterDialogue(this);
                 button.OnPressed.AddListener(HandleCompletedPress);
                 button.PressAccepted += HandleClick;
             }
@@ -106,19 +117,61 @@ namespace BigRedButton
         {
             if (button == null)
                 return;
+            button.UnregisterDialogue(this);
             button.OnPressed.RemoveListener(HandleCompletedPress);
             button.PressAccepted -= HandleClick;
         }
 
         private void HandleCompletedPress()
         {
-            if (silenceOnPress && speaksWhen != Trigger.ButtonPress)
+            if (!ClickThrough && silenceOnPress && speaksWhen != Trigger.ButtonPress)
                 Silence();
+        }
+
+        /// <summary>True consumes this press for dialogue; false allows the button's outcome.</summary>
+        internal bool ConsumeClick()
+        {
+            if (!isActiveAndEnabled || !ClickThrough || lines.Count == 0 || dialogueExhausted)
+                return false;
+            int next = dialogueCursor + 1;
+            if (next >= lines.Count)
+            {
+                dialogueExhausted = true;
+                Silence();
+                return false;
+            }
+            ShowClickLine(next);
+            return true;
+        }
+
+        internal void ResetClickProgression()
+        {
+            if (source != null)
+                source.Stop();
+            talking = false;
+            waitingToStart = false;
+            finished = false;
+            dialogueCursor = -1;
+            dialogueExhausted = false;
+        }
+
+        private void ShowClickLine(int index)
+        {
+            if (source != null)
+                source.Stop();
+            talking = true;
+            finished = false;
+            lineIndex = index;
+            lineTimer = 0f;
+            startTimer = 0f;
+            waitingToStart = false;
+            BeginLine();
+            onStartedTalking.Invoke();
         }
 
         private void HandleClick(ButtonPress press)
         {
-            if (!isActiveAndEnabled || speaksWhen != Trigger.ButtonPress)
+            if (!isActiveAndEnabled || ClickThrough || speaksWhen != Trigger.ButtonPress)
                 return;
             if (lines.Count == 0)
                 return;
@@ -148,7 +201,8 @@ namespace BigRedButton
         /// <summary>Starts the lines. Can be called from another button's event.</summary>
         public void StartTalking()
         {
-            if (talking || (finished && !canRetrigger) || lines.Count == 0)
+            if (talking || (finished && !canRetrigger) || lines.Count == 0 ||
+                (ClickThrough && (dialogueExhausted || dialogueCursor >= 0)))
                 return;
 
             talking = true;
@@ -193,6 +247,11 @@ namespace BigRedButton
                 return;
             }
 
+            // Talking buttons wait for deliberate clicks. Time alone cannot consume
+            // dialogue, and a looping line list must never prevent day completion.
+            if (ClickThrough)
+                return;
+
             lineTimer += Time.deltaTime;
             if (lineTimer < secondsPerLine)
                 return;
@@ -223,6 +282,8 @@ namespace BigRedButton
 
         private void BeginLine()
         {
+            if (ClickThrough)
+                dialogueCursor = lineIndex;
             if (source == null && (voice != null || lineClips.Count > 0))
             {
                 source = gameObject.AddComponent<AudioSource>();
@@ -248,7 +309,7 @@ namespace BigRedButton
 
         private bool ShouldStart()
         {
-            if (finished && !canRetrigger)
+            if ((finished && !canRetrigger) || (ClickThrough && (dialogueExhausted || dialogueCursor >= 0)))
                 return false;
 
             if (player == null)

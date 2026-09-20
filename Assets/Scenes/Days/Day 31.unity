@@ -1372,7 +1372,10 @@ MonoBehaviour:
   doorwayRadius: 1.5
   doorwayHeightTolerance: 2.5
   explorationDuration: 5
-  fadeToBlackDuration: 2
+  gunshot: {fileID: 8300000, guid: 749ced96bccf491191488651ae27f168, type: 3}
+  gunshotVolume: 1
+  flashDuration: 0.12
+  fadeToBlackDuration: 0.06
   darkHold: 0.5
   cardText: 'Employee of the Month
 
@@ -1383,6 +1386,9 @@ MonoBehaviour:
   player: {fileID: 0}
   frozenDuringEnding: {fileID: 0}
   onEndingStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onGunshot:
     m_PersistentCalls:
       m_Calls: []
   onFadeStarted:

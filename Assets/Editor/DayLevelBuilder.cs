@@ -21,6 +21,7 @@ namespace BigRedButton.Editor
         private const string OpeningClipPath = "Assets/Audio/Opening.mp3";
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
+        private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
         private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
@@ -225,8 +226,9 @@ namespace BigRedButton.Editor
             GameObject sneak = SpecialButton("Sneaking Green Button", new Vector3(0f, 0f, -2.6f),
                 "STAYS BEHIND YOU");
             SetStartGreen(sneak);
-            var behind = sneak.AddComponent<ButtonMover>();
+            var behind = sneak.transform.parent.gameObject.AddComponent<ButtonMover>();
             SetPrivate(behind, "mode", (int)ButtonMover.MoveMode.StayBehindPlayer);
+            SetPrivate(behind, "collideWithWalls", true);
             ResolveByColour(sneak, level);
 
             // A plain moving button, for platform-style days.
@@ -583,6 +585,7 @@ namespace BigRedButton.Editor
                     SetPrivate(mover, "mode", (int)ButtonMover.MoveMode.StayBehindPlayer);
                     SetPrivate(mover, "orbitRadius", 3.5f);
                     SetPrivate(mover, "orbitSpeed", 110f);
+                    SetPrivate(mover, "collideWithWalls", true);
                     break;
                 }
 
@@ -656,7 +659,9 @@ namespace BigRedButton.Editor
             SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 2f));
             SetPrivate(ending, "doorwayRadius", 1.5f);
             SetPrivate(ending, "explorationDuration", 5f);
-            SetPrivate(ending, "fadeToBlackDuration", 2f);
+            SetPrivate(ending, "fadeToBlackDuration", 0.06f);
+            SetPrivate(ending, "flashDuration", 0.12f);
+            SetPrivate(ending, "gunshot", AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
 
             // No red button to fail and no green button to complete. Walking into the
             // doorway starts the ending itself, so nothing else needs wiring here.
@@ -699,7 +704,8 @@ namespace BigRedButton.Editor
             SetPrivate(talking, "speaksWhen", (int)TalkingButton.Trigger.PlayerIsNear);
             SetPrivate(talking, "triggerDistance", 6f);
             SetPrivate(talking, "secondsPerLine", 4f);
-            SetPrivate(talking, "loop", true);
+            SetPrivate(talking, "advanceOnPress", true);
+            SetPrivate(talking, "loop", false);
         }
 
         /// <summary>Day 6: a field of red buttons with one green button hidden among them.</summary>

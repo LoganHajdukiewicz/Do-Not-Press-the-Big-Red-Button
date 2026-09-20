@@ -44,6 +44,12 @@ namespace BigRedButton
         [Tooltip("Speed multiplier while circling, relative to Speed.")]
         [SerializeField, Range(0.5f, 4f)] private float orbitSpeedMultiplier = 2f;
 
+        [Header("Wall collision (stay behind)")]
+        [Tooltip("Sweep the whole assembly against walls. It can slide along walls, but cannot pass through corners.")]
+        [SerializeField] private bool collideWithWalls = true;
+        [SerializeField] private LayerMask wallLayers = Physics.DefaultRaycastLayers;
+        [SerializeField, Min(0.001f)] private float wallSkin = 0.03f;
+
         [Header("Patrol")]
         [SerializeField] private Vector3 patrolOffset = new Vector3(0f, 0f, 6f);
         [Tooltip("Seconds it waits at each end of the route.")]
@@ -71,6 +77,13 @@ namespace BigRedButton
         private bool towardsEnd = true;
         private bool running = true;
         private bool announcedArrival;
+        private ButtonInteractable button;
+        private bool hasCollisionShape;
+        private Vector3 collisionCentre;
+        private float collisionRadius;
+        private float collisionHeight;
+
+        public bool IsBlockedByWall { get; private set; }
 
         public bool IsMoving { get; private set; }
         public UnityEngine.Events.UnityEvent OnReachedPlayer => onReachedPlayer;
@@ -82,17 +95,29 @@ namespace BigRedButton
                 ? patrolOffset : transform.TransformVector(patrolOffset));
             startHeight = transform.position.y;
 
-            var button = GetComponentInChildren<ButtonInteractable>();
+            CacheCollisionShape();
+            button = GetComponentInChildren<ButtonInteractable>();
             if (stopOnPress && button != null)
                 button.OnPressed.AddListener(Stop);
         }
 
-        public void Stop() => running = false;
+        private void OnDestroy()
+        {
+            if (button != null)
+                button.OnPressed.RemoveListener(Stop);
+        }
+
+        public void Stop()
+        {
+            running = false;
+            IsMoving = false;
+        }
 
         private void Update()
         {
             IsMoving = false;
-            if (!running)
+            IsBlockedByWall = false;
+            if (!running || Time.timeScale <= 0f)
                 return;
 
             if (delayTimer < startDelay)
@@ -174,9 +199,8 @@ namespace BigRedButton
             Vector3 offset = step * Vector3.forward * orbitRadius;
             Vector3 destination = player.position + offset;
             destination.y = lockHeight ? startHeight : transform.position.y;
-            transform.position = Vector3.MoveTowards(transform.position, destination,
-                speed * orbitSpeedMultiplier * Time.deltaTime);
-            IsMoving = true;
+            MoveWithWalls(Vector3.MoveTowards(transform.position, destination,
+                speed * orbitSpeedMultiplier * Time.deltaTime));
 
             if (!faceThePlayer)
                 return;
@@ -184,6 +208,92 @@ namespace BigRedButton
             facePlayer.y = 0f;
             if (facePlayer.sqrMagnitude > 0.0001f)
                 transform.rotation = Quaternion.LookRotation(facePlayer.normalized, Vector3.up);
+        }
+
+        private void CacheCollisionShape()
+        {
+            Physics.SyncTransforms();
+            Bounds bounds = default;
+            hasCollisionShape = false;
+            foreach (Collider part in GetComponentsInChildren<Collider>())
+            {
+                if (!part.enabled || part.isTrigger)
+                    continue;
+                if (!hasCollisionShape)
+                    bounds = part.bounds;
+                else
+                    bounds.Encapsulate(part.bounds);
+                hasCollisionShape = true;
+            }
+            if (!hasCollisionShape)
+                return;
+
+            // Conservative upright box covers pedestal, housing and cap, including
+            // their corners at every yaw. Its bottom is raised slightly off the floor.
+            collisionRadius = Mathf.Max(0.05f,
+                new Vector2(bounds.extents.x, bounds.extents.z).magnitude);
+            collisionHeight = Mathf.Max(0.05f, bounds.size.y - wallSkin * 2f);
+            Vector3 centre = new Vector3(bounds.center.x,
+                bounds.min.y + wallSkin + collisionHeight * 0.5f, bounds.center.z);
+            collisionCentre = transform.InverseTransformPoint(centre);
+        }
+
+        private void MoveWithWalls(Vector3 destination)
+        {
+            Vector3 original = transform.position;
+            IsBlockedByWall = false;
+            if (!collideWithWalls || !hasCollisionShape)
+            {
+                transform.position = destination;
+                IsMoving = (destination - original).sqrMagnitude > 0.000001f;
+                return;
+            }
+
+            Physics.SyncTransforms();
+            Vector3 position = original;
+            Vector3 remaining = destination - original;
+            Vector3 centreOffset = transform.TransformPoint(collisionCentre) - original;
+            Vector3 halfExtents = new Vector3(collisionRadius, collisionHeight * 0.5f, collisionRadius);
+            // A sweep, then up to two wall slides. No teleporting to the desired orbit
+            // position: when both walls block a corner, the button stays there.
+            for (int slide = 0; slide < 3 && remaining.sqrMagnitude > 0.000001f; slide++)
+            {
+                float distance = remaining.magnitude;
+                Vector3 direction = remaining / distance;
+                Vector3 centre = position + centreOffset;
+                RaycastHit nearest = default;
+                float nearestDistance = distance + wallSkin;
+                foreach (RaycastHit hit in Physics.BoxCastAll(centre, halfExtents,
+                    direction, Quaternion.identity, distance + wallSkin, wallLayers,
+                    QueryTriggerInteraction.Ignore))
+                {
+                    Collider obstacle = hit.collider;
+                    if (obstacle == null || obstacle.transform.IsChildOf(transform) ||
+                        (player != null && obstacle.transform.IsChildOf(player)) ||
+                        obstacle.GetComponentInParent<PlayerInteractor>() != null ||
+                        Physics.GetIgnoreLayerCollision(gameObject.layer, obstacle.gameObject.layer) ||
+                        Vector3.Dot(hit.normal, direction) >= -0.0001f)
+                        continue;
+                    if (hit.distance <= nearestDistance)
+                    {
+                        nearest = hit;
+                        nearestDistance = hit.distance;
+                    }
+                }
+                if (nearest.collider == null)
+                {
+                    position += remaining;
+                    break;
+                }
+                IsBlockedByWall = true;
+                float travel = Mathf.Clamp(nearestDistance - wallSkin, 0f, distance);
+                position += direction * travel;
+                remaining = Vector3.ProjectOnPlane(remaining - direction * travel, nearest.normal);
+                if (lockHeight)
+                    remaining.y = 0f;
+            }
+            transform.position = position;
+            IsMoving = (position - original).sqrMagnitude > 0.000001f;
         }
 
         private void UpdatePatrol()

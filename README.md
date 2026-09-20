@@ -18,6 +18,8 @@ See [controller and day system setup, customization, and tests](Docs/FirstPerson
 
 ## Game design
 
+Talking buttons advance one bit of dialogue per accepted click instead of immediately ending the day. After the last line, the next click acknowledges it and permits day completion. Dialogue is never skipped by its timer.
+
 Each Day is a Level. 
 (Robot Voice is RoboSoft 3 from: https://www.tetyys.com/SAPI4/)
 
@@ -70,6 +72,6 @@ Day 19: If you're facing north the button is red, as you turn around the button 
 
 Day 20: Red Buttons will follow you around. They will want to be pressed. 
 
-Day 21: The Green Button spawns behind the player and tries to stay behind the player. As they turn to see it, it turns around them so it is behind them. The player must turn quickly and press the button. 
+Day 21: The Green Button spawns behind the player and tries to stay behind the player. As they turn to see it, it turns around them so it is behind them. It collides with walls, so the player can wrangle it into a corner and press it.
 
-LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside and freely explore this large world for five seconds. Then the screen gently fades to black. No gunshot. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}
+LAST LEVEL (DAY 31): There are no buttons. There is nothing to decide. For the first time, there is only a door. A door that leads to a beautiful outside. You step outside and freely explore this large world for five seconds. Then a gunshot and white flash cut the exploration short, followed by black. Employee of the Month {WORKER-FIRSTNAME} {WORKER-LASTNAME}

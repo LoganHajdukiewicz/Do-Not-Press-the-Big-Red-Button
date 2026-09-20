@@ -4,14 +4,14 @@ using UnityEngine.Events;
 namespace BigRedButton
 {
     /// <summary>
-    /// Day 31: step outside, explore freely for five seconds, then fade to black
-    /// and receive the Employee of the Month card. No gunshot or white flash.
+    /// Day 31: five seconds outside, a gunshot and white flash, then black
+    /// and the Employee of the Month card.
     /// </summary>
     [DefaultExecutionOrder(-40)]
     [DisallowMultipleComponent]
     public sealed class EndingSequence : MonoBehaviour
     {
-        private enum Stage { Waiting, Exploring, Fading, Dark, Card, Finished }
+        private enum Stage { Waiting, Exploring, Flash, Fading, Dark, Card, Finished }
 
         [Header("Outside trigger")]
         [Tooltip("World-space centre of the area just beyond the doorway.")]
@@ -23,9 +23,14 @@ namespace BigRedButton
         [Tooltip("Seconds of free exploration after stepping outside, before any fade begins.")]
         [SerializeField, Min(0f)] private float explorationDuration = 5f;
 
-        [Header("Fade to black")]
-        [Tooltip("Seconds to fade the world to black. Movement remains available during the fade.")]
-        [SerializeField, Min(0f)] private float fadeToBlackDuration = 2f;
+        [Header("Gunshot and white flash")]
+        [SerializeField] private AudioClip gunshot;
+        [SerializeField, Range(0f, 1f)] private float gunshotVolume = 1f;
+        [SerializeField, Min(0f)] private float flashDuration = 0.12f;
+
+        [Header("Blackout")]
+        [Tooltip("Seconds to take the white flash to black.")]
+        [SerializeField, Min(0f)] private float fadeToBlackDuration = 0.06f;
         [Tooltip("Seconds of darkness before the card begins to appear.")]
         [SerializeField, Min(0f)] private float darkHold = 0.5f;
 
@@ -41,12 +46,13 @@ namespace BigRedButton
         [Header("Player")]
         [Tooltip("Found from the player controller if left empty.")]
         [SerializeField] private Transform player;
-        [Tooltip("Disabled only AFTER the screen becomes fully black, never during exploration.")]
+        [Tooltip("Disabled at the gunshot/flash, after free exploration.")]
         [SerializeField] private MonoBehaviour frozenDuringEnding;
 
         [Header("Events")]
         [Tooltip("Fires when the player steps outside and the exploration timer starts.")]
         [SerializeField] private UnityEvent onEndingStarted = new UnityEvent();
+        [SerializeField] private UnityEvent onGunshot = new UnityEvent();
         [SerializeField] private UnityEvent onFadeStarted = new UnityEvent();
         [SerializeField] private UnityEvent onCardShown = new UnityEvent();
 
@@ -54,15 +60,19 @@ namespace BigRedButton
         private GUIStyle style;
         private float timer;
         private bool controlsFrozen;
+        private AudioSource shotSource;
 
         public float OverlayAlpha { get; private set; }
-        public Color OverlayColour => Color.black;
+        public Color OverlayColour { get; private set; } = Color.black;
+        public bool HasFiredGunshot { get; private set; }
+        public bool IsFlashing => stage == Stage.Flash;
         public float CardAlpha { get; private set; }
         public bool HasStarted => stage != Stage.Waiting;
         public bool IsExploring => stage == Stage.Exploring;
         public bool IsFading => stage == Stage.Fading;
         public string CardText => WorkerIdentity.Format(cardText);
         public UnityEvent OnEndingStarted => onEndingStarted;
+        public UnityEvent OnGunshot => onGunshot;
         public UnityEvent OnFadeStarted => onFadeStarted;
         public UnityEvent OnCardShown => onCardShown;
 
@@ -126,7 +136,7 @@ namespace BigRedButton
         {
             if (deltaTime <= 0f || Time.timeScale <= 0f)
                 return;
-            if ((stage == Stage.Exploring || stage == Stage.Fading) && !CanExplore())
+            if (stage == Stage.Exploring && !CanExplore())
                 return;
 
             timer += deltaTime;
@@ -135,18 +145,38 @@ namespace BigRedButton
                 case Stage.Exploring:
                     if (timer < explorationDuration)
                         return;
+                    stage = Stage.Flash;
+                    timer = 0f;
+                    OverlayAlpha = 1f;
+                    OverlayColour = Color.white;
+                    FreezeControls();
+                    HasFiredGunshot = true;
+                    if (gunshot != null)
+                    {
+                        if (shotSource == null)
+                        {
+                            shotSource = gameObject.AddComponent<AudioSource>();
+                            shotSource.playOnAwake = false;
+                            shotSource.spatialBlend = 0f;
+                        }
+                        shotSource.PlayOneShot(gunshot, gunshotVolume);
+                    }
+                    onGunshot.Invoke();
+                    break;
+                case Stage.Flash:
+                    if (timer < flashDuration)
+                        return;
                     stage = Stage.Fading;
                     timer = 0f;
                     onFadeStarted.Invoke();
                     break;
                 case Stage.Fading:
-                    OverlayAlpha = fadeToBlackDuration <= 0f ? 1f :
-                        Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(timer / fadeToBlackDuration));
-                    if (OverlayAlpha < 1f)
+                    float fade = fadeToBlackDuration <= 0f ? 1f : Mathf.Clamp01(timer / fadeToBlackDuration);
+                    OverlayColour = Color.Lerp(Color.white, Color.black, fade);
+                    if (fade < 1f)
                         return;
                     stage = Stage.Dark;
                     timer = 0f;
-                    FreezeControls();
                     break;
                 case Stage.Dark:
                     if (timer < darkHold)
@@ -173,7 +203,7 @@ namespace BigRedButton
 
         private void OnEnable()
         {
-            if (stage is Stage.Dark or Stage.Card or Stage.Finished)
+            if (stage is Stage.Flash or Stage.Fading or Stage.Dark or Stage.Card or Stage.Finished)
                 FreezeControls();
         }
 
@@ -182,6 +212,8 @@ namespace BigRedButton
             if (controlsFrozen && frozenDuringEnding != null)
                 frozenDuringEnding.enabled = true;
             controlsFrozen = false;
+            if (shotSource != null)
+                shotSource.Stop();
         }
 
         private void OnGUI()
@@ -192,7 +224,7 @@ namespace BigRedButton
             Color previousColour = GUI.color;
             int previousDepth = GUI.depth;
             GUI.depth = -100;
-            GUI.color = new Color(0f, 0f, 0f, OverlayAlpha);
+            GUI.color = new Color(OverlayColour.r, OverlayColour.g, OverlayColour.b, OverlayAlpha);
             GUI.DrawTexture(full, Texture2D.whiteTexture);
             if (CardAlpha > 0f)
             {

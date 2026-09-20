@@ -262,6 +262,7 @@ namespace BigRedButton.Tests
             GameObject cap = CreateCap();
             cap.transform.position = new Vector3(0f, 0f, 2f);
             var talking = cap.AddComponent<TalkingButton>();
+            Set(talking, "advanceOnPress", false);
             Set(talking, "speaksWhen", (int)TalkingButton.Trigger.PlayerIsNear);
             Set(talking, "secondsPerLine", 0.6f);
             Set(talking, "triggerDistance", 5f);
