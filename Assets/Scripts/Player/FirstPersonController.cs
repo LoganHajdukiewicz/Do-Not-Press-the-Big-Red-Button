@@ -91,9 +91,20 @@ namespace BigRedButton
 
         private void RestoreCameraRig()
         {
+            transform.localScale = Vector3.one;
             Transform rig = playerCamera.transform;
             rig.localPosition = new Vector3(0f, 1.6f, 0f);
             rig.localRotation = Quaternion.identity;
+            RestoreCameraVisuals();
+        }
+
+        // Camera position/scale/FOV have no gameplay reason to change. Keep them stable
+        // every frame, while leaving local rotation alone so normal mouse look still works.
+        private void RestoreCameraVisuals()
+        {
+            Transform rig = playerCamera.transform;
+            transform.localScale = Vector3.one;
+            rig.localPosition = new Vector3(0f, 1.6f, 0f);
             rig.localScale = Vector3.one;
             playerCamera.nearClipPlane = 0.03f;
             playerCamera.fieldOfView = 75f;
@@ -146,6 +157,8 @@ namespace BigRedButton
 
         private void Update()
         {
+            if (playerCamera != null)
+                RestoreCameraVisuals();
             if (!hasFocus)
                 return;
 
