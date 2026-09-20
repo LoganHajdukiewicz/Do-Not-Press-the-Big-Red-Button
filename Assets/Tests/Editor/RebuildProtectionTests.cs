@@ -24,7 +24,14 @@ namespace BigRedButton.Tests
         [TestCase("5")]
         public void FinishedDayIsNeverInTheRebuildPlan(string day)
         {
-            Assert.That(DayLevelBuilder.RebuildDayNumbers(), Does.Not.Contain(day));
+            // Compare ints against ints. Passing the string straight to Does.Not.Contain
+            // always passes, because a string never equals an int, which would hide a
+            // regression that made Days 1-5 rebuildable.
+            int protectedDay = int.Parse(day);
+            int[] plan = DayLevelBuilder.RebuildDayNumbers().ToArray();
+            Assert.That(plan, Does.Not.Contain(protectedDay),
+                $"Day {protectedDay} is finished work and must never be regenerated.");
+            Assert.That(plan, Is.Not.Empty, "A silently empty plan must not pass this test.");
         }
 
         [Test]
