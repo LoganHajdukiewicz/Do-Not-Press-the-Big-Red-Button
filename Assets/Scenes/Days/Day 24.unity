@@ -184510,7 +184510,7 @@ MonoBehaviour:
   patrolOffset: {x: 0, y: 0, z: 6}
   patrolPause: 0.5
   patrolInWorldSpace: 1
-  oneWayPathOffset: {x: 0, y: 0, z: -5.8}
+  oneWayPathOffset: {x: 0, y: 0, z: -10002.4}
   oneWayPathInWorldSpace: 1
   stopOnPress: 1
   lockHeight: 1
