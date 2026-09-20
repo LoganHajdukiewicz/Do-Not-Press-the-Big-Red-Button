@@ -119,84 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1100010
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1100011}
-  - component: {fileID: 1100012}
-  m_Layer: 0
-  m_Name: Start Menu
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1100011
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100010}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1100012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b742bb5a1449df955c85ba777a18e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.StartMenu
-  pageColour: {r: 0.98, g: 0.98, b: 0.98, a: 1}
-  gameTitle: EMPLOYEE OF THE MONTH
-  subtitle: 
-  titleHeightFraction: 0.11
-  subtitleHeightFraction: 0.028
-  titleColour: {r: 0, g: 0, b: 0, a: 1}
-  subtitleColour: {r: 0.35, g: 0.35, b: 0.38, a: 1}
-  titleRuleColour: {r: 0.55, g: 0.35, b: 0.96, a: 1}
-  folderTab: {r: 0.97, g: 0.92, b: 0.56, a: 1}
-  folderBody: {r: 0.99, g: 0.96, b: 0.69, a: 1}
-  folderHover: {r: 1, g: 0.99, b: 0.82, a: 1}
-  folderLabel: {r: 0, g: 0, b: 0, a: 1}
-  stackWidthFraction: 0.78
-  bandHeightFraction: 0.152
-  tabWidthFraction: 0.44
-  tabRiseFraction: 0.58
-  folderEdge: {r: 0.85, g: 0.79, b: 0.42, a: 1}
-  stackTopFraction: 0.26
-  stackBottomFraction: 1.06
-  labelHeightFraction: 0.032
-  hoverSlideX: 14
-  hoverLiftY: 9
-  hoverSpeed: 12
-  startLabel: START
-  quitLabel: QUIT
-  teamPlayerLabel: TEAM PLAYER MODE
-  teamPlayerNote: Touching a red button returns you to Day 1.
-  startAtDay: 1
-  teamPlayerModeByDefault: 0
-  fadeInDuration: 1.4
-  keyboardAndGamepadCanStart: 1
-  onStartPressed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1100000
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,21 +137,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1100003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100000}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1100001
 Camera:
   m_ObjectHideFlags: 0
@@ -289,6 +196,99 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100000}
   m_Enabled: 1
+--- !u!4 &1100003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1100010
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1100011}
+  - component: {fileID: 1100012}
+  m_Layer: 0
+  m_Name: Start Menu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1100011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100010}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1100012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b742bb5a1449df955c85ba777a18e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.StartMenu
+  pageColour: {r: 0.98, g: 0.98, b: 0.98, a: 1}
+  gameTitle: EMPLOYEE OF THE MONTH
+  subtitle: 
+  titleHeightFraction: 0.11
+  subtitleHeightFraction: 0.028
+  titleColour: {r: 0, g: 0, b: 0, a: 1}
+  subtitleColour: {r: 0.35, g: 0.35, b: 0.38, a: 1}
+  titleRuleColour: {r: 1, g: 1, b: 1, a: 1}
+  folderTab: {r: 0.97, g: 0.92, b: 0.56, a: 1}
+  folderBody: {r: 0.99, g: 0.96, b: 0.69, a: 1}
+  folderHover: {r: 1, g: 0.99, b: 0.82, a: 1}
+  folderLabel: {r: 0, g: 0, b: 0, a: 1}
+  stackWidthFraction: 0.78
+  bandHeightFraction: 0.152
+  tabWidthFraction: 0.44
+  tabRiseFraction: 0.58
+  folderEdge: {r: 0.85, g: 0.79, b: 0.42, a: 1}
+  stackTopFraction: 0.26
+  stackBottomFraction: 1.06
+  labelHeightFraction: 0.032
+  hoverSlideX: 14
+  hoverLiftY: 9
+  hoverSpeed: 12
+  startLabel: START
+  quitLabel: QUIT
+  teamPlayerLabel: TEAM PLAYER MODE
+  teamPlayerNote: Touching a red button returns you to Day 1.
+  startAtDay: 1
+  teamPlayerModeByDefault: 0
+  fadeInDuration: 1.4
+  keyboardAndGamepadCanStart: 1
+  onStartPressed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
