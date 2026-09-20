@@ -261,7 +261,7 @@ Transform:
   m_LocalPosition: {x: 0.1875, y: -0.5500001, z: 0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 236663050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &16671283
@@ -563,8 +563,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -663,7 +665,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.78, g: 0.79, b: 0.8, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.78, g: 0.78999996, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -1052,8 +1054,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 820000002}
   - component: {fileID: 394230746}
+  - component: {fileID: 820000002}
   - component: {fileID: 394230754}
   - component: {fileID: 394230753}
   - component: {fileID: 394230752}
@@ -1801,6 +1803,29 @@ MonoBehaviour:
   continueAcrossDays: 1
   ignorePause: 1
   playOnStart: 1
+--- !u!114 &820000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394230745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a90c5eaf1e84fd9b0c1bd6d1ce28477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: -1.38, y: -10, z: 0}
+  bucketName: Paint Bucket
+  bucketDiameter: 0.9
+  bucketHeight: 5
+  bodyColour: {r: 0.42, g: 0.43, b: 0.45, a: 1}
+  rimColour: {r: 0.28, g: 0.29, b: 0.31, a: 1}
+  rimThickness: 0.07
+  paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
+  paintBarDiameterFraction: 0.88
+  paintBarThickness: 0.11
+  paintBarLift: 0.02
 --- !u!1 &828823257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,7 +1856,7 @@ Transform:
   m_LocalPosition: {x: -0.1875, y: -0.5500001, z: 0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 236663050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &828823259
@@ -2237,7 +2262,7 @@ Transform:
   m_LocalPosition: {x: -0.1875, y: -0.5500001, z: -0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 236663050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &937771504
@@ -3409,7 +3434,7 @@ Transform:
   m_LocalPosition: {x: 0.1875, y: -0.5500001, z: -0.1875}
   m_LocalScale: {x: 1.2, y: 0.04, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children:
+  m_Children: []
   m_Father: {fileID: 236663050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1716098997
@@ -3487,8 +3512,10 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -3587,7 +3614,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.94, g: 0.96, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.94, g: 0.96, b: 1, a: 1}
     - _EmissionColor: {r: 2.444, g: 2.4959998, b: 2.6, a: 2.6}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
@@ -3927,26 +3954,3 @@ SceneRoots:
   - {fileID: 175906030}
   - {fileID: 143679081}
   - {fileID: 620956121}
---- !u!114 &820000002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 394230745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a90c5eaf1e84fd9b0c1bd6d1ce28477, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: -0.92, y: -1.15, z: 0}
-  bucketName: Paint Bucket
-  bucketDiameter: 0.9
-  bucketHeight: 0.36
-  bodyColour: {r: 0.42, g: 0.43, b: 0.45, a: 1}
-  rimColour: {r: 0.28, g: 0.29, b: 0.31, a: 1}
-  rimThickness: 0.07
-  paintColour: {r: 0.72, g: 0.05, b: 0.04, a: 1}
-  paintBarDiameterFraction: 0.88
-  paintBarThickness: 0.11
-  paintBarLift: 0.02
