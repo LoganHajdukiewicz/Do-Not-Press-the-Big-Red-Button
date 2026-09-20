@@ -16,16 +16,18 @@ namespace BigRedButton
             PlayerIsNear,
             PlayerLooksAtIt,
             DayStart,
-            Manual
+            Manual,
+            ButtonPress
         }
 
         [Header("What it says")]
-        [Tooltip("Lines are shown in order, one after another.")]
+        [Tooltip("Lines are shown in order. In Button Press mode: entry 0 is click 1, entry 1 is click 2, " +
+            "etc., including grey/wake-up clicks. Blank entries show nothing for that click.")]
         [TextArea(2, 4)]
         [SerializeField] private List<string> lines = new List<string>();
         [Tooltip("Seconds each line stays on screen.")]
         [SerializeField, Min(0.5f)] private float secondsPerLine = 3.5f;
-        [Tooltip("Repeats the lines from the start once they finish.")]
+        [Tooltip("Repeats the lines from the start. In Button Press mode, wraps after the last click entry.")]
         [SerializeField] private bool loop;
         [Tooltip("Seconds to wait before the first line.")]
         [SerializeField, Min(0f)] private float startDelay;
@@ -38,7 +40,7 @@ namespace BigRedButton
         [SerializeField, Range(0.5f, 0.999f)] private float aimTolerance = 0.9f;
         [Tooltip("Can start talking again after it has finished.")]
         [SerializeField] private bool canRetrigger;
-        [Tooltip("Stops talking once the button has been pressed.")]
+        [Tooltip("Stops talking when the button completes. Ignored in Button Press mode so the final line stays visible.")]
         [SerializeField] private bool silenceOnPress = true;
 
         [Header("Voice")]
@@ -65,6 +67,7 @@ namespace BigRedButton
         private GUIStyle style;
         private Transform player;
         private AudioSource source;
+        private ButtonInteractable button;
         private int lineIndex;
         private float lineTimer;
         private float startTimer;
@@ -88,12 +91,58 @@ namespace BigRedButton
                 source.spatialBlend = spatialBlend;
             }
 
-            var button = GetComponentInChildren<ButtonInteractable>();
-            if (silenceOnPress && button != null)
-                button.OnPressed.AddListener(Silence);
+            button = GetComponentInChildren<ButtonInteractable>();
+            if (button != null)
+            {
+                button.OnPressed.AddListener(HandleCompletedPress);
+                button.PressAccepted += HandleClick;
+            }
 
             if (speaksWhen == Trigger.DayStart)
                 StartTalking();
+        }
+
+        private void OnDestroy()
+        {
+            if (button == null)
+                return;
+            button.OnPressed.RemoveListener(HandleCompletedPress);
+            button.PressAccepted -= HandleClick;
+        }
+
+        private void HandleCompletedPress()
+        {
+            if (silenceOnPress && speaksWhen != Trigger.ButtonPress)
+                Silence();
+        }
+
+        private void HandleClick(ButtonPress press)
+        {
+            if (!isActiveAndEnabled || speaksWhen != Trigger.ButtonPress)
+                return;
+            if (lines.Count == 0)
+                return;
+            int index = press.Number - 1;
+            if (loop)
+                index %= lines.Count;
+            if (index >= lines.Count)
+            {
+                Silence();
+                return;
+            }
+
+            // Each click replaces the previous popup/voice. No automatic next line.
+            if (source != null)
+                source.Stop();
+            talking = true;
+            finished = false;
+            lineIndex = index;
+            lineTimer = 0f;
+            startTimer = 0f;
+            waitingToStart = startDelay > 0f;
+            if (!waitingToStart)
+                BeginLine();
+            onStartedTalking.Invoke();
         }
 
         /// <summary>Starts the lines. Can be called from another button's event.</summary>
@@ -148,6 +197,12 @@ namespace BigRedButton
             if (lineTimer < secondsPerLine)
                 return;
 
+            if (speaksWhen == Trigger.ButtonPress)
+            {
+                Silence();
+                return;
+            }
+
             lineTimer = 0f;
             lineIndex++;
             if (lineIndex < lines.Count)
@@ -168,6 +223,12 @@ namespace BigRedButton
 
         private void BeginLine()
         {
+            if (source == null && (voice != null || lineClips.Count > 0))
+            {
+                source = gameObject.AddComponent<AudioSource>();
+                source.playOnAwake = false;
+                source.spatialBlend = spatialBlend;
+            }
             if (source == null)
                 return;
 

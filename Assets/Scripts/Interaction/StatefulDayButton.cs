@@ -27,6 +27,7 @@ namespace BigRedButton
         private ButtonAppearance appearance;
 
         /// <summary>True when the button is currently showing green.</summary>
+        public float GreenThreshold => greenThreshold;
         public bool LooksGreen => appearance != null && appearance.Greenness >= greenThreshold;
         public UnityEvent OnPressedWhileGreen => onPressedWhileGreen;
         public UnityEvent OnPressedWhileRed => onPressedWhileRed;
@@ -52,10 +53,11 @@ namespace BigRedButton
         private void Resolve()
         {
             // A grey button has no colour to judge, so it is neither answer.
-            if (ignoreWhileDisabledLook && appearance.IsDisabledLook)
+            if (ignoreWhileDisabledLook && button.LastPress.WasDisabled)
                 return;
 
-            bool green = LooksGreen;
+            // Use the same pre-click colour as sound, even if another callback changed it.
+            bool green = button.LastPress.WasGreen;
             if (green)
                 onPressedWhileGreen.Invoke();
             else

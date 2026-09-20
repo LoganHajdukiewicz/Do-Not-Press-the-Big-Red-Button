@@ -64,10 +64,30 @@ The runtime clones the input asset and enables only the clone's Player map. It d
 
 1. Add a **non-trigger collider** to the button's top or another intended hit area.
 2. Add `ButtonInteractable` to that object or a parent of its colliders.
-3. Set **Prompt**, **Interactable**, **One Shot**, **Press On Contact**, and **Cooldown** as needed.
-4. Connect **On Pressed** in the Inspector to your level logic, animation, AudioSource.Play, etc.
+3. Set **Prompt**, **Interactable**, **One Shot**, **Press On Contact**, **Cooldown**, and **Required Presses** as needed.
+4. Connect **On Pressed** in the Inspector to your level logic or animation. It runs after the required active clicks, not after each partial/wake-up click. Use `ButtonSound` for state-aware audio.
 
 Red and green buttons share the same interaction code; their event wiring determines what they do. No win/fail or day progression is hard-coded into the controller. In the generated days, the green button's `On Pressed` calls `DayLevel.CompleteDay` and the red button's calls `DayLevel.FailDay`.
+
+### Click counts and per-click dialogue (Inspector)
+
+Select the button's **cap** in the Hierarchy, not the player controller or pedestal. These settings are per button:
+
+- **Button Interactable → Click Requirement → Required Presses:** active clicks needed for its outcome. Default **1**, so existing scenes retain their behaviour. With **3**, clicks 1 and 2 only click/show dialogue; click 3 fires **On Pressed** and, if green, dings.
+- **Wakeable Button → Presses To Wake:** grey clicks needed before it wakes. These are separate from active clicks. Example: **Presses To Wake = 2**, **Required Presses = 1** gives two grey clicks (the second wakes it), then a third click to ding/advance. A waking click never doubles as an active click.
+- **One Shot** locks the button only after the complete sequence, not after a partial/wake-up click. Otherwise the active count restarts for the next sequence. `ResetButton()` clears counts and one-shot/cooldown state; it does not put an already-awake button back to sleep.
+
+To show a different popup for each click:
+
+1. Add **Talking Button** to the same cap, or reuse its existing component.
+2. Set **Speaks When → Button Press**.
+3. Add entries under **Lines**: element 0 = first accepted click, element 1 = second click, etc. Grey/waking clicks count too. Leave an entry blank to show no text on that click.
+4. Set **Seconds Per Line**, **Screen Position**, text size and colour. Text remains plain and centered—no added bold, shadows or letter spacing.
+5. Optionally fill **Line Clips** with matching voice clips. Each new click replaces the previous popup and voice. Enable **Loop** to wrap after the final entry; otherwise extra clicks show nothing.
+
+In this mode, expiry hides the current popup; it never advances dialogue without another click. **Silence On Press** is ignored so it cannot erase the final click's line. If the final click changes scenes, set the Day object's **Delay Before Next Day** long enough to read/hear that line. Cooldown-rejected clicks and fully locked/disabled objects neither increment counts nor advance dialogue. E and physical contact share the same accepted-click sequence; continuous contact still counts only once.
+
+For custom code, `Pressed` is the legacy every-click callback; `PressAccepted(ButtonPress)` carries an immutable pre-click state and click number. `OnPressed` is the completed-sequence event. `AcceptedPressCount`, `PressesRemaining`, and `LastPress` expose progress at runtime.
 
 ### Button types
 
@@ -75,12 +95,12 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 
 | Component | What it does | Days |
 | --- | --- | --- |
-| `ButtonSound` | Plays the press click on every button, and the ding whenever the button is green as it is pressed. | all |
+| `ButtonSound` | Clicks on accepted presses; dings on a completed active green press, never on grey/wake-up clicks. | all |
 | `ButtonAppearance` | Sets the colour a button *looks* like, separately from what it does: red, green, a blend, or grey. | 4, 10, 13, 16-19 |
 | `ButtonColourSchedule` | Switches the look between red and green on a timer. | 4 |
 | `ButtonGazeColour` | Colour reacts to the player's view: turns red when watched, or follows their heading. | 18, 19 |
 | `ButtonSign` | A word painted above the button, in the company's lettering. | 5, 10, 17 |
-| `TalkingButton` | Shows lines of dialogue when approached, looked at, or at day start. | 8, 9, 11, 12 |
+| `TalkingButton` | Shows dialogue on approach, gaze, day start, manually, or one line per accepted click. | 8, 9, 11, 12 |
 | `WakeableButton` | Starts grey and inert; the first press only wakes it up. | 13 |
 | `CursorRepellingButton` | Pushes the player's aim away as they try to point at it. Default strength 210 deg/s. | 7 |
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
@@ -123,11 +143,11 @@ Notes for building days with these:
 
 ### Button sound
 
-`ButtonSound` decides the ding from the button's **state**, not from which object it is. Any button that is green when pressed dings, including one that only turned green on a timer or as the player looked away.
+`ButtonSound` uses the **state captured before click callbacks run**, not the colour after a wake-up callback. A completed click that began active and green dings; grey, suppressed and partial clicks only play the physical click. `StatefulDayButton` uses the same snapshot and green threshold for its outcome.
 
 - **Press Clip / Press Volume:** the click every button makes.
 - **Green Clip / Green Volume / Green Delay:** the ding, played after the click so the press lands first.
-- **Ding Only When Green:** uncheck to always ding.
+- **Ding Only When Green:** uncheck to also ding on a completed active red click. This never overrides grey/suppressed/incomplete clicks.
 - **Red Clip / Red Volume / Red Delay:** an optional sound for pressing it while red.
 - **Spatial Blend / Min Distance / Max Distance:** how the sound sits in the room.
 
@@ -155,7 +175,7 @@ Each button has its own indicator settings, so the debug light can be switched o
 
 The indicator starts hidden, appears when the button is pressed, and hides again on `ResetButton()`. Toggling **Show Pressed Indicator** at runtime applies immediately. The generated day scenes ship with indicators off; `TestScene` has them on.
 
-`SetInteractable(bool)` can lock/unlock a button. `ResetButton()` clears the one-shot state and cooldown without overriding the interactable setting. Disabling the component or its GameObject also prevents interaction.
+`SetInteractable(bool)` can lock/unlock a button. `ResetButton()` clears the click counters, one-shot state and cooldown without overriding the interactable setting. Disabling the component or its GameObject also prevents interaction.
 
 ### Collision-based button presses
 
@@ -337,6 +357,8 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.WakeableButtonTests` covers the sleeping button: starting grey rather than red, waking to green without advancing the day, the next press advancing it, multiple wake presses, waking up red, and suppression holding for the press that lifts it.
 
+`BigRedButton.Tests.ButtonClickSequenceTests` covers both sound/wake component orders, disabled/suppressed clicks with the ding override, N-click completion, one-shot sleeping buttons, per-click dialogue (including final/wake clicks), cooldown rejection, contact clicks, popup expiry, and shared sound/outcome snapshots with custom thresholds.
+
 `BigRedButton.Tests.ButtonSoundStateTests` covers the ding following the state: plain green buttons, a button that turns green, grey buttons staying silent, the timed green window, the always-ding option, and the halfway threshold.
 
 Select **PlayMode** in the Test Runner and run `BigRedButton.Tests.DayLevelTests` for the title fade, day advancement from a button press, single-outcome handling, delays, failure repeats and the final-day event. Also run `BigRedButton.Tests.ButtonContactTests` for landing, standing, side contact, incoming Transform/kinematic button movement, contact re-arming, shared cooldown/one-shot rules, duplicate prevention, ignored collisions, child colliders, crowded overlap buffers, pause behavior and safe player disabling from a button event.
@@ -357,7 +379,7 @@ Manual Play Mode checklist:
 - Pressing green ends the day and loads the next one; pressing red repeats the same day.
 - Day 3's green button appears after 5 seconds.
 - Unchecking **Show Pressed Indicator** hides the light while the button still works.
-- Every button clicks when pressed. Any button clicks *and* dings while it is green, including one that turned green on a timer.
+- Every accepted button press clicks. Completing the required active clicks while green also dings, including a timed-green button. Grey, wake-up and partial clicks never ding.
 - The magnetic button shoves the view hard; it is still pressable when you get close to it.
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.

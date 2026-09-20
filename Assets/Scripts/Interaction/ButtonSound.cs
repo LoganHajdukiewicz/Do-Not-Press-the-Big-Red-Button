@@ -5,9 +5,9 @@ using UnityEngine.Serialization;
 namespace BigRedButton
 {
     /// <summary>
-    /// Plays the press sound for any button, and the ding whenever the button was
-    /// showing green at the moment it was pressed. The ding follows the state, not the
-    /// object, so a button that turns green dings too.
+    /// Clicks on accepted presses. Dings only when an active green click completes
+    /// the required sequence, using the state captured before wake/colour callbacks.
+    /// Grey, suppressed and incomplete clicks never play an outcome layer.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ButtonInteractable))]
@@ -27,7 +27,8 @@ namespace BigRedButton
         [Tooltip("Seconds to wait before the ding, so the click lands first.")]
         [FormerlySerializedAs("extraDelay")]
         [SerializeField, Min(0f)] private float greenDelay = 0.06f;
-        [Tooltip("Only ding while the button is showing green. Uncheck to always ding.")]
+        [Tooltip("Only ding on a completed green click. Uncheck to also ding on completed red clicks. " +
+            "Grey, suppressed and incomplete clicks never ding.")]
         [SerializeField] private bool dingOnlyWhenGreen = true;
 
         [Header("Red")]
@@ -43,67 +44,67 @@ namespace BigRedButton
 
         private AudioSource source;
         private ButtonInteractable button;
-        private ButtonAppearance appearance;
 
-        /// <summary>
-        /// True when this button counts as green right now. A button with no colour
-        /// control of its own is treated as green, so plain green buttons still ding.
-        /// </summary>
-        public bool CountsAsGreen
-        {
-            get
-            {
-                if (appearance == null)
-                    return true;
-                if (appearance.IsDisabledLook)
-                    return false;
-                return appearance.Greenness >= 0.5f;
-            }
-        }
+        /// <summary>Live state for Inspector/debugging; actual clicks use their immutable snapshot.</summary>
+        public bool CountsAsGreen => button != null && button.CountsAsGreen;
+        /// <summary>Last outcome layer selected for playback; null for grey or incomplete clicks.</summary>
+        public AudioClip LastLayerScheduled { get; private set; }
 
         private void Awake()
         {
             button = GetComponent<ButtonInteractable>();
-            appearance = GetComponent<ButtonAppearance>();
 
-            source = GetComponent<AudioSource>();
-            if (source == null)
-                source = gameObject.AddComponent<AudioSource>();
+            // Own a separate source: replacing click dialogue must not stop the click/ding,
+            // regardless of whether TalkingButton's Awake ran before this component.
+            source = gameObject.AddComponent<AudioSource>();
 
             source.playOnAwake = false;
             source.spatialBlend = spatialBlend;
             source.minDistance = minDistance;
             source.maxDistance = Mathf.Max(minDistance + 1f, maxDistance);
 
-            // The plain event, so even a button whose inspector event is suppressed
-            // still makes a physical click when the player pushes it.
-            button.Pressed += Play;
+            // Includes wake-up clicks, but carries their state BEFORE WakeableButton ran.
+            button.PressAccepted += PlayAcceptedPress;
         }
 
         private void OnDestroy()
         {
             if (button != null)
-                button.Pressed -= Play;
+                button.PressAccepted -= PlayAcceptedPress;
+            if (source != null)
+                Destroy(source);
         }
 
-        /// <summary>Plays the click, then the ding or red sound for the current state.</summary>
+        /// <summary>Manual preview/event hook. Deactivated objects never play an outcome layer.</summary>
         public void Play()
         {
-            if (source == null)
+            if (button == null)
+                return;
+            PlayAcceptedPress(new ButtonPress(0, button.IsDeactivated, CountsAsGreen, true));
+        }
+
+        private void PlayAcceptedPress(ButtonPress press)
+        {
+            LastLayerScheduled = null;
+            if (source == null || !isActiveAndEnabled)
                 return;
 
             if (pressClip != null)
                 source.PlayOneShot(pressClip, pressVolume);
 
-            // Read the colour now, at the moment of the press, not when the layer plays.
-            bool green = !dingOnlyWhenGreen || CountsAsGreen;
+            // This test precedes the "always ding" override. Waking during this callback
+            // cannot turn a grey click into a green ding, regardless of component order.
+            if (press.WasDisabled || !press.CompletesSequence)
+                return;
+            bool green = !dingOnlyWhenGreen || press.WasGreen;
             AudioClip layer = green ? greenClip : redClip;
             float volume = green ? greenVolume : redVolume;
             float delay = green ? greenDelay : redDelay;
             if (layer == null)
                 return;
 
-            if (delay <= 0f || !gameObject.activeInHierarchy)
+            LastLayerScheduled = layer;
+            if (delay <= 0f)
                 source.PlayOneShot(layer, volume);
             else
                 StartCoroutine(PlayLayerAfterDelay(layer, volume, delay));
@@ -112,8 +113,16 @@ namespace BigRedButton
         private IEnumerator PlayLayerAfterDelay(AudioClip layer, float volume, float delay)
         {
             yield return new WaitForSeconds(delay);
-            if (source != null)
+            if (source != null && isActiveAndEnabled && button != null && !button.IsDeactivated)
                 source.PlayOneShot(layer, volume);
+        }
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            LastLayerScheduled = null;
+            if (source != null)
+                source.Stop();
         }
     }
 }

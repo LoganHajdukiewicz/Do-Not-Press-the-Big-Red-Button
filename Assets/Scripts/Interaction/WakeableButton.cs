@@ -13,7 +13,8 @@ namespace BigRedButton
     public sealed class WakeableButton : MonoBehaviour
     {
         [Header("Waking up")]
-        [Tooltip("Presses needed to wake it up before it counts for real.")]
+        [Tooltip("Grey clicks required before waking. These never ding or advance the day. " +
+            "After waking, Button Interactable's Required Presses still have to be completed.")]
         [SerializeField, Min(1)] private int pressesToWake = 1;
         [Tooltip("Shown while the button is still grey and inert.")]
         [SerializeField] private string asleepPrompt = "Press button (no response)";
@@ -35,6 +36,7 @@ namespace BigRedButton
         private ButtonInteractable button;
         private ButtonAppearance appearance;
         private int wakePresses;
+        private bool wakePending;
 
         public bool IsAwake { get; private set; }
         public int PressesRemaining => Mathf.Max(0, pressesToWake - wakePresses);
@@ -60,9 +62,15 @@ namespace BigRedButton
                 button.Pressed -= HandlePress;
         }
 
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            wakePending = false;
+        }
+
         private void HandlePress()
         {
-            if (IsAwake)
+            if (!isActiveAndEnabled || IsAwake)
                 return;
 
             wakePresses++;
@@ -71,11 +79,12 @@ namespace BigRedButton
             if (asleepClip != null)
                 AudioSource.PlayClipAtPoint(asleepClip, transform.position, asleepVolume);
 
-            if (wakePresses < pressesToWake)
+            if (wakePresses < Mathf.Max(1, pressesToWake) || wakePending)
                 return;
 
             if (wakeDelay > 0f)
             {
+                wakePending = true;
                 StartCoroutine(WakeAfterDelay());
                 return;
             }
