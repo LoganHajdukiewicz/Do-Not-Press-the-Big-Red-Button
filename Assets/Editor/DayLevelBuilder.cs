@@ -10,8 +10,8 @@ using UnityEngine.SceneManagement;
 namespace BigRedButton.Editor
 {
     /// <summary>
-    /// Rebuilds unfinished days and the mechanics sandbox, preserving the finished
-    /// Days 1-5 and all existing shared materials.
+    /// Rebuilds days without a completed snapshot and the mechanics sandbox, preserving
+    /// archived finished scenes and all existing shared materials.
     /// </summary>
     public static class DayLevelBuilder
     {
@@ -24,7 +24,6 @@ namespace BigRedButton.Editor
         private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
         private const string CorporateMusicPath = "Assets/Audio/Corporate Background Music.mp3";
         private const string HappyMusicPath = "Assets/Audio/Happy Ending Music.mp3";
-        private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
 
@@ -35,28 +34,17 @@ namespace BigRedButton.Editor
         private static Material greenMaterial;
         private static Material pedestalMaterial;
 
-        /// <summary>The only day numbers the rebuild tool is allowed to overwrite.</summary>
+        /// <summary>Every day that has not been saved as a completed snapshot.</summary>
         public static IEnumerable<int> RebuildDayNumbers()
         {
-            for (int day = FirstDayToRebuild; day <= DaysToBuild; day++)
-                yield return day;
+            for (int day = DayFlow.FirstDay; day <= DaysToBuild; day++)
+                if (!CompletedDaySetup.IsCompleted(day))
+                    yield return day;
         }
 
-        [MenuItem("Tools/Big Red Button/Rebuild Days 6-31 (Keep Days 1-5)")]
+        [MenuItem("Tools/Big Red Button/Rebuild All Uncompleted Days")]
         public static void BuildFirstDays()
         {
-            // These scenes are authored content now, not disposable generated output.
-            // Missing ones must be restored rather than silently replaced with templates.
-            for (int day = 1; day < FirstDayToRebuild; day++)
-            {
-                string path = $"{DayFolder}/Day {day}.unity";
-                if (!File.Exists(path))
-                {
-                    Debug.LogError($"Rebuild cancelled: protected scene \"{path}\" is missing. " +
-                        "Restore it from source control or a backup; Days 1-5 are never regenerated.");
-                    return;
-                }
-            }
 
             var actions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputPath);
             if (actions == null)
@@ -85,10 +73,11 @@ namespace BigRedButton.Editor
             // The front page keeps its place at the top of the build order.
             StartMenuSetup.MakeFirstInBuildSettings();
             EditorSceneManager.OpenScene(StartMenuSetup.ScenePath, OpenSceneMode.Single);
-            Debug.Log($"Rebuilt {builtCount} scenes (Days 6-31) and Assets/Scenes/TestScene.unity. " +
-                "Days 1-5, the start menu and existing shared materials were preserved. " +
-                "Press Play from \"Start Menu\": START runs the Day 1 opening. " +
-                "Future rebuilds overwrite only Days 6-31 and TestScene.");
+            int protectedCount = DaysToBuild - builtCount;
+            Debug.Log($"Rebuilt {builtCount} uncompleted day scene(s) and Assets/Scenes/TestScene.unity. " +
+                $"{protectedCount} completed snapshot(s) were preserved. " +
+                "Use Tools > Big Red Button > Completed Days > Save Current Day As Completed " +
+                "Snapshot to protect a finished level from later rebuilds.");
         }
 
         [MenuItem("Tools/Big Red Button/Rebuild Test Scene")]
@@ -352,9 +341,12 @@ namespace BigRedButton.Editor
         private static string BuildDay(int day, InputActionAsset actions)
         {
             // Guard the write entry point too, not just the menu's loop.
-            if (day < FirstDayToRebuild || day > DaysToBuild)
+            if (day < DayFlow.FirstDay || day > DaysToBuild)
                 throw new System.ArgumentOutOfRangeException(nameof(day), day,
-                    "Only Days 6-31 may be rebuilt. Days 1-5 are protected.");
+                    "Day number is outside the rebuild range.");
+            if (CompletedDaySetup.IsCompleted(day))
+                throw new System.InvalidOperationException($"Day {day} has a completed snapshot at " +
+                    $"\"{CompletedDaySetup.CompletedPath(day)}\" and cannot be rebuilt.");
 
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             BuildRoom(SizeForDay(day));
