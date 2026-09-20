@@ -240,6 +240,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600000}
   - component: {fileID: 15449535}
   - component: {fileID: 15449541}
   - component: {fileID: 15449540}
@@ -499,6 +500,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600001}
   - component: {fileID: 43243176}
   - component: {fileID: 43243182}
   - component: {fileID: 43243181}
@@ -919,6 +921,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600002}
   - component: {fileID: 58245686}
   - component: {fileID: 58245692}
   - component: {fileID: 58245691}
@@ -1115,6 +1118,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600003}
   - component: {fileID: 94035736}
   - component: {fileID: 94035742}
   - component: {fileID: 94035741}
@@ -1423,6 +1427,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600004}
   - component: {fileID: 116386956}
   - component: {fileID: 116386962}
   - component: {fileID: 116386961}
@@ -1653,6 +1658,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600005}
   - component: {fileID: 146648097}
   - component: {fileID: 146648103}
   - component: {fileID: 146648102}
@@ -2107,6 +2113,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600006}
   - component: {fileID: 157535637}
   - component: {fileID: 157535643}
   - component: {fileID: 157535642}
@@ -3169,6 +3176,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600007}
   - component: {fileID: 281480504}
   - component: {fileID: 281480510}
   - component: {fileID: 281480509}
@@ -3567,6 +3575,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600008}
   - component: {fileID: 323594572}
   - component: {fileID: 323594578}
   - component: {fileID: 323594577}
@@ -3875,6 +3884,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600009}
   - component: {fileID: 361862774}
   - component: {fileID: 361862780}
   - component: {fileID: 361862779}
@@ -4979,6 +4989,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600010}
   - component: {fileID: 435864729}
   - component: {fileID: 435864735}
   - component: {fileID: 435864734}
@@ -5523,6 +5534,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600011}
   - component: {fileID: 492607206}
   - component: {fileID: 492607212}
   - component: {fileID: 492607211}
@@ -6157,6 +6169,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600012}
   - component: {fileID: 539694453}
   - component: {fileID: 539694459}
   - component: {fileID: 539694458}
@@ -6757,6 +6770,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600013}
   - component: {fileID: 645004407}
   - component: {fileID: 645004413}
   - component: {fileID: 645004412}
@@ -7323,6 +7337,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600014}
   - component: {fileID: 678278690}
   - component: {fileID: 678278696}
   - component: {fileID: 678278695}
@@ -7631,6 +7646,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600015}
   - component: {fileID: 690244870}
   - component: {fileID: 690244876}
   - component: {fileID: 690244875}
@@ -8523,6 +8539,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600016}
   - component: {fileID: 725172942}
   - component: {fileID: 725172948}
   - component: {fileID: 725172947}
@@ -8753,6 +8770,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600017}
   - component: {fileID: 739490462}
   - component: {fileID: 739490468}
   - component: {fileID: 739490467}
@@ -9061,6 +9079,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600018}
   - component: {fileID: 777560638}
   - component: {fileID: 777560644}
   - component: {fileID: 777560643}
@@ -9654,6 +9673,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600019}
   - component: {fileID: 824000083}
   - component: {fileID: 824000089}
   - component: {fileID: 824000088}
@@ -9996,6 +10016,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600020}
   - component: {fileID: 861033028}
   - component: {fileID: 861033034}
   - component: {fileID: 861033033}
@@ -10854,6 +10875,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600021}
   - component: {fileID: 913003073}
   - component: {fileID: 913003079}
   - component: {fileID: 913003078}
@@ -11274,6 +11296,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600022}
   - component: {fileID: 949702063}
   - component: {fileID: 949702069}
   - component: {fileID: 949702068}
@@ -11582,6 +11605,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600023}
   - component: {fileID: 969990453}
   - component: {fileID: 969990459}
   - component: {fileID: 969990458}
@@ -12002,6 +12026,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600024}
   - component: {fileID: 1011246421}
   - component: {fileID: 1011246427}
   - component: {fileID: 1011246426}
@@ -12310,6 +12335,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600025}
   - component: {fileID: 1021017163}
   - component: {fileID: 1021017169}
   - component: {fileID: 1021017168}
@@ -12742,6 +12768,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600026}
   - component: {fileID: 1083261417}
   - component: {fileID: 1083261423}
   - component: {fileID: 1083261422}
@@ -13174,6 +13201,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600027}
   - component: {fileID: 1116049176}
   - component: {fileID: 1116049182}
   - component: {fileID: 1116049181}
@@ -13482,6 +13510,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600028}
   - component: {fileID: 1119869667}
   - component: {fileID: 1119869673}
   - component: {fileID: 1119869672}
@@ -14453,6 +14482,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600029}
   - component: {fileID: 1214723715}
   - component: {fileID: 1214723721}
   - component: {fileID: 1214723720}
@@ -15133,6 +15163,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600030}
   - component: {fileID: 1291572514}
   - component: {fileID: 1291572520}
   - component: {fileID: 1291572519}
@@ -15441,6 +15472,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600031}
   - component: {fileID: 1321569000}
   - component: {fileID: 1321569006}
   - component: {fileID: 1321569005}
@@ -15749,6 +15781,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600032}
   - component: {fileID: 1355029999}
   - component: {fileID: 1355030005}
   - component: {fileID: 1355030004}
@@ -16501,6 +16534,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600033}
   - component: {fileID: 1424725442}
   - component: {fileID: 1424725448}
   - component: {fileID: 1424725447}
@@ -16989,6 +17023,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600034}
   - component: {fileID: 1499169874}
   - component: {fileID: 1499169880}
   - component: {fileID: 1499169879}
@@ -18475,6 +18510,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600035}
   - component: {fileID: 1644216841}
   - component: {fileID: 1644216847}
   - component: {fileID: 1644216846}
@@ -18705,6 +18741,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600036}
   - component: {fileID: 1652489874}
   - component: {fileID: 1652489880}
   - component: {fileID: 1652489879}
@@ -19159,6 +19196,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600037}
   - component: {fileID: 1714871069}
   - component: {fileID: 1714871075}
   - component: {fileID: 1714871074}
@@ -19355,6 +19393,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600038}
   - component: {fileID: 1715941189}
   - component: {fileID: 1715941195}
   - component: {fileID: 1715941194}
@@ -19663,6 +19702,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600039}
   - component: {fileID: 1727517944}
   - component: {fileID: 1727517950}
   - component: {fileID: 1727517949}
@@ -20579,6 +20619,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600040}
   - component: {fileID: 1792135129}
   - component: {fileID: 1792135135}
   - component: {fileID: 1792135134}
@@ -20865,6 +20906,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600041}
   - component: {fileID: 1803894810}
   - component: {fileID: 1803894816}
   - component: {fileID: 1803894815}
@@ -21173,6 +21215,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600042}
   - component: {fileID: 1814388100}
   - component: {fileID: 1814388106}
   - component: {fileID: 1814388105}
@@ -21481,6 +21524,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600043}
   - component: {fileID: 1817377665}
   - component: {fileID: 1817377671}
   - component: {fileID: 1817377670}
@@ -21677,6 +21721,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600044}
   - component: {fileID: 1836615884}
   - component: {fileID: 1836615890}
   - component: {fileID: 1836615889}
@@ -21873,6 +21918,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600045}
   - component: {fileID: 1840716907}
   - component: {fileID: 1840716913}
   - component: {fileID: 1840716912}
@@ -22103,6 +22149,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600046}
   - component: {fileID: 1847272337}
   - component: {fileID: 1847272343}
   - component: {fileID: 1847272342}
@@ -22501,6 +22548,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600047}
   - component: {fileID: 1866125840}
   - component: {fileID: 1866125846}
   - component: {fileID: 1866125845}
@@ -23045,6 +23093,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600048}
   - component: {fileID: 1967430873}
   - component: {fileID: 1967430879}
   - component: {fileID: 1967430878}
@@ -23689,6 +23738,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600049}
   - component: {fileID: 2005288030}
   - component: {fileID: 2005288036}
   - component: {fileID: 2005288035}
@@ -23997,6 +24047,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600050}
   - component: {fileID: 2009209246}
   - component: {fileID: 2009209252}
   - component: {fileID: 2009209251}
@@ -24687,6 +24738,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+  - component: {fileID: 500600051}
   - component: {fileID: 2113557069}
   - component: {fileID: 2113557075}
   - component: {fileID: 2113557074}
@@ -25638,3 +25690,1875 @@ SceneRoots:
   - {fileID: 2046991556}
   - {fileID: 1588287435}
   - {fileID: 518971486}
+--- !u!114 &500600000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15449534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43243175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58245685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94035735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116386955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146648096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157535636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281480503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323594571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361862773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435864728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492607205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539694452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645004406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678278689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690244869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725172941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739490461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777560637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824000082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861033027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913003072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949702062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969990452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011246420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021017162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083261416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116049175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119869666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214723714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291572513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321568999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355029998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424725441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499169873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644216840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652489873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714871068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715941188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727517943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792135128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803894809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814388099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817377664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836615883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840716906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847272336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866125839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967430872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005288029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009209245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &500600051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113557068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
+  lines: []
+  secondsPerLine: 3
+  loop: 0
+  startDelay: 0
+  advanceOnPress: 0
+  speaksWhen: 2
+  triggerDistance: 5
+  aimTolerance: 0.9
+  canRetrigger: 0
+  silenceOnPress: 1
+  voice: {fileID: 0}
+  voiceVolume: 0.9
+  lineClips: []
+  spatialBlend: 0.8
+  textHeightFraction: 0.032
+  screenPosition: 0.74
+  textColour: {r: 1, g: 1, b: 1, a: 1}
+  hideText: 0
+  onStartedTalking:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishedTalking:
+    m_PersistentCalls:
+      m_Calls: []
