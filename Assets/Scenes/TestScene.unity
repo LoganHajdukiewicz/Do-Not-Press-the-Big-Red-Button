@@ -9427,7 +9427,7 @@ MonoBehaviour:
   lightColour: {r: 0.94, g: 0.96, b: 1, a: 1}
   emission: 2.6
   showHousing: 1
-  castLight: 1
+  castLight: 0
   lightIntensity: 1.5
   lightRange: 7
   maxRealLights: 12

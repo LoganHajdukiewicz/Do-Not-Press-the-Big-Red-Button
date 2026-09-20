@@ -39,12 +39,12 @@ namespace BigRedButton
         [SerializeField] private bool showHousing = true;
 
         [Header("Real lights")]
-        [Tooltip("Adds a point light per panel. Uncheck to keep only the glowing panels.")]
-        [SerializeField] private bool castLight = true;
+        [Tooltip("Legacy option. Leave off: strip panels replace dotted point lights.")]
+        [SerializeField] private bool castLight;
         [SerializeField, Min(0f)] private float lightIntensity = 1.5f;
         [SerializeField, Min(0.5f)] private float lightRange = 7f;
         [Tooltip("Total real lights allowed, so forward rendering never runs out of slots.")]
-        [SerializeField, Min(0)] private int maxRealLights = 12;
+        [SerializeField, Min(0)] private int maxRealLights;
 
         private const string ContainerName = "LED Office Lights";
         private readonly List<GameObject> built = new List<GameObject>();

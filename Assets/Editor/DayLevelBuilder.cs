@@ -536,6 +536,8 @@ namespace BigRedButton.Editor
                     // Both read as the same dull yellow, so colour alone cannot be trusted.
                     ApplyColourblindLook(redFiltered);
                     ApplyColourblindLook(greenFiltered);
+                    // The filter changes the whole chamber, not just these two caps.
+                    level.gameObject.AddComponent<ColourblindWorldFilter>();
                     break;
                 }
 
@@ -545,9 +547,13 @@ namespace BigRedButton.Editor
                     GameObject paintedGreen = StateButton("Big Red Button",
                         new Vector3(2.2f, 0f, 2.4f), level, string.Empty, startGreen: false);
                     SwapPaint(paintedGreen, lookGreen: true);
+                    CreatePaintBucket(paintedGreen, new Color(0.09f, 0.55f, 0.16f),
+                        new Vector3(1.15f, -1.15f, -0.25f));
                     GameObject paintedRed = StateButton("Green Button",
                         new Vector3(-2.2f, 0f, 2.4f), level, string.Empty, startGreen: true);
                     SwapPaint(paintedRed, lookGreen: false);
+                    CreatePaintBucket(paintedRed, new Color(0.72f, 0.05f, 0.04f),
+                        new Vector3(-1.15f, -1.15f, -0.25f));
                     break;
                 }
 
@@ -814,6 +820,15 @@ namespace BigRedButton.Editor
             SetPrivateColour(appearance, "greenColour", paint);
         }
 
+        /// <summary>Day 17: adds the open paint bucket that explains the swapped coating.</summary>
+        private static void CreatePaintBucket(GameObject button, Color paint, Vector3 offset)
+        {
+            var bucket = button.AddComponent<PaintBucket>();
+            SetPrivateColour(bucket, "paintColour", paint);
+            SetPrivate(bucket, "offset", offset);
+            bucket.Build(); // AddComponent has already made its default preview in edit mode.
+        }
+
         /// <summary>Day 20: red buttons that walk towards the player wanting to be pressed.</summary>
         private static void CreateChasingRedButtons(DayLevel level, int count)
         {
@@ -851,15 +866,19 @@ namespace BigRedButton.Editor
             /// <summary>The standard chamber, with a detour for a distant button.</summary>
             Standard,
             /// <summary>One wide open floor, for crowds of buttons and moving buttons.</summary>
-            Hall
+            Hall,
+            /// <summary>A 40 metre Z run reserved for the platforming days.</summary>
+            Platforming
         }
 
         private static RoomSize SizeForDay(int day) => day switch
         {
             1 => RoomSize.Intimate,
             2 or 3 => RoomSize.Standard,
+            // Days 21-29 need the long uninterrupted Z run for platforming.
+            >= 21 and <= 29 => RoomSize.Platforming,
             // The crowded and moving days need floor space and no dividers in the way.
-            6 or 14 or 20 or 21 => RoomSize.Hall,
+            6 or 14 or 20 => RoomSize.Hall,
             EndingDay => RoomSize.Intimate,
             _ => RoomSize.Intimate
         };
@@ -871,9 +890,9 @@ namespace BigRedButton.Editor
         private static void BuildRoom(RoomSize size)
         {
             float halfWidth = size == RoomSize.Intimate ? 6f : 9f;
-            float depth = size == RoomSize.Intimate ? 12f : 20f;
+            float depth = size == RoomSize.Intimate ? 12f : size == RoomSize.Platforming ? 40f : 20f;
             float height = 4f;
-            float back = size == RoomSize.Intimate ? 7f : 12f;
+            float back = size == RoomSize.Intimate ? 7f : size == RoomSize.Platforming ? 22f : 12f;
             float front = depth - back;
 
             Box("Floor", new Vector3(0f, -0.25f, (back - front) * 0.5f),
