@@ -14,6 +14,8 @@ namespace BigRedButton.Tests
     public sealed class DayChainTests
     {
         private const int ExpectedDays = 31;
+        private const string MissingScenesMessage = "Restore the day scenes from source control. " +
+            "Rebuild Days 6-31 (Keep Days 1-5) requires the protected first five scenes.";
 
         private static List<int> BuiltDayNumbers()
         {
@@ -30,14 +32,14 @@ namespace BigRedButton.Tests
         }
 
         [Test]
-        public void ThirtyDaysExistWithNoGaps()
+        public void ThirtyOneDaysExistWithNoGaps()
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             Assert.That(days, Is.EqualTo(Enumerable.Range(1, ExpectedDays).ToList()),
-                "Days must run 1 to 30 with no gaps and no duplicates.");
+                "Days must run 1 to 31 with no gaps and no duplicates.");
         }
 
         [Test]
@@ -45,7 +47,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             var registered = EditorBuildSettings.scenes
                 .Where(s => s.enabled)
@@ -65,7 +67,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             // Walk the chain the way the game does, without loading any scenes.
             DayFlow.ResetForTests();
@@ -103,7 +105,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             foreach (int day in days)
             {
@@ -124,7 +126,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             foreach (int day in days)
             {
@@ -146,7 +148,7 @@ namespace BigRedButton.Tests
         {
             List<int> days = BuiltDayNumbers();
             if (days.Count == 0)
-                Assert.Ignore("No day scenes yet. Run Tools > Big Red Button > Build Days 1-31.");
+                Assert.Ignore(MissingScenesMessage);
 
             string path = $"Assets/Scenes/Days/Day {days[^1]}.unity";
             string text = File.ReadAllText(path);

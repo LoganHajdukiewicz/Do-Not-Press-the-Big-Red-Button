@@ -10,8 +10,8 @@ using UnityEngine.SceneManagement;
 namespace BigRedButton.Editor
 {
     /// <summary>
-    /// Builds the first playable days from the design in the README: a clean, quiet
-    /// test-chamber room with one green button that ends the day and red buttons that do not.
+    /// Rebuilds unfinished days and the mechanics sandbox, preserving the finished
+    /// Days 1-5 and all existing shared materials.
     /// </summary>
     public static class DayLevelBuilder
     {
@@ -22,6 +22,7 @@ namespace BigRedButton.Editor
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
         private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
+        private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
 
@@ -32,9 +33,29 @@ namespace BigRedButton.Editor
         private static Material greenMaterial;
         private static Material pedestalMaterial;
 
-        [MenuItem("Tools/Big Red Button/Build Days 1-31")]
+        /// <summary>The only day numbers the rebuild tool is allowed to overwrite.</summary>
+        public static IEnumerable<int> RebuildDayNumbers()
+        {
+            for (int day = FirstDayToRebuild; day <= DaysToBuild; day++)
+                yield return day;
+        }
+
+        [MenuItem("Tools/Big Red Button/Rebuild Days 6-31 (Keep Days 1-5)")]
         public static void BuildFirstDays()
         {
+            // These scenes are authored content now, not disposable generated output.
+            // Missing ones must be restored rather than silently replaced with templates.
+            for (int day = 1; day < FirstDayToRebuild; day++)
+            {
+                string path = $"{DayFolder}/Day {day}.unity";
+                if (!File.Exists(path))
+                {
+                    Debug.LogError($"Rebuild cancelled: protected scene \"{path}\" is missing. " +
+                        "Restore it from source control or a backup; Days 1-5 are never regenerated.");
+                    return;
+                }
+            }
+
             var actions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputPath);
             if (actions == null)
             {
@@ -49,19 +70,21 @@ namespace BigRedButton.Editor
             Directory.CreateDirectory(DayFolder);
             AssetDatabase.Refresh();
 
-            var built = new List<string>();
-            for (int day = 1; day <= DaysToBuild; day++)
-                built.Add(BuildDay(day, actions));
+            int builtCount = 0;
+            foreach (int day in RebuildDayNumbers())
+            {
+                BuildDay(day, actions);
+                builtCount++;
+            }
 
             BuildTestScene(actions);
             AssetDatabase.SaveAssets();
             DaySetup.RefreshDayScenes();
-            EditorSceneManager.OpenScene(built[0], OpenSceneMode.Single);
-            Debug.Log($"Built {built.Count} day scenes in {DayFolder} and rewrote " +
-                "Assets/Scenes/TestScene.unity. Press Play from \"Day 1\" for the real opening; " +
-                "each day leads to the next. Every day is a normal scene, so open any of them " +
-                "and rearrange the buttons, rooms and settings in the inspector. Re-running this " +
-                "command overwrites Day 1-31, so save custom work under a different name.");
+            EditorSceneManager.OpenScene($"{DayFolder}/Day 1.unity", OpenSceneMode.Single);
+            Debug.Log($"Rebuilt {builtCount} scenes (Days 6-31) and Assets/Scenes/TestScene.unity. " +
+                "Days 1-5 and existing shared materials were preserved. " +
+                "All 31 days remain registered in build settings. Press Play from Day 1. " +
+                "Future rebuilds overwrite only Days 6-31 and TestScene.");
         }
 
         [MenuItem("Tools/Big Red Button/Rebuild Test Scene")]
@@ -323,6 +346,11 @@ namespace BigRedButton.Editor
 
         private static string BuildDay(int day, InputActionAsset actions)
         {
+            // Guard the write entry point too, not just the menu's loop.
+            if (day < FirstDayToRebuild || day > DaysToBuild)
+                throw new System.ArgumentOutOfRangeException(nameof(day), day,
+                    "Only Days 6-31 may be rebuilt. Days 1-5 are protected.");
+
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             BuildRoom(SizeForDay(day));
             CreateLighting();
@@ -1011,16 +1039,12 @@ namespace BigRedButton.Editor
         {
             string path = $"{MaterialFolder}/{name}.mat";
             var existing = AssetDatabase.LoadAssetAtPath<Material>(path);
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            // Shared with the protected scenes: never reset an existing material's
+            // shader, colour, smoothness, textures or other hand-edited properties.
             if (existing != null)
-            {
-                existing.shader = shader;
-                existing.color = colour;
-                existing.SetFloat("_Smoothness", smoothness);
-                EditorUtility.SetDirty(existing);
                 return existing;
-            }
 
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
             var material = new Material(shader) { color = colour };
             material.SetFloat("_Smoothness", smoothness);
             AssetDatabase.CreateAsset(material, path);

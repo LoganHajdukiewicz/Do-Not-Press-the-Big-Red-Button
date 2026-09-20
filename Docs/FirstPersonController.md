@@ -194,11 +194,13 @@ Each day is its own scene named `Day 1`, `Day 2`, and so on. A day scene shows *
 
 ### Build the month (30 button days plus the Day 31 ending)
 
-Select **Tools > Big Red Button > Build Days 1-31**. It generates `Assets/Scenes/Days/Day 1.unity` through `Day 31.unity`, registers them in build settings in numeric order, and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. Press **Play** from `Day 1` and each day leads to the next.
+Select **Tools > Big Red Button > Rebuild Days 6-31 (Keep Days 1-5)**. It regenerates `Assets/Scenes/Days/Day 6.unity` through `Day 31.unity` and rewrites `Assets/Scenes/TestScene.unity` as a mechanics sandbox. **Days 1–5 are protected:** their scene files are never regenerated. All 31 days remain registered in build settings in numeric order. Press **Play** from `Day 1` and each day leads to the next.
+
+The rebuild also leaves existing shared materials unchanged, including shaders, colours, textures and smoothness. Missing materials are created using defaults. If any protected scene is missing, the rebuild cancels before making changes: restore that scene from Git or a backup. There is no force-overwrite option for Days 1–5.
 
 Every generated day is an ordinary scene. Open any of them and move buttons, resize the room, change the sign text, retime the colour cycles, or replace a whole layout in the inspector. Nothing about a day is locked.
 
-**Re-running the command overwrites `Day 1-31` and `TestScene`.** Once you start editing a day by hand, either stop re-running it or save your version under a different name first.
+**Re-running the command overwrites only `Day 6-31` and `TestScene`.** Back up hand-edited work in those scenes before rebuilding. Days 1–5 can be edited normally in the Editor without the rebuild replacing them. If Unity prompts you to save an already-open modified scene, that is saving your own edits, not regenerating it.
 
 - **Opening:** the game starts on a fully black screen and plays `Assets/Audio/Opening.mp3`. `DO NOT PRESS THE BIG RED BUTTON` appears centred at **10.28 seconds**, when the line is spoken, then the black fades away onto the room and `DAY 1` fades in. The player cannot move until the screen clears.
 - **The red button** repeats the current day, so pressing it never advances the game. Any button showing green completes the day.
@@ -320,6 +322,8 @@ The title uses unscaled time, so it still fades if a day sets `Time.timeScale` t
 Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedButton.Tests.FirstPersonTests`. These tests cover action availability, press interactions, raycast range, wall occlusion, stale targets, disabled/locked objects, child colliders, ignored triggers, cooldowns, and one-shot resets.
 
 `BigRedButton.Tests.DayFlowTests` covers day order, missing days, reloads, and rejected day numbers.
+
+`BigRedButton.Tests.RebuildProtectionTests` checks that the rebuild plan contains exactly Days 6–31, excludes each protected day, and reuses an existing material without changing its settings or saved bytes.
 
 `BigRedButton.Tests.DayChainTests` checks the built chain: that days 1 to 31 exist with no gaps, that they are registered in numeric order, that walking from day one reaches the ending, that each scene holds exactly one correctly numbered `DayLevel`, and that every day has some way to complete it. These tests skip themselves if the days have not been built yet.
 

@@ -1,7 +1,7 @@
 {
     "name": "BigRedButton.Editor.Tests",
     "rootNamespace": "BigRedButton.Tests",
-    "references": ["BigRedButton.Runtime", "Unity.InputSystem"],
+    "references": ["BigRedButton.Runtime", "BigRedButton.Editor", "Unity.InputSystem"],
     "includePlatforms": ["Editor"],
     "optionalUnityReferences": ["TestAssemblies"]
 }
