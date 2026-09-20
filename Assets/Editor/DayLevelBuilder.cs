@@ -592,6 +592,8 @@ namespace BigRedButton.Editor
                 }
 
                 case 27:
+                case 28:
+                case 30:
                 {
                     // The green button begins speaking as soon as the room loads.
                     CreateRedButton("Big Red Button", new Vector3(2.2f, 0f, 2.4f), level);
