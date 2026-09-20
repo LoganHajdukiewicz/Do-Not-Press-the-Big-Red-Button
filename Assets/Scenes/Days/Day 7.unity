@@ -1520,7 +1520,6 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 500700000}
   - component: {fileID: 1021017163}
   - component: {fileID: 1021017169}
   - component: {fileID: 1021017168}
@@ -3924,42 +3923,6 @@ SceneRoots:
   - {fileID: 2046991558}
   - {fileID: 1588287435}
   - {fileID: 518971486}
---- !u!114 &500700000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021017162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d5a281882114d7e805c8059f77624f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.TalkingButton
-  lines: []
-  secondsPerLine: 3
-  loop: 0
-  startDelay: 0
-  advanceOnPress: 0
-  speaksWhen: 2
-  triggerDistance: 5
-  aimTolerance: 0.9
-  canRetrigger: 0
-  silenceOnPress: 1
-  voice: {fileID: 0}
-  voiceVolume: 0.9
-  lineClips: []
-  spatialBlend: 0.8
-  textHeightFraction: 0.032
-  screenPosition: 0.74
-  textColour: {r: 1, g: 1, b: 1, a: 1}
-  hideText: 0
-  onStartedTalking:
-    m_PersistentCalls:
-      m_Calls: []
-  onFinishedTalking:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &500700001
 MonoBehaviour:
   m_ObjectHideFlags: 0
