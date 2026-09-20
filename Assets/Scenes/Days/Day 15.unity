@@ -423,6 +423,7 @@ GameObject:
   - component: {fileID: 190417580}
   - component: {fileID: 190417579}
   - component: {fileID: 190417578}
+  - component: {fileID: 190417582}
   m_Layer: 0
   m_Name: Wall (right)
   m_TagString: Untagged
@@ -523,6 +524,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &190417582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190417577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ff3be79eae4b3ab9fd9580b1659537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonSign
+  text: ...find some comfort...
+  uppercase: 0
+  colour: {r: 0.9, g: 0.9, b: 0.87, a: 1}
+  height: 0
+  offset: {x: 0, y: 0, z: 0}
+  baseFontSize: 50
+  visibleDistance: 50
+  constantScreenSize: 0
+  minimumFontSize: 8
+  hideWhenOccluded: 1
+  hideAfterPress: 0
 --- !u!1 &357668197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,6 +1455,7 @@ GameObject:
   - component: {fileID: 817434916}
   - component: {fileID: 817434915}
   - component: {fileID: 817434914}
+  - component: {fileID: 817434918}
   m_Layer: 0
   m_Name: Wall (back)
   m_TagString: Untagged
@@ -1531,6 +1556,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &817434918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817434913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ff3be79eae4b3ab9fd9580b1659537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonSign
+  text: If the way forward feels impossible...
+  uppercase: 0
+  colour: {r: 0.9, g: 0.9, b: 0.87, a: 1}
+  height: 0
+  offset: {x: 0, y: 0, z: 0}
+  baseFontSize: 70
+  visibleDistance: 500
+  constantScreenSize: 0
+  minimumFontSize: 8
+  hideWhenOccluded: 1
+  hideAfterPress: 0
 --- !u!114 &820000000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3724,7 +3772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ff3be79eae4b3ab9fd9580b1659537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BigRedButton.Runtime::BigRedButton.ButtonSign
-  text: 'If the way forward feels impossible, find some comfort in looking back. '
+  text: '...in looking back. '
   uppercase: 0
   colour: {r: 0.9, g: 0.9, b: 0.87, a: 1}
   height: -0.25
