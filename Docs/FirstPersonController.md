@@ -106,7 +106,7 @@ These components cover the tricks in the design. Add them to a button's cap, alo
 | `ButtonMover` | Chases the player, stays behind their back, or patrols between two points. | 20, 21 |
 | `TimedReveal` | Hides a button for a few seconds, then reveals it. | 3 |
 | `TrapdoorTrigger` | Opens a floor panel when the player walks over it. | 15 |
-| `EndingSequence` | Sunshine, gunshot, darkness, and the employee of the year card. | 31 |
+| `EndingSequence` | Five seconds of free outdoor exploration, fade to black, Employee of the Month. | 31 |
 | `StatefulDayButton` | Resolves the day by the colour the button is showing when pressed. | 4, 13, 17-19 |
 
 ### Judging a button by the colour it is showing
@@ -265,7 +265,11 @@ The pit and its large red contact button cover the chamber underneath. The green
 
 ### Day 31, the ending
 
-The last day has **no buttons at all**. The back wall has an open doorway and an outdoor ground surface; the old opaque daylight panel no longer blocks the sky. The camera renders a skybox. The ending trigger is outside the doorway, at z=10 with a 1.5m radius, so you can see the sky and step through before the fade begins. Walking outside runs `EndingSequence`: the screen bleaches to sunshine, the gunshot from `Assets/Audio/gunshot.mp3` lands on the brightest frame, the light is cut to black, and after a silence the card fades in naming the player **Employee of the Year**.
+The last day has **no buttons at all**. Walk through the open doorway into the outdoor space. The camera renders a skybox, and the walkable outdoor ground is now **300 × 300 metres**, with room to sprint in any direction without reaching its edge during the ending.
+
+Crossing the outside trigger (centre z=9, radius 1.5m) starts **five full seconds of free exploration**. Movement, running, jumping and looking remain available; the view stays clear. Then the world fades smoothly to black over **two seconds**, still allowing movement. Once fully black, the controller is frozen. After a short black hold, the plain centered **Employee of the Month** card fades in with the worker's name.
+
+There is **no gunshot and no white flash**. The timer starts only once, does not restart if you move away or return indoors, and pauses while gameplay is paused or the first-person controller has released input (Escape/focus loss).
 
 #### Fantasy Skybox FREE import (required once in your Unity Editor)
 
@@ -277,11 +281,12 @@ The Render Knight pack is not included in this repository and has not been downl
 
 The skybox menu preserves the previous open scene setup. Keep the imported texture dependencies installed locally; do not publish the vendor pack as a standalone download.
 
-- **Doorway Centre / Radius:** the area that starts the ending. `Begin()` can also be called from a door animation or trigger.
-- **Sunshine Fade In / Hold / Colour:** how long the outside blinds the player before the shot.
-- **Gunshot / Volume / Cut To Black / Dark Hold:** the shot and the darkness after it.
+- **Doorway Centre / Radius / Height Tolerance:** the outside area that starts the exploration timer. `Begin()` can also be called from a trigger or door animation.
+- **Exploration Duration:** clear-view free exploration before fading; default **5 seconds**.
+- **Fade To Black Duration / Dark Hold:** fade length (default **2 seconds**) and pause before the card (default **0.5 seconds**).
 - **Card Text / Fade In / Size / Colour:** the closing card. It accepts `{WORKER-FIRSTNAME}` and `{WORKER-LASTNAME}`.
-- **Frozen During Ending:** the player controller, disabled so they cannot walk back inside.
+- **Player / Frozen During Ending:** optional references, found automatically when empty. Control is disabled only when the fade is fully black, never when stepping outside.
+- **On Ending Started / On Fade Started / On Card Shown:** separate Inspector events for the three stages. The old gunshot event and audio fields are removed.
 
 The rooms are plain, quiet, and evenly lit, with panel trim and no decorative props: closer to a clean test chamber than a dressed set. Days 6, 14, 20 and 21 use a wider open hall so their crowds and moving buttons have floor space.
 
@@ -353,7 +358,7 @@ Open **Window > General > Test Runner**, choose **EditMode**, and run `BigRedBut
 
 `BigRedButton.Tests.StatefulDayButtonTests` covers colour-based outcomes: green completes, red repeats, grey does nothing, the same button flipping outcome as its colour changes, the halfway threshold, and the sleeping button's wake-up press not ending the day.
 
-`BigRedButton.Tests.EndingSequenceTests` covers the ending: the run from sunshine through the gunshot to the card, the doorway trigger, beginning only once, freezing the player, and filling in the worker's name.
+`BigRedButton.Tests.EndingSequenceTests` covers five full seconds before fading, control retained during exploration/fade, a smooth black-only overlay, the outside trigger, no timer restart, pause handling, freezing only at full black, restoring controls, zero-duration settings and the Employee of the Month card.
 
 `BigRedButton.Tests.WakeableButtonTests` covers the sleeping button: starting grey rather than red, waking to green without advancing the day, the next press advancing it, multiple wake presses, waking up red, and suppression holding for the press that lifts it.
 
@@ -384,7 +389,7 @@ Manual Play Mode checklist:
 - In `TestScene`, walk the showcase row: the timed button cycles colour, the shy button reddens when stared at, the compass button changes with your heading, the sleeping button needs two presses, the magnetic button shoves your aim, the talking button starts speaking as you approach, and the chasing and sneaking buttons move.
 - Press a showcase button while it looks green: the day completes. Press one while it looks red: the day restarts. The Console logs each press.
 - The sleeping button starts grey and silent. Press it once: it clicks and turns green, and the day does not change. Press it again: it dings and the day completes.
-- On Day 31 there are no buttons. Walking into the doorway gives sunshine, a gunshot, darkness, then the employee of the year card.
+- On Day 31, step outside and explore freely for five seconds. The world then fades to black, followed by Employee of the Month. No gunshot or white flash; controls remain available until fully black.
 - The final day raises **On Final Day Completed** instead of loading a missing scene.
 - Alt-tab releases the cursor; returning does not unexpectedly capture it.
 - Gamepad sticks, hold-to-run, jump, and interaction work; switching input updates the prompt hint.

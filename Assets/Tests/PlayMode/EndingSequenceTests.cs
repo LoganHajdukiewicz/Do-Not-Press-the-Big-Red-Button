@@ -10,6 +10,18 @@ namespace BigRedButton.Tests
     public sealed class EndingSequenceTests
     {
         private readonly List<GameObject> objects = new List<GameObject>();
+        private PlayerInteractor controls;
+        private float previousTimeScale;
+        private string firstName, lastName;
+
+        [SetUp]
+        public void SetUp()
+        {
+            previousTimeScale = Time.timeScale;
+            Time.timeScale = 1f;
+            firstName = WorkerIdentity.FirstName;
+            lastName = WorkerIdentity.LastName;
+        }
 
         [TearDown]
         public void TearDown()
@@ -18,126 +30,181 @@ namespace BigRedButton.Tests
                 if (objects[i] != null)
                     Object.DestroyImmediate(objects[i]);
             objects.Clear();
-            WorkerIdentity.ResetForTests();
+            Time.timeScale = previousTimeScale;
+            WorkerIdentity.FirstName = firstName;
+            WorkerIdentity.LastName = lastName;
         }
 
         private static void Set(object target, string field, object value) =>
             target.GetType().GetField(field, BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(target, value);
 
+        // Deterministic timing checks, without sleeps/frame-rate dependent assertions.
+        private static void Advance(EndingSequence ending, float seconds) =>
+            typeof(EndingSequence).GetMethod("AdvanceSequence", BindingFlags.Instance | BindingFlags.NonPublic)
+                .Invoke(ending, new object[] { seconds });
+
         private EndingSequence BuildEnding()
         {
-            GameObject host = new GameObject("Day 31");
+            var player = new GameObject("Test player");
+            objects.Add(player);
+            player.transform.position = new Vector3(0f, 0f, -4.5f);
+            // A harmless stand-in for control enable/disable assertions. No invalid
+            // FirstPersonController with missing camera/input asset in the test fixture.
+            controls = player.AddComponent<PlayerInteractor>();
+            var host = new GameObject("Day 31");
             objects.Add(host);
             var ending = host.AddComponent<EndingSequence>();
-            Set(ending, "sunshineFadeIn", 0.1f);
-            Set(ending, "sunshineHold", 0.1f);
-            Set(ending, "cutToBlack", 0.05f);
-            Set(ending, "darkHold", 0.1f);
-            Set(ending, "cardFadeIn", 0.1f);
+            Set(ending, "player", player.transform);
+            Set(ending, "frozenDuringEnding", controls);
             return ending;
         }
 
-        [UnityTest]
-        public IEnumerator EndingRunsFromSunshineThroughDarknessToTheCard()
+        [Test]
+        public void FullFiveSecondsOfExplorationBeforeAnyFade()
         {
-            EndingSequence ending = BuildEnding();
-            int started = 0, shots = 0, cards = 0;
-            ending.OnEndingStarted.AddListener(() => started++);
-            ending.OnGunshot.AddListener(() => shots++);
-            ending.OnCardShown.AddListener(() => cards++);
-            yield return null;
-
-            Assert.That(ending.HasStarted, Is.False, "It waits until the player reaches the door.");
-            Assert.That(ending.OverlayAlpha, Is.Zero, "The screen starts clear.");
-
+            var ending = BuildEnding();
+            int fades = 0;
+            ending.OnFadeStarted.AddListener(() => fades++);
             ending.Begin();
-            Assert.That(started, Is.EqualTo(1));
+            Assert.That(controls.enabled, Is.True);
+            Assert.That(ending.IsExploring, Is.True);
+            Advance(ending, 4.5f);
+            Assert.That(ending.OverlayAlpha, Is.Zero);
+            Assert.That(ending.IsExploring, Is.True);
+            Assert.That(fades, Is.Zero);
+            Assert.That(controls.enabled, Is.True);
+            Advance(ending, 0.5f);
+            Assert.That(ending.IsFading, Is.True);
+            Assert.That(fades, Is.EqualTo(1));
+            Assert.That(ending.OverlayAlpha, Is.Zero, "Fade starts after five seconds, not at the door.");
+            Assert.That(controls.enabled, Is.True);
+        }
 
-            // Sunshine floods in first.
-            yield return new WaitForSecondsRealtime(0.08f);
-            Assert.That(ending.OverlayAlpha, Is.GreaterThan(0f).And.LessThanOrEqualTo(1f));
-            Assert.That(ending.OverlayColour.r, Is.GreaterThan(0.8f), "The bleach is warm, not black.");
-            Assert.That(ending.HasFiredGunshot, Is.False);
-
-            // Then the gunshot and the cut to black.
-            yield return new WaitForSecondsRealtime(0.25f);
-            Assert.That(shots, Is.EqualTo(1), "The gunshot fires once.");
-            Assert.That(ending.OverlayColour.r, Is.LessThan(0.2f), "The screen goes dark.");
+        [Test]
+        public void SmoothBlackFadeThenMonthCardWithoutAudioOrWhiteFlash()
+        {
+            var ending = BuildEnding();
+            int cards = 0;
+            ending.OnCardShown.AddListener(() => cards++);
+            ending.Begin();
+            Advance(ending, 5f);
+            Advance(ending, 1f);
+            Assert.That(ending.OverlayAlpha, Is.EqualTo(0.5f).Within(0.001f));
+            Assert.That(ending.OverlayColour, Is.EqualTo(Color.black));
+            Assert.That(controls.enabled, Is.True, "Movement remains available during the fade.");
+            Assert.That(ending.CardAlpha, Is.Zero);
+            Advance(ending, 1f);
             Assert.That(ending.OverlayAlpha, Is.EqualTo(1f));
-
-            // Then the card.
-            yield return new WaitForSecondsRealtime(0.35f);
+            Assert.That(controls.enabled, Is.False, "Only freeze once the world is completely hidden.");
+            Assert.That(cards, Is.Zero);
+            Advance(ending, 0.5f);
             Assert.That(cards, Is.EqualTo(1));
-            Assert.That(ending.CardAlpha, Is.GreaterThan(0f));
+            Advance(ending, 2.5f);
+            Assert.That(ending.CardAlpha, Is.EqualTo(1f));
+            Assert.That(ending.CardText, Does.StartWith("Employee of the Month"));
+            Assert.That(ending.GetComponents<AudioSource>(), Is.Empty);
+            Advance(ending, 20f);
+            Assert.That(cards, Is.EqualTo(1));
+            Assert.That(ending.OverlayAlpha, Is.EqualTo(1f));
         }
 
         [UnityTest]
-        public IEnumerator CardNamesTheWorker()
+        public IEnumerator DoorwayStartsTimerOnlyOnceAndOnlyOutside()
         {
-            EndingSequence ending = BuildEnding();
-            WorkerIdentity.FirstName = "{WORKER-FIRSTNAME}";
-            WorkerIdentity.LastName = "{WORKER-LASTNAME}";
-            yield return null;
-
-            Assert.That(ending.CardText, Does.Contain("Employee of the Year"));
-            Assert.That(ending.CardText, Does.Contain("{WORKER-FIRSTNAME} {WORKER-LASTNAME}"),
-                "The card uses the worker's name.");
-            Assert.That(ending.CardText, Does.Not.Contain("{WORKER-"),
-                "The name tokens must be filled in, not shown raw.");
-        }
-
-        [UnityTest]
-        public IEnumerator WalkingIntoTheDoorwayStartsTheEnding()
-        {
-            GameObject player = new GameObject("Player");
-            objects.Add(player);
-            player.AddComponent<CharacterController>();
-            player.AddComponent<PlayerInteractor>();
-            player.AddComponent<FirstPersonController>();
-            player.transform.position = Vector3.zero;
-
-            EndingSequence ending = BuildEnding();
-            Set(ending, "doorwayCentre", new Vector3(0f, 0f, 7f));
-            Set(ending, "doorwayRadius", 1.5f);
-
-            yield return null;
-            Assert.That(ending.HasStarted, Is.False, "Standing in the room is not enough.");
-
-            player.transform.position = new Vector3(0f, 0f, 7f);
-            yield return null;
-            Assert.That(ending.HasStarted, Is.True, "Reaching the doorway begins the ending.");
-        }
-
-        [UnityTest]
-        public IEnumerator EndingOnlyBeginsOnce()
-        {
-            EndingSequence ending = BuildEnding();
+            var ending = BuildEnding();
             int started = 0;
             ending.OnEndingStarted.AddListener(() => started++);
             yield return null;
-
+            Assert.That(ending.HasStarted, Is.False);
+            controls.transform.position = new Vector3(0f, 0f, 6.8f);
+            yield return null;
+            Assert.That(ending.HasStarted, Is.False, "Still inside the room.");
+            controls.transform.position = new Vector3(0f, 0f, 7.6f);
+            yield return null;
+            Assert.That(ending.IsExploring, Is.True);
+            Assert.That(controls.enabled, Is.True);
+            controls.transform.position = new Vector3(30f, 0f, 30f);
             ending.Begin();
-            ending.Begin();
-            ending.Begin();
-            Assert.That(started, Is.EqualTo(1));
-            LogAssert.NoUnexpectedReceived();
+            yield return null;
+            Assert.That(started, Is.EqualTo(1), "Walking away cannot restart the timer.");
         }
 
-        [UnityTest]
-        public IEnumerator EndingFreezesThePlayer()
+        [Test]
+        public void RepeatedBeginDoesNotResetExplorationTimer()
         {
-            GameObject player = new GameObject("Player");
-            objects.Add(player);
-            var standIn = player.AddComponent<FirstPersonHUD>();
-
-            EndingSequence ending = BuildEnding();
-            Set(ending, "frozenDuringEnding", standIn);
-            yield return null;
-
+            var ending = BuildEnding();
             ending.Begin();
-            Assert.That(standIn.enabled, Is.False,
-                "The player cannot walk back inside once the ending starts.");
+            Advance(ending, 4f);
+            ending.Begin();
+            Advance(ending, 1f);
+            Assert.That(ending.IsFading, Is.True);
+        }
+
+        [Test]
+        public void PauseDoesNotConsumeExplorationTime()
+        {
+            var ending = BuildEnding();
+            ending.Begin();
+            Time.timeScale = 0f;
+            Advance(ending, 100f);
+            Assert.That(ending.IsExploring, Is.True);
+            Assert.That(ending.OverlayAlpha, Is.Zero);
+            Time.timeScale = 1f;
+            Advance(ending, 4f);
+            Assert.That(ending.IsExploring, Is.True);
+            Advance(ending, 1f);
+            Assert.That(ending.IsFading, Is.True);
+        }
+
+        [Test]
+        public void UnavailableControlsDoNotConsumeExplorationTime()
+        {
+            var ending = BuildEnding();
+            ending.Begin();
+            controls.enabled = false;
+            Advance(ending, 100f);
+            Assert.That(ending.IsExploring, Is.True);
+            controls.enabled = true;
+            Advance(ending, 5f);
+            Assert.That(ending.IsFading, Is.True);
+        }
+
+        [Test]
+        public void DisablingEndingRestoresControlsItFroze()
+        {
+            var ending = BuildEnding();
+            ending.Begin();
+            Advance(ending, 5f);
+            Advance(ending, 2f);
+            Assert.That(controls.enabled, Is.False);
+            ending.enabled = false;
+            Assert.That(controls.enabled, Is.True);
+        }
+
+        [Test]
+        public void CardNamesTheWorker()
+        {
+            var ending = BuildEnding();
+            WorkerIdentity.FirstName = "ANNE";
+            WorkerIdentity.LastName = "KOWALSKI";
+            Assert.That(ending.CardText, Is.EqualTo("Employee of the Month\nANNE KOWALSKI"));
+            Assert.That(ending.CardText, Does.Not.Contain("{WORKER-"));
+        }
+
+        [Test]
+        public void ZeroDurationSettingsStillReachTheCard()
+        {
+            var ending = BuildEnding();
+            Set(ending, "explorationDuration", 0f);
+            Set(ending, "fadeToBlackDuration", 0f);
+            Set(ending, "darkHold", 0f);
+            Set(ending, "cardFadeIn", 0f);
+            ending.Begin();
+            for (int i = 0; i < 4; i++)
+                Advance(ending, 0.01f);
+            Assert.That(ending.CardAlpha, Is.EqualTo(1f));
+            Assert.That(ending.OverlayAlpha, Is.EqualTo(1f));
         }
 
         [Test]
@@ -148,10 +215,7 @@ namespace BigRedButton.Tests
             Assert.That(WorkerIdentity.Format("{WORKER-FIRSTNAME} {WORKER-LASTNAME}"),
                 Is.EqualTo("ANNE KOWALSKI"));
             Assert.That(WorkerIdentity.Format("HELLO WORKER-FIRSTNAME WORKER-LASTNAME."),
-                Is.EqualTo("HELLO ANNE KOWALSKI."), "The opening narration style also works.");
-            Assert.That(WorkerIdentity.FullName, Is.EqualTo("ANNE KOWALSKI"));
-
-            // Blank input keeps the previous name rather than emptying the card.
+                Is.EqualTo("HELLO ANNE KOWALSKI."));
             WorkerIdentity.FirstName = "   ";
             Assert.That(WorkerIdentity.FirstName, Is.EqualTo("ANNE"));
         }

@@ -4,198 +4,196 @@ using UnityEngine.Events;
 namespace BigRedButton
 {
     /// <summary>
-    /// The last day. The player steps through the door into sunshine, a gunshot rings
-    /// out, the screen goes dark, and the company names its employee of the year.
+    /// Day 31: step outside, explore freely for five seconds, then fade to black
+    /// and receive the Employee of the Month card. No gunshot or white flash.
     /// </summary>
     [DefaultExecutionOrder(-40)]
     [DisallowMultipleComponent]
     public sealed class EndingSequence : MonoBehaviour
     {
-        private enum Stage
-        {
-            Waiting,
-            Sunshine,
-            Dark,
-            Card,
-            Finished
-        }
+        private enum Stage { Waiting, Exploring, Fading, Dark, Card, Finished }
 
-        [Header("Trigger")]
-        [Tooltip("Walking into this area starts the ending. Usually the doorway.")]
-        [SerializeField] private Vector3 doorwayCentre = new Vector3(0f, 0f, 7f);
-        [SerializeField, Min(0.2f)] private float doorwayRadius = 1.6f;
+        [Header("Outside trigger")]
+        [Tooltip("World-space centre of the area just beyond the doorway.")]
+        [SerializeField] private Vector3 doorwayCentre = new Vector3(0f, 0f, 9f);
+        [SerializeField, Min(0.2f)] private float doorwayRadius = 1.5f;
+        [SerializeField, Min(0f)] private float doorwayHeightTolerance = 2.5f;
 
-        [Header("Sunshine")]
-        [Tooltip("Seconds the screen takes to bleach out to white.")]
-        [SerializeField, Min(0f)] private float sunshineFadeIn = 1.4f;
-        [Tooltip("Seconds of held sunshine before the gunshot.")]
-        [SerializeField, Min(0f)] private float sunshineHold = 1.1f;
-        [SerializeField] private Color sunshineColour = new Color(1f, 0.99f, 0.93f);
+        [Header("Exploration")]
+        [Tooltip("Seconds of free exploration after stepping outside, before any fade begins.")]
+        [SerializeField, Min(0f)] private float explorationDuration = 5f;
 
-        [Header("Gunshot")]
-        [SerializeField] private AudioClip gunshot;
-        [SerializeField, Range(0f, 1f)] private float gunshotVolume = 1f;
-        [Tooltip("Seconds the screen takes to go from sunshine to black. Keep it fast.")]
-        [SerializeField, Min(0f)] private float cutToBlack = 0.06f;
-        [Tooltip("Seconds of silent darkness before the card appears.")]
-        [SerializeField, Min(0f)] private float darkHold = 2.2f;
+        [Header("Fade to black")]
+        [Tooltip("Seconds to fade the world to black. Movement remains available during the fade.")]
+        [SerializeField, Min(0f)] private float fadeToBlackDuration = 2f;
+        [Tooltip("Seconds of darkness before the card begins to appear.")]
+        [SerializeField, Min(0f)] private float darkHold = 0.5f;
 
-        [Header("Employee of the year card")]
+        [Header("Employee of the month card")]
         [Tooltip("Uses {WORKER-FIRSTNAME} and {WORKER-LASTNAME} for the worker's name.")]
         [TextArea(2, 4)]
         [SerializeField] private string cardText =
-            "Employee of the Year\n{WORKER-FIRSTNAME} {WORKER-LASTNAME}";
+            "Employee of the Month\n{WORKER-FIRSTNAME} {WORKER-LASTNAME}";
         [SerializeField, Min(0f)] private float cardFadeIn = 2.5f;
         [SerializeField, Range(0.02f, 0.12f)] private float cardHeightFraction = 0.045f;
         [SerializeField] private Color cardColour = new Color(0.86f, 0.86f, 0.83f);
 
         [Header("Player")]
-        [Tooltip("Disabled once the ending starts, so the player cannot walk back.")]
+        [Tooltip("Found from the player controller if left empty.")]
+        [SerializeField] private Transform player;
+        [Tooltip("Disabled only AFTER the screen becomes fully black, never during exploration.")]
         [SerializeField] private MonoBehaviour frozenDuringEnding;
 
         [Header("Events")]
+        [Tooltip("Fires when the player steps outside and the exploration timer starts.")]
         [SerializeField] private UnityEvent onEndingStarted = new UnityEvent();
-        [SerializeField] private UnityEvent onGunshot = new UnityEvent();
+        [SerializeField] private UnityEvent onFadeStarted = new UnityEvent();
         [SerializeField] private UnityEvent onCardShown = new UnityEvent();
 
         private Stage stage = Stage.Waiting;
-        private Transform player;
         private GUIStyle style;
-        private Texture2D pixel;
         private float timer;
-        private bool playerWasEnabled;
+        private bool controlsFrozen;
 
-        /// <summary>0 when clear, 1 when fully bleached or fully black.</summary>
         public float OverlayAlpha { get; private set; }
-        public Color OverlayColour { get; private set; } = Color.white;
+        public Color OverlayColour => Color.black;
         public float CardAlpha { get; private set; }
         public bool HasStarted => stage != Stage.Waiting;
-        public bool HasFiredGunshot => stage is Stage.Dark or Stage.Card or Stage.Finished;
+        public bool IsExploring => stage == Stage.Exploring;
+        public bool IsFading => stage == Stage.Fading;
         public string CardText => WorkerIdentity.Format(cardText);
         public UnityEvent OnEndingStarted => onEndingStarted;
-        public UnityEvent OnGunshot => onGunshot;
+        public UnityEvent OnFadeStarted => onFadeStarted;
         public UnityEvent OnCardShown => onCardShown;
 
-        /// <summary>Starts the ending. Can be wired to a door or a trigger volume.</summary>
+        /// <summary>Starts the one-shot exploration timer. Does not take away control.</summary>
         public void Begin()
         {
             if (stage != Stage.Waiting)
                 return;
-
-            stage = Stage.Sunshine;
+            ResolvePlayer();
+            stage = Stage.Exploring;
             timer = 0f;
-            OverlayColour = sunshineColour;
-
-            if (frozenDuringEnding == null)
-                frozenDuringEnding = FindFirstObjectByType<FirstPersonController>();
-            if (frozenDuringEnding != null)
-            {
-                playerWasEnabled = frozenDuringEnding.enabled;
-                frozenDuringEnding.enabled = false;
-            }
-
+            OverlayAlpha = 0f;
             onEndingStarted.Invoke();
+        }
+
+        private void ResolvePlayer()
+        {
+            if (frozenDuringEnding == null)
+            {
+                var controller = player != null
+                    ? player.GetComponentInParent<FirstPersonController>()
+                    : FindFirstObjectByType<FirstPersonController>();
+                frozenDuringEnding = controller;
+            }
+            if (player == null && frozenDuringEnding != null)
+                player = frozenDuringEnding.transform;
+        }
+
+        private bool CanExplore()
+        {
+            if (Time.timeScale <= 0f)
+                return false;
+            if (frozenDuringEnding != null && !frozenDuringEnding.isActiveAndEnabled)
+                return false;
+            // Escape/unfocused input must not use up the short exploration window.
+            return !(frozenDuringEnding is FirstPersonController controller) || controller.HasControl;
         }
 
         private void Update()
         {
-            switch (stage)
-            {
-                case Stage.Waiting:
-                    CheckDoorway();
-                    return;
-
-                case Stage.Sunshine:
-                    UpdateSunshine();
-                    return;
-
-                case Stage.Dark:
-                    UpdateDark();
-                    return;
-
-                case Stage.Card:
-                    UpdateCard();
-                    return;
-            }
+            if (stage == Stage.Waiting)
+                CheckDoorway();
+            else
+                AdvanceSequence(Time.deltaTime);
         }
 
         private void CheckDoorway()
         {
-            if (player == null)
-            {
-                var controller = FindFirstObjectByType<FirstPersonController>();
-                if (controller == null)
-                    return;
-                player = controller.transform;
-            }
-
+            ResolvePlayer();
+            if (player == null || !CanExplore())
+                return;
             Vector3 offset = player.position - doorwayCentre;
+            if (Mathf.Abs(offset.y) > doorwayHeightTolerance)
+                return;
             offset.y = 0f;
-            if (offset.magnitude <= doorwayRadius)
+            if (offset.sqrMagnitude <= doorwayRadius * doorwayRadius)
                 Begin();
         }
 
-        private void UpdateSunshine()
+        private void AdvanceSequence(float deltaTime)
         {
-            timer += Time.unscaledDeltaTime;
-            OverlayColour = sunshineColour;
-            OverlayAlpha = sunshineFadeIn <= 0f ? 1f : Mathf.Clamp01(timer / sunshineFadeIn);
-
-            if (timer < sunshineFadeIn + sunshineHold)
+            if (deltaTime <= 0f || Time.timeScale <= 0f)
+                return;
+            if ((stage == Stage.Exploring || stage == Stage.Fading) && !CanExplore())
                 return;
 
-            // The gunshot lands on the brightest frame, then the light is taken away.
-            stage = Stage.Dark;
-            timer = 0f;
-            if (gunshot != null)
-                AudioSource.PlayClipAtPoint(gunshot, player != null
-                    ? player.position : transform.position, gunshotVolume);
-            onGunshot.Invoke();
+            timer += deltaTime;
+            switch (stage)
+            {
+                case Stage.Exploring:
+                    if (timer < explorationDuration)
+                        return;
+                    stage = Stage.Fading;
+                    timer = 0f;
+                    onFadeStarted.Invoke();
+                    break;
+                case Stage.Fading:
+                    OverlayAlpha = fadeToBlackDuration <= 0f ? 1f :
+                        Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(timer / fadeToBlackDuration));
+                    if (OverlayAlpha < 1f)
+                        return;
+                    stage = Stage.Dark;
+                    timer = 0f;
+                    FreezeControls();
+                    break;
+                case Stage.Dark:
+                    if (timer < darkHold)
+                        return;
+                    stage = Stage.Card;
+                    timer = 0f;
+                    onCardShown.Invoke();
+                    break;
+                case Stage.Card:
+                    CardAlpha = cardFadeIn <= 0f ? 1f : Mathf.Clamp01(timer / cardFadeIn);
+                    if (CardAlpha >= 1f)
+                        stage = Stage.Finished;
+                    break;
+            }
         }
 
-        private void UpdateDark()
+        private void FreezeControls()
         {
-            timer += Time.unscaledDeltaTime;
-            float toBlack = cutToBlack <= 0f ? 1f : Mathf.Clamp01(timer / cutToBlack);
-            OverlayColour = Color.Lerp(sunshineColour, Color.black, toBlack);
-            OverlayAlpha = 1f;
-
-            if (timer < cutToBlack + darkHold)
+            if (controlsFrozen || frozenDuringEnding == null || !frozenDuringEnding.enabled)
                 return;
-
-            stage = Stage.Card;
-            timer = 0f;
-            onCardShown.Invoke();
+            controlsFrozen = true;
+            frozenDuringEnding.enabled = false;
         }
 
-        private void UpdateCard()
+        private void OnEnable()
         {
-            timer += Time.unscaledDeltaTime;
-            OverlayColour = Color.black;
-            OverlayAlpha = 1f;
-            CardAlpha = cardFadeIn <= 0f ? 1f : Mathf.Clamp01(timer / cardFadeIn);
-            if (CardAlpha >= 1f)
-                stage = Stage.Finished;
+            if (stage is Stage.Dark or Stage.Card or Stage.Finished)
+                FreezeControls();
+        }
+
+        private void OnDisable()
+        {
+            if (controlsFrozen && frozenDuringEnding != null)
+                frozenDuringEnding.enabled = true;
+            controlsFrozen = false;
         }
 
         private void OnGUI()
         {
             if (OverlayAlpha <= 0f)
                 return;
-
-            if (pixel == null)
-            {
-                pixel = new Texture2D(1, 1) { hideFlags = HideFlags.HideAndDontSave };
-                pixel.SetPixel(0, 0, Color.white);
-                pixel.Apply();
-            }
-
             var full = new Rect(0f, 0f, Screen.width, Screen.height);
-            Color previous = GUI.color;
-
-            GUI.color = new Color(OverlayColour.r, OverlayColour.g, OverlayColour.b, OverlayAlpha);
-            GUI.DrawTexture(full, pixel);
-
+            Color previousColour = GUI.color;
+            int previousDepth = GUI.depth;
+            GUI.depth = -100;
+            GUI.color = new Color(0f, 0f, 0f, OverlayAlpha);
+            GUI.DrawTexture(full, Texture2D.whiteTexture);
             if (CardAlpha > 0f)
             {
                 if (style == null)
@@ -203,19 +201,11 @@ namespace BigRedButton
                 style.fontSize = Mathf.Max(11, Mathf.RoundToInt(Screen.height * cardHeightFraction));
                 style.normal.textColor =
                     new Color(cardColour.r, cardColour.g, cardColour.b, cardColour.a * CardAlpha);
-                GUI.color = new Color(1f, 1f, 1f, CardAlpha);
+                GUI.color = Color.white;
                 GUI.Label(full, CardText, style);
             }
-
-            GUI.color = previous;
-        }
-
-        private void OnDestroy()
-        {
-            if (pixel != null)
-                Destroy(pixel);
-            if (frozenDuringEnding != null && playerWasEnabled)
-                frozenDuringEnding.enabled = true;
+            GUI.color = previousColour;
+            GUI.depth = previousDepth;
         }
     }
 }

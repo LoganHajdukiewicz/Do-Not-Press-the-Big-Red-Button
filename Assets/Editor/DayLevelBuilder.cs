@@ -21,7 +21,6 @@ namespace BigRedButton.Editor
         private const string OpeningClipPath = "Assets/Audio/Opening.mp3";
         private const string DingClipPath = "Assets/Audio/button-ding.mp3";
         private const string ClickClipPath = "Assets/Audio/button-click.mp3";
-        private const string GunshotClipPath = "Assets/Audio/gunshot.mp3";
         private const int FirstDayToRebuild = 6;
         private const int DaysToBuild = 31;
         private const int EndingDay = 31;
@@ -603,7 +602,7 @@ namespace BigRedButton.Editor
 
         /// <summary>
         /// Day 31, the last level. No buttons at all: the far wall has a doorway with
-        /// daylight behind it. Walking into the doorway plays the ending.
+        /// daylight behind it. Stepping outside starts five seconds of free exploration.
         /// </summary>
         private static void CreateEnding(DayLevel level)
         {
@@ -626,7 +625,7 @@ namespace BigRedButton.Editor
             Box("Wall (above door)", new Vector3(0f, (doorHeight + height) * 0.5f, wallZ),
                 new Vector3(doorWidth, height - doorHeight, 0.5f), wallMaterial);
 
-            // The frame, and a bright panel standing in for the outside.
+            // The open door frame, with an unobstructed view of the outside.
             Box("Door frame", new Vector3(-doorWidth * 0.5f, doorHeight * 0.5f, wallZ),
                 new Vector3(0.12f, doorHeight, 0.6f), trimMaterial);
             Box("Door frame", new Vector3(doorWidth * 0.5f, doorHeight * 0.5f, wallZ),
@@ -635,8 +634,10 @@ namespace BigRedButton.Editor
                 new Vector3(doorWidth, 0.12f, 0.6f), trimMaterial);
 
             // Leave the doorway open: an opaque panel would hide the fantasy skybox.
-            Box("Outside ground", new Vector3(0f, -0.25f, 17f),
-                new Vector3(30f, 0.5f, 20f), floorMaterial);
+            // Large enough to sprint in any direction throughout exploration and the fade.
+            // Slightly lower than the chamber floor avoids overlapping visible surfaces.
+            Box("Outside ground", new Vector3(0f, -0.3f, 1f),
+                new Vector3(300f, 0.5f, 300f), floorMaterial);
             Day31SkyboxSetup.ApplyConfiguredSkybox();
 
             // Light spilling in through the doorway, the only warm light in the game.
@@ -652,10 +653,10 @@ namespace BigRedButton.Editor
             sunlight.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
             var ending = level.gameObject.AddComponent<EndingSequence>();
-            SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 3f));
+            SetPrivate(ending, "doorwayCentre", new Vector3(0f, 0f, wallZ + 2f));
             SetPrivate(ending, "doorwayRadius", 1.5f);
-            SetPrivate(ending, "gunshot",
-                AssetDatabase.LoadAssetAtPath<AudioClip>(GunshotClipPath));
+            SetPrivate(ending, "explorationDuration", 5f);
+            SetPrivate(ending, "fadeToBlackDuration", 2f);
 
             // No red button to fail and no green button to complete. Walking into the
             // doorway starts the ending itself, so nothing else needs wiring here.
